@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+# Call with
+# git difftool -x ./elternverteiler-difftool elternverteiler.txt
+
+require 'pry'
+require 'hashdiff'
+
+LOCAL = ARGV[0]
+REMOTE = ARGV[1]
+BASE = ENV['BASE']
+
+def load(file_name)
+  File.read(file_name).lines.inject({}) do |db, line|
+    name, addresses = line.split(' ')
+    db[name] = addresses.split(',').sort if addresses
+    db
+  end
+end
+
+local = load(LOCAL)
+remote = load(REMOTE)
+
+warn '+ means it was added; - means it was removed.'
+warn 'Beware that if someone moves from one class to another, it will appear as delete and add for each paren.'
+puts HashDiff.diff(local, remote)
