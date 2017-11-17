@@ -75,3 +75,34 @@ scp elternverteiler.txt ***REMOVED***.schickhardt-gymnasium-herrenberg.de:
 * Excel ist nicht für Normalbenutzer, eine App wäre besser
 * Metriken, um "heiße Diskussionen" zu erkennen
 * Signatur unter jede Mail
+
+# Development
+
+```bash
+# create the database
+initdb -D /usr/local/var/postgres-10
+
+# see brew info postgresql on how to start the database server
+
+# create the dev database
+createdb elternverteiler
+
+# configure the DB URI
+export DB=postgres://localhost/elternverteiler
+
+# migrate the database
+bundle exec rake db:migrate
+```
+
+# Troubleshooting
+
+## Use the `sequel` database monitor
+
+```bash
+$ bundle exec sequel $DB
+```
+
+# TODO
+
+* deleted_at
+* audit trail

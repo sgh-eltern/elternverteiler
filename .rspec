@@ -1,0 +1,5 @@
+-I lib
+--color
+--format documentation
+--require spec_helper
+--tty

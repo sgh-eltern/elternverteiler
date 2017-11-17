@@ -1,0 +1,9 @@
+name: <%= File.basename(Dir.pwd) %>
+windows:
+  - ruby:
+      panes:
+        - bundle exec guard
+        -
+  - db:
+      panes:
+        - bundle exec sequel $DB
