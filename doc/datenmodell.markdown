@@ -21,7 +21,7 @@ Abgang (Optional)
 
 PrimaryKey ID
 
-# ??? (Schüler <=> Erziehungsberechtigter)
+# Erziehungsberechtigung (Schüler <=> Erziehungsberechtigter)
 
 SchülerID
 ErziehungsberechtigterID
