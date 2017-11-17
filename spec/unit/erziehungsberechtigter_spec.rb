@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'sgh/elternverteiler/erziehungsberechtigter'
 
-describe SGH::Elternverteiler::Erziehungsberechtigter do
+describe Erziehungsberechtigter do
   subject(:homer) { described_class.new }
 
   context 'without data' do

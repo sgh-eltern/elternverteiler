@@ -2,6 +2,8 @@
 
 require 'sequel'
 Sequel.connect(ENV.fetch('DB'))
+require 'sgh/elternverteiler'
+include SGH::Elternverteiler
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
@@ -35,6 +37,7 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 
   config.around(:each) do |example|
+    # TODO: Does not seem to work with models
     # Sequel.extension :migration
     # Sequel::Migrator.run(Sequel::Model.db, 'db/migrations')
     Sequel::Model.db.transaction(rollback: :always, auto_savepoint: true) { example.run }

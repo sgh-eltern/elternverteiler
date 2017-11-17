@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'sgh/elternverteiler/schüler'
 
-describe SGH::Elternverteiler::Schüler do
+describe Schüler do
   subject(:bart) { described_class.new }
 
   context 'without data' do
@@ -16,7 +15,7 @@ describe SGH::Elternverteiler::Schüler do
     before do
       bart.vorname = 'Bart'
       bart.nachname = 'Simpson'
-      bart.klasse = '5a'
+      bart.klasse = '4a'
       bart.save
     end
 
@@ -24,27 +23,27 @@ describe SGH::Elternverteiler::Schüler do
       expect(bart).to be
       expect(bart.vorname).to eq('Bart')
       expect(bart.nachname).to eq('Simpson')
-      expect(bart.klasse).to eq('5a')
+      expect(bart.klasse).to eq('4a')
     end
   end
 
   context 'missing attributes' do
     it 'cannot exist without vorname' do
       bart.nachname = 'Simpson'
-      bart.klasse = '5a'
-      expect{bart.save}.to raise_error(Sequel::NotNullConstraintViolation)
+      bart.klasse = '4a'
+      expect { bart.save }.to raise_error(Sequel::NotNullConstraintViolation)
     end
 
     it 'cannot exist without nachname' do
       bart.vorname = 'Bart'
-      bart.klasse = '5a'
-      expect{bart.save}.to raise_error(Sequel::NotNullConstraintViolation)
+      bart.klasse = '4a'
+      expect { bart.save }.to raise_error(Sequel::NotNullConstraintViolation)
     end
 
     it 'cannot exist without klasse' do
       bart.vorname = 'Bart'
       bart.nachname = 'Simpson'
-      expect{bart.save}.to raise_error(Sequel::NotNullConstraintViolation)
+      expect { bart.save }.to raise_error(Sequel::NotNullConstraintViolation)
     end
   end
 end
