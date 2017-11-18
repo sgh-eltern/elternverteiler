@@ -14,4 +14,5 @@ group 'development' do
   gem 'pry-byebug'
   gem 'rspec'
   gem 'rubocop'
+  gem 'sqlite3'
 end

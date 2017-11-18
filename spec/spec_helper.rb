@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 require 'sequel'
-Sequel.connect(ENV.fetch('DB'))
+
+Sequel::Model.db = Sequel.sqlite
+Sequel.extension :migration
+Sequel::Migrator.run(Sequel::Model.db, 'db/migrations')
+
 require 'sgh/elternverteiler'
 include SGH::Elternverteiler
 
@@ -37,9 +41,6 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 
   config.around(:each) do |example|
-    # TODO: Does not seem to work with models
-    # Sequel.extension :migration
-    # Sequel::Migrator.run(Sequel::Model.db, 'db/migrations')
     Sequel::Model.db.transaction(rollback: :always, auto_savepoint: true) { example.run }
   end
 end
