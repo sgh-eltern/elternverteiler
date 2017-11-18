@@ -12,11 +12,11 @@ describe Erziehungsberechtigung do
         homer.add_kinder(bart)
       end
 
-      it "Homer is Bart's father" do
+      it "shows Homer as Bart's father" do
         expect(homer.kinder).to include(bart)
       end
 
-      it "Bart is Homer's son" do
+      it "shows Bart as Homer's son" do
         expect(bart.eltern).to include(homer)
       end
     end
@@ -26,21 +26,49 @@ describe Erziehungsberechtigung do
         bart.add_eltern(homer)
       end
 
-      it "Homer is Bart's father" do
+      it "shows Homer as Bart's father" do
         expect(homer.kinder).to include(bart)
       end
 
-      it "Bart is Homer's son" do
+      it "shows Bart as Homer's son" do
         expect(bart.eltern).to include(homer)
       end
     end
 
-    it "Homer is Bart's father" do
-      expect(homer.kinder).to include(bart)
+    context 'Bart is thrown off the school' do
+      let(:lisa) { Schüler.new(vorname: 'Lisa', nachname: 'Simpson', klasse: '2a').save }
+      let(:marge) { Erziehungsberechtigter.new(vorname: 'Marge', nachname: 'Simpson').save }
+
+      before do
+        bart.add_eltern(marge)
+        bart.add_eltern(homer)
+        lisa.add_eltern(homer)
+        lisa.add_eltern(marge)
+      end
+
+      it 'keeps Homer and Marge because of Lisa' do
+        Schüler.find(nachname: 'Simpson', vorname: 'Bart').delete
+        expect(Erziehungsberechtigter.find(vorname: 'Homer', nachname: 'Simpson')).to be
+        expect(Erziehungsberechtigter.find(vorname: 'Marge', nachname: 'Simpson')).to be
+        expect(Schüler.find(vorname: 'Lisa', nachname: 'Simpson')).to be
+      end
     end
 
-    it "Bart is Homer's son" do
-      expect(bart.eltern).to include(homer)
+    context 'Milhouse leaves the school' do
+      let(:milhouse) { Schüler.new(vorname: 'Milhouse', nachname: 'Van Houten', klasse: '4a').save }
+      let(:luann) { Erziehungsberechtigter.new(vorname: 'Luann', nachname: 'Van Houten').save }
+      let(:kirk) { Erziehungsberechtigter.new(vorname: 'Kirk', nachname: 'Van Houten').save }
+
+      before do
+        milhouse.add_eltern(luann)
+        milhouse.add_eltern(kirk)
+      end
+
+      it 'removes Luann and Kirk because they have no other kids in this school' do
+        Schüler.find(nachname: 'Van Houten', vorname: 'Milhouse').delete
+        expect(Erziehungsberechtigter.find(nachname: 'Van Houten', vorname: 'Luann')).to be_nil
+        expect(Erziehungsberechtigter.find(nachname: 'Van Houten', vorname: 'Kirk')).to be_nil
+      end
     end
   end
 end
