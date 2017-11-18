@@ -53,21 +53,35 @@ describe Erziehungsberechtigung do
         expect(Schüler.find(vorname: 'Lisa', nachname: 'Simpson')).to be
       end
     end
+  end
 
-    context 'Milhouse leaves the school' do
-      let(:milhouse) { Schüler.new(vorname: 'Milhouse', nachname: 'Van Houten', klasse: '4a').save }
-      let(:luann) { Erziehungsberechtigter.new(vorname: 'Luann', nachname: 'Van Houten').save }
-      let(:kirk) { Erziehungsberechtigter.new(vorname: 'Kirk', nachname: 'Van Houten').save }
+  context 'The Van Houtens' do
+    let(:milhouse) { Schüler.new(vorname: 'Milhouse', nachname: 'Van Houten', klasse: '4a').save }
+    let(:luann) { Erziehungsberechtigter.new(vorname: 'Luann', nachname: 'Van Houten').save }
+    let(:kirk) { Erziehungsberechtigter.new(vorname: 'Kirk', nachname: 'Van Houten').save }
 
+    before do
+      milhouse.add_eltern(luann)
+      milhouse.add_eltern(kirk)
+    end
+
+    context "Milhouse' parents get divorced; Milhouse stays with Kirk" do
       before do
-        milhouse.add_eltern(luann)
-        milhouse.add_eltern(kirk)
+        Erziehungsberechtigter.find(nachname: 'Van Houten', vorname: 'Luann').delete
       end
 
-      it 'removes Luann and Kirk because they have no other kids in this school' do
-        Schüler.find(nachname: 'Van Houten', vorname: 'Milhouse').delete
+      it "retains Kirk's parentship" do
+        expect(Erziehungsberechtigter.find(nachname: 'Van Houten', vorname: 'Kirk')).to be
+      end
+
+      it "removes Luann from the parentship" do
         expect(Erziehungsberechtigter.find(nachname: 'Van Houten', vorname: 'Luann')).to be_nil
-        expect(Erziehungsberechtigter.find(nachname: 'Van Houten', vorname: 'Kirk')).to be_nil
+      end
+
+      it "shows just Kirk as Milhouse' parents" do
+        expect(milhouse.eltern.count).to eq(1)
+        expect(milhouse.eltern).to include(kirk)
+        expect(milhouse.eltern).to_not include(luann)
       end
     end
   end
