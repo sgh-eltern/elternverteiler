@@ -15,4 +15,5 @@ group 'development' do
   gem 'rspec'
   gem 'rubocop'
   gem 'sqlite3'
+  gem 'timecop'
 end

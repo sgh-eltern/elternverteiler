@@ -6,6 +6,8 @@ Sequel.migration do
       String :vorname
       String :mail
       String :telefon
+      DateTime :created_at
+      DateTime :updated_at
 
       constraint(:nachname_min_length) { Sequel.char_length(:nachname) > 0 }
     end

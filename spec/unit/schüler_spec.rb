@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'timecop'
 
 describe Schüler do
   subject(:bart) { described_class.new }
@@ -24,6 +25,25 @@ describe Schüler do
       expect(bart.vorname).to eq('Bart')
       expect(bart.nachname).to eq('Simpson')
       expect(bart.klasse).to eq('4a')
+    end
+
+    it 'has a created_at timestamp' do
+      expect(bart.created_at).to be
+    end
+
+    it 'has a updated_at timestamp' do
+      bart.save
+      expect(bart.updated_at).to be
+    end
+
+    it 'updates the updated_at timestamp' do
+      bart.save
+      before_update = bart.updated_at
+
+      Timecop.freeze(30) do
+        bart.save
+        expect(bart.updated_at).to be >= before_update
+      end
     end
   end
 
