@@ -74,7 +74,7 @@ describe Erziehungsberechtigung do
         expect(Erziehungsberechtigter.find(nachname: 'Van Houten', vorname: 'Kirk')).to be
       end
 
-      it "removes Luann from the parentship" do
+      it 'removes Luann from the parentship' do
         expect(Erziehungsberechtigter.find(nachname: 'Van Houten', vorname: 'Luann')).to be_nil
       end
 
@@ -82,6 +82,104 @@ describe Erziehungsberechtigung do
         expect(milhouse.eltern.count).to eq(1)
         expect(milhouse.eltern).to include(kirk)
         expect(milhouse.eltern).to_not include(luann)
+      end
+    end
+
+    context 'Milhouse leaves the school' do
+      it 'removes Luann and Kirk because they have no other kids in this school' do
+        milhouse.destroy
+        expect(Erziehungsberechtigter.find(nachname: 'Van Houten', vorname: 'Luann')).to be_nil
+        expect(Erziehungsberechtigter.find(nachname: 'Van Houten', vorname: 'Kirk')).to be_nil
+      end
+    end
+  end
+
+  context 'a patchwork family' do
+    let(:martina) { Erziehungsberechtigter.new(vorname: '***REMOVED***a', nachname: 'Bock').save }
+    let(:thomas) { Erziehungsberechtigter.new(vorname: 'Thomas', nachname: 'Mustermann').save }
+    let(:tajana) { Schüler.new(vorname: 'Tajana', nachname: 'Bock', klasse: '4a').save }
+    let(:david) { Schüler.new(vorname: 'David', nachname: 'Mustermann', klasse: '7b').save }
+    let(:mika) { Schüler.new(vorname: 'Mika', nachname: 'Bock', klasse: '10c').save }
+
+    before do
+      tajana.add_eltern(martina)
+      david.add_eltern(thomas)
+      mika.add_eltern(martina)
+      mika.add_eltern(thomas)
+    end
+
+    context 'Tajana leaves school' do
+      before do
+        tajana.destroy
+      end
+
+      it 'retains ***REMOVED***a and Thomas because of Mika' do
+        expect(Erziehungsberechtigter.find(nachname: 'Bock', vorname: '***REMOVED***a')).to be
+        expect(Erziehungsberechtigter.find(nachname: 'Mustermann', vorname: 'Thomas')).to be
+      end
+    end
+
+    context 'David leaves school' do
+      before do
+        david.destroy
+      end
+
+      it 'retains ***REMOVED***a and Thomas because of Mika' do
+        expect(Erziehungsberechtigter.find(nachname: 'Bock', vorname: '***REMOVED***a')).to be
+        expect(Erziehungsberechtigter.find(nachname: 'Mustermann', vorname: 'Thomas')).to be
+      end
+    end
+
+    context 'Mika leaves school' do
+      before do
+        mika.destroy
+      end
+
+      it 'retains ***REMOVED***a and Thomas because of Tajana and David, respectively' do
+        expect(Erziehungsberechtigter.find(nachname: 'Bock', vorname: '***REMOVED***a')).to be
+        expect(Erziehungsberechtigter.find(nachname: 'Mustermann', vorname: 'Thomas')).to be
+      end
+    end
+
+    context 'Tajana and David leave school' do
+      before do
+        tajana.destroy
+        david.destroy
+      end
+
+      it 'retains ***REMOVED***a and Thomas because of Mika' do
+        expect(Erziehungsberechtigter.find(nachname: 'Bock', vorname: '***REMOVED***a')).to be
+        expect(Erziehungsberechtigter.find(nachname: 'Mustermann', vorname: 'Thomas')).to be
+      end
+    end
+
+    context 'David and Mika leave school' do
+      before do
+        mika.destroy
+        david.destroy
+      end
+
+      it 'retains ***REMOVED***a because of Tajana' do
+        expect(Erziehungsberechtigter.find(nachname: 'Bock', vorname: '***REMOVED***a')).to be
+      end
+
+      it 'destroys Thomas because he has no kid in school anymore' do
+        expect(Erziehungsberechtigter.find(nachname: 'Mustermann', vorname: 'Thomas')).to_not be
+      end
+    end
+
+    context 'Tajana and Mika leave school' do
+      before do
+        tajana.destroy
+        mika.destroy
+      end
+
+      it 'retains Thomas because of David' do
+        expect(Erziehungsberechtigter.find(nachname: 'Mustermann', vorname: 'Thomas')).to be
+      end
+
+      it 'destroys ***REMOVED***a because she has no kid in school anymore' do
+        expect(Erziehungsberechtigter.find(nachname: 'Bock', vorname: '***REMOVED***a')).to_not be
       end
     end
   end
