@@ -6,29 +6,26 @@ describe Erziehungsberechtigter do
   subject(:homer) { described_class.new }
 
   context 'without data' do
-    it 'there are no Erziehungsberechtigte' do
+    it 'there are no parents' do
       expect(described_class.all).to be_empty
     end
   end
 
-  context 'a valid Erziehungsberechtigter' do
-    before do
+  context 'a valid parent' do
+    it 'persists' do
       homer.nachname = 'Simpson'
       homer.save
-    end
-
-    it 'persists' do
-      expect(homer).to be
+      homer.refresh
       expect(homer.nachname).to eq('Simpson')
     end
 
-    it 'can have a vorname' do
+    it 'can have a first name' do
       homer.vorname = 'Homer'
       homer.save
       expect(homer.vorname).to eq('Homer')
     end
 
-    it 'can have an empty vorname' do
+    it 'can have an empty first name' do
       homer.vorname = ''
       homer.save
     end
@@ -44,13 +41,13 @@ describe Erziehungsberechtigter do
       homer.save
     end
 
-    it 'can have a telefon' do
+    it 'can have a phone number' do
       homer.telefon = 'Homer'
       homer.save
       expect(homer.telefon).to eq('Homer')
     end
 
-    it 'can have an empty telefon' do
+    it 'can have an empty phone number' do
       homer.telefon = ''
       homer.save
     end

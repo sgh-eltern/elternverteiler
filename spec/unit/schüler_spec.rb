@@ -7,17 +7,18 @@ describe Schüler do
   subject(:bart) { described_class.new }
 
   context 'without data' do
-    it 'there are no Schüler' do
+    it 'there are no pupils' do
       expect(described_class.all).to be_empty
     end
   end
 
-  context 'a valid Schüler' do
+  context 'a valid pupil' do
     before do
       bart.vorname = 'Bart'
       bart.nachname = 'Simpson'
       bart.klasse = '4a'
       bart.save
+      bart.refresh
     end
 
     it 'persists' do
@@ -48,22 +49,30 @@ describe Schüler do
   end
 
   context 'missing attributes' do
-    it 'cannot exist without vorname' do
+    it 'cannot exist without first name' do
       bart.nachname = 'Simpson'
       bart.klasse = '4a'
       expect { bart.save }.to raise_error(Sequel::NotNullConstraintViolation)
     end
 
-    it 'cannot exist without nachname' do
+    it 'cannot exist without last name' do
       bart.vorname = 'Bart'
       bart.klasse = '4a'
       expect { bart.save }.to raise_error(Sequel::NotNullConstraintViolation)
     end
 
-    it 'cannot exist without klasse' do
+    it 'cannot exist without grade' do
       bart.vorname = 'Bart'
       bart.nachname = 'Simpson'
       expect { bart.save }.to raise_error(Sequel::NotNullConstraintViolation)
+    end
+
+    it 'cannot exist without grade too short' do
+      maggie = described_class.new
+      maggie.vorname = 'Maggie'
+      maggie.nachname = 'Simpson'
+      maggie.klasse = '0'
+      expect { maggie.save }.to raise_error(Sequel::CheckConstraintViolation)
     end
   end
 end
