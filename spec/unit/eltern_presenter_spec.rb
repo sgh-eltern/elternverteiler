@@ -33,5 +33,26 @@ describe ElternPresenter do
       expect(subject.to_s).to include('kirk@vanhouten.org')
       expect(subject.to_s).to include('eddie@muntz.org')
     end
+
+    context 'some parents sharing a single mail address' do
+      before do
+        Erziehungsberechtigter.new(vorname: 'Ned', nachname: 'Flanders', mail: 'flanders@firstchurch.org').save
+        Erziehungsberechtigter.new(vorname: 'Maude', nachname: 'Flanders', mail: 'flanders@firstchurch.org').save
+      end
+
+      it 'contains the addresses of Ned and Maude parents' do
+        expect(subject.to_s).to include('flanders@firstchurch.org')
+      end
+
+      it 'has no dupes' do
+        addresses = subject.to_s.split(' ').last.split(',')
+        expect(addresses.size).to eq(addresses.uniq.size)
+      end
+    end
+
+    it 'does not contain empty fields' do
+      expect(subject.to_s).to_not end_with(',')
+      expect(subject.to_s).to_not include(',,')
+    end
   end
 end

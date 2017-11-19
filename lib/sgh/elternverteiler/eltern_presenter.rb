@@ -9,7 +9,7 @@ module SGH
 
       def to_s
         return '' if Erziehungsberechtigter.empty?
-        "#{@address} #{Erziehungsberechtigter.all.map(&:mail).join(',')}"
+        "#{@address} #{Erziehungsberechtigter.all.map(&:mail).uniq.compact.join(',')}"
       end
     end
   end

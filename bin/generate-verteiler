@@ -11,5 +11,7 @@ Sequel::Migrator.run(Sequel::Model.db, 'db/migrations')
 require 'sgh/elternverteiler'
 include SGH::Elternverteiler
 require 'sgh/elternverteiler/eltern_presenter'
+require 'sgh/elternverteiler/klasse_presenter'
 
 puts ElternPresenter.new('eltern@schickhardt-gymnasium-herrenberg.de')
+puts KlassePresenter.new('5A', 'eltern-5a@schickhardt-gymnasium-herrenberg.de')
