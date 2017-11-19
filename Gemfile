@@ -6,6 +6,7 @@ gem 'hashdiff'
 gem 'pg'
 gem 'rake'
 gem 'sequel'
+gem 'simple-spreadsheet'
 
 group 'development' do
   gem 'guard-bundler', require: false
