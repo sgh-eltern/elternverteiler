@@ -9,12 +9,13 @@ Sequel::Model.db = Sequel.connect(ENV.fetch('DB'))
 require 'sgh/elternverteiler'
 include SGH::Elternverteiler
 
-require "simple-spreadsheet"
+require 'simple-spreadsheet'
 
 # Not sure if this is what we get from the school ...
 s = SimpleSpreadsheet::Workbook.read('elternverteiler.ods')
 s.selected_sheet = s.sheets.first
 s.first_row.upto(s.last_row) do |line|
+  # rubocop:disable Lint/RescueWithoutErrorClass
   begin
     child  = Schüler.find_or_create(vorname: s.cell(line, 1), nachname: s.cell(line, 2), klasse: s.cell(line, 3)).save
     parent = Erziehungsberechtigter.find_or_create(vorname: s.cell(line, 4), nachname: s.cell(line, 5), mail: s.cell(line, 6)).save

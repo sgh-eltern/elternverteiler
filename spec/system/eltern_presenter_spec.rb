@@ -30,6 +30,6 @@ describe ElternPresenter, type: 'system' do
   end
 
   it 'is parsable by postmap without errors' do
-    expect { %x(postmap hash:#{@db_file.path}) }.to_not output.to_stderr
+    expect { `postmap hash:#{@db_file.path}` }.to_not output.to_stderr
   end
 end

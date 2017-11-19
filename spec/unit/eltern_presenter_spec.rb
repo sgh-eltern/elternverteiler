@@ -14,13 +14,10 @@ describe ElternPresenter do
 
   context 'with some parents in 4th grade' do
     before do
-      Schüler.new(vorname: 'Bart', nachname: 'Simpson', klasse: '4a').save
       Erziehungsberechtigter.new(vorname: 'Homer', nachname: 'Simpson', mail: 'homer@simpson.org').save
       Erziehungsberechtigter.new(vorname: 'Marge', nachname: 'Simpson', mail: 'marge@simpson.org').save
-      Schüler.new(vorname: 'Milhouse', nachname: 'Van Houten', klasse: '4a').save
       Erziehungsberechtigter.new(vorname: 'Luann', nachname: 'Van Houten', mail: 'luann@vanhouten.org').save
       Erziehungsberechtigter.new(vorname: 'Kirk', nachname: 'Van Houten', mail: 'kirk@vanhouten.org').save
-      Schüler.new(vorname: 'Nelson', nachname: 'Muntz', klasse: '4a').save
       Erziehungsberechtigter.new(vorname: 'Eddie', nachname: 'Muntz', mail: 'eddie@muntz.org').save
       Erziehungsberechtigter.new(nachname: 'Muntz').save
     end
