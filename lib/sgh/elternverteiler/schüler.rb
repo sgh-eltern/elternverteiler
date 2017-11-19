@@ -13,6 +13,10 @@ module SGH
         # destroy all parents that have no other kid in school besides this
         eltern.each { |ezb| ezb.destroy if ezb.kinder.size == 1 }
       end
+
+      def to_s
+        "#{vorname} #{nachname}, #{klasse}"
+      end
     end
   end
 end

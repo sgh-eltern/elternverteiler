@@ -6,12 +6,6 @@ require 'timecop'
 describe Schüler do
   subject(:bart) { described_class.new }
 
-  context 'without data' do
-    it 'there are no pupils' do
-      expect(described_class.all).to be_empty
-    end
-  end
-
   context 'a valid pupil' do
     before do
       bart.vorname = 'Bart'
@@ -26,6 +20,10 @@ describe Schüler do
       expect(bart.vorname).to eq('Bart')
       expect(bart.nachname).to eq('Simpson')
       expect(bart.klasse).to eq('4a')
+    end
+
+    it 'has a string representation' do
+      expect(bart.to_s).to eq('Bart Simpson, 4a')
     end
 
     it 'has a created_at timestamp' do

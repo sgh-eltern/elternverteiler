@@ -5,12 +5,6 @@ require 'spec_helper'
 describe Erziehungsberechtigter do
   subject(:homer) { described_class.new }
 
-  context 'without data' do
-    it 'there are no parents' do
-      expect(described_class.all).to be_empty
-    end
-  end
-
   context 'a valid parent' do
     it 'persists' do
       homer.nachname = 'Simpson'
