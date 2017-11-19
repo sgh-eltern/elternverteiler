@@ -9,14 +9,13 @@ guard :bundler do
   files.each { |file| watch(helper.real_path(file)) }
 end
 
-%w[unit system acceptance].each do |type|
-  group type do
-    guard :rspec, cmd: 'bundle exec rspec' do
-      watch(%r{^spec/#{type}/.+_spec\.rb$})
-      watch(%r{^lib/(?<module>.*/)(?<file>.+)\.rb$}) { |m|
-        "spec/unit/#{m[:module]}#{m[:file]}_spec.rb"
-      }
-      watch('spec/spec_helper.rb') { 'spec' }
-    end
-  end
-end
+guard :rspec, cmd: 'bundle exec rspec' do
+  require 'guard/rspec/dsl'
+  dsl = Guard::RSpec::Dsl.new(self)
+
+  rspec = dsl.rspec
+  watch(rspec.spec_helper) { rspec.spec_dir }
+  watch(rspec.spec_files)
+  watch(%r{^lib/.+/(.+)\.rb$}) { |m| "spec/unit/#{m[1]}_spec.rb" }
+  dsl.watch_spec_files_for(dsl.ruby.lib_files)
+ end
