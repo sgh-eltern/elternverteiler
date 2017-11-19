@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Erziehungsberechtigung do
-  context 'The Simpsons' do
+  context 'the Simpsons' do
     let(:bart) { Schüler.new(vorname: 'Bart', nachname: 'Simpson', klasse: '4a').save }
     let(:homer) { Erziehungsberechtigter.new(vorname: 'Homer', nachname: 'Simpson').save }
 
@@ -46,8 +46,8 @@ describe Erziehungsberechtigung do
         lisa.add_eltern(marge)
       end
 
-      it 'keeps Homer and Marge because of Lisa' do
-        Schüler.find(nachname: 'Simpson', vorname: 'Bart').destroy
+      it 'retains Homer and Marge because of Lisa' do
+        bart.destroy
         expect(Erziehungsberechtigter.find(vorname: 'Homer', nachname: 'Simpson')).to be
         expect(Erziehungsberechtigter.find(vorname: 'Marge', nachname: 'Simpson')).to be
         expect(Schüler.find(vorname: 'Lisa', nachname: 'Simpson')).to be
@@ -55,7 +55,7 @@ describe Erziehungsberechtigung do
     end
   end
 
-  context 'The Van Houtens' do
+  context 'the Van Houtens' do
     let(:milhouse) { Schüler.new(vorname: 'Milhouse', nachname: 'Van Houten', klasse: '4a').save }
     let(:luann) { Erziehungsberechtigter.new(vorname: 'Luann', nachname: 'Van Houten').save }
     let(:kirk) { Erziehungsberechtigter.new(vorname: 'Kirk', nachname: 'Van Houten').save }
@@ -67,7 +67,7 @@ describe Erziehungsberechtigung do
 
     context "Milhouse' parents get divorced; Milhouse stays with Kirk" do
       before do
-        Erziehungsberechtigter.find(nachname: 'Van Houten', vorname: 'Luann').destroy
+        luann.destroy
       end
 
       it "retains Kirk's parentship" do
