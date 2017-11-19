@@ -1,33 +1,5 @@
 # Datenmodell Elternverteiler
 
-# Schüler
-
-ID
-Vorname (Pflicht)
-Nachname (Pflicht)
-Klasse (Pflicht)
-
-PrimaryKey ID
-
-# Table: Erziehungsberechtigter
-
-ID
-Vorname (Optional)
-Nachname (Pflicht)
-Mail (Optional)
-Telefon (Optional)
-Zugang (Optional)
-Abgang (Optional)
-
-PrimaryKey ID
-
-# Erziehungsberechtigung (Schüler <=> Erziehungsberechtigter)
-
-SchülerID
-ErziehungsberechtigterID
-
-PrimaryKey SchülerID,ErziehungsberechtigterID
-
 # Rollen
 
 J1-AGH K eltern-J1-KOOP
