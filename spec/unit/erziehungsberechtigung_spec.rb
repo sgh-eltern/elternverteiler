@@ -47,7 +47,7 @@ describe Erziehungsberechtigung do
       end
 
       it 'keeps Homer and Marge because of Lisa' do
-        Schüler.find(nachname: 'Simpson', vorname: 'Bart').delete
+        Schüler.find(nachname: 'Simpson', vorname: 'Bart').destroy
         expect(Erziehungsberechtigter.find(vorname: 'Homer', nachname: 'Simpson')).to be
         expect(Erziehungsberechtigter.find(vorname: 'Marge', nachname: 'Simpson')).to be
         expect(Schüler.find(vorname: 'Lisa', nachname: 'Simpson')).to be
@@ -67,7 +67,7 @@ describe Erziehungsberechtigung do
 
     context "Milhouse' parents get divorced; Milhouse stays with Kirk" do
       before do
-        Erziehungsberechtigter.find(nachname: 'Van Houten', vorname: 'Luann').delete
+        Erziehungsberechtigter.find(nachname: 'Van Houten', vorname: 'Luann').destroy
       end
 
       it "retains Kirk's parentship" do

@@ -8,6 +8,11 @@ module SGH
         right_key: :erziehungsberechtigter_id,
         join_table: :erziehungsberechtigung,
         class: Erziehungsberechtigter
+
+      def before_destroy
+        # destroy all parents that have no other kid in school besides this
+        eltern.each { |ezb| ezb.destroy if ezb.kinder.size == 1 }
+      end
     end
   end
 end
