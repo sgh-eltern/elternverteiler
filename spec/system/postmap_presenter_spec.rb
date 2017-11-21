@@ -4,8 +4,12 @@ require 'spec_helper'
 require 'tempfile'
 require 'sgh/elternverteiler/postmap_presenter'
 
-describe PostmapPresenter, type: 'system' do
+describe 'A file with all parents presented with PostmapPresenter', type: 'system' do
   let(:k4a) { Klasse.new(stufe: '4', zug: 'a').save }
+  subject {
+    File.write(@db_file.path, PostmapPresenter.new('eltern@springfield-elementary.edu').present(Erziehungsberechtigter.all))
+    @db_file
+  }
 
   before do
     Schüler.new(vorname: 'Bart', nachname: 'Simpson', klasse: k4a).save
@@ -27,15 +31,11 @@ describe PostmapPresenter, type: 'system' do
     end
   end
 
-  before do
-    File.write(@db_file.path, described_class.new('eltern@springfield-elementary.edu').present(Erziehungsberechtigter.all))
-  end
-
   it 'contains a sizable amount of characters' do
-    expect(@db_file.size).to be > 100
+    expect(subject.size).to be > 100
   end
 
   it 'is parsable by postmap without errors' do
-    expect { `postmap hash:#{@db_file.path}` }.to_not output.to_stderr
+    expect { `postmap hash:#{subject.path}` }.to_not output.to_stderr
   end
 end
