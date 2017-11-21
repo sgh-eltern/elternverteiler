@@ -7,6 +7,7 @@ gem 'pg'
 gem 'rake'
 gem 'sequel'
 gem 'simple-spreadsheet'
+gem 'ruby-progressbar'
 
 group 'development' do
   gem 'guard-bundler', require: false

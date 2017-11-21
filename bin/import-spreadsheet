@@ -10,11 +10,17 @@ require 'sgh/elternverteiler'
 include SGH::Elternverteiler
 
 require 'simple-spreadsheet'
+require 'ruby-progressbar'
 
 # Not sure if this is what we get from the school ...
 s = SimpleSpreadsheet::Workbook.read('elternverteiler.ods')
 s.selected_sheet = s.sheets.first
+
+progressbar = ProgressBar.create(total: s.last_row - s.first_row + 1)
+
 s.first_row.upto(s.last_row) do |line|
+  progressbar.increment
+
   # rubocop:disable Lint/RescueWithoutErrorClass
   begin
     klassenname = s.cell(line, 3).upcase
