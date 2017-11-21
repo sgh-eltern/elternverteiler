@@ -27,11 +27,3 @@ ErziehungsberechtigterID
 RolleID
 
 PrimaryKey ErziehungsberechtigterID,RolleID
-
-# View: Klassenstufenverteiler
-
-Klasse starts with 5,6,7,8,9,10,J1,J2
-
-# TODO
-
-* Indices (für Suche)

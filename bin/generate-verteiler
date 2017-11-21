@@ -20,5 +20,10 @@ end
 warn "Alle Eltern: #{Erziehungsberechtigter.count} Adressen"
 puts PostmapPresenter.new('eltern@schickhardt-gymnasium-herrenberg.de').present(Erziehungsberechtigter.all)
 
-warn 'Nicht per Mail erreichbar sind:'
-warn(Schüler.all.select { |sch| sch.eltern.collect(&:mail).compact.empty? })
+unreachable = Schüler.all.select { |sch| sch.eltern.collect(&:mail).compact.empty? }
+
+if unreachable.any?
+  percent = unreachable.count.to_f / Schüler.count * 100
+  warn "Nicht per Mail erreichbar sind (#{'%.2f%' % percent}):"
+  warn unreachable
+end
