@@ -2,3 +2,4 @@
 .cache_rake_t
 .envrc
 spec/failure-state
+.DS_Store
