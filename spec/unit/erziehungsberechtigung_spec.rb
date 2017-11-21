@@ -3,8 +3,10 @@
 require 'spec_helper'
 
 describe Erziehungsberechtigung do
+  let(:k4a) { Klasse.new(stufe: '4', zug: 'a').save }
+
   context 'the Simpsons' do
-    let(:bart) { Schüler.new(vorname: 'Bart', nachname: 'Simpson', klasse: '4a').save }
+    let(:bart) { Schüler.new(vorname: 'Bart', nachname: 'Simpson', klasse: k4a).save }
     let(:homer) { Erziehungsberechtigter.new(vorname: 'Homer', nachname: 'Simpson').save }
 
     context "when registering Bart as Homer's child" do
@@ -36,7 +38,8 @@ describe Erziehungsberechtigung do
     end
 
     context 'Bart is thrown off the school' do
-      let(:lisa) { Schüler.new(vorname: 'Lisa', nachname: 'Simpson', klasse: '2a').save }
+      let(:k2a) { Klasse.new(stufe: '2', zug: 'a').save }
+      let(:lisa) { Schüler.new(vorname: 'Lisa', nachname: 'Simpson', klasse: k2a).save }
       let(:marge) { Erziehungsberechtigter.new(vorname: 'Marge', nachname: 'Simpson').save }
 
       before do
@@ -56,7 +59,7 @@ describe Erziehungsberechtigung do
   end
 
   context 'the Van Houtens' do
-    let(:milhouse) { Schüler.new(vorname: 'Milhouse', nachname: 'Van Houten', klasse: '4a').save }
+    let(:milhouse) { Schüler.new(vorname: 'Milhouse', nachname: 'Van Houten', klasse: k4a).save }
     let(:luann) { Erziehungsberechtigter.new(vorname: 'Luann', nachname: 'Van Houten').save }
     let(:kirk) { Erziehungsberechtigter.new(vorname: 'Kirk', nachname: 'Van Houten').save }
 
@@ -95,11 +98,14 @@ describe Erziehungsberechtigung do
   end
 
   context 'a patchwork family' do
+    let(:k7b) { Klasse.new(stufe: '7', zug: 'b').save }
+    let(:k10c) { Klasse.new(stufe: '10', zug: 'c').save }
+
     let(:martina) { Erziehungsberechtigter.new(vorname: '***REMOVED***a', nachname: 'Bock').save }
     let(:thomas) { Erziehungsberechtigter.new(vorname: 'Thomas', nachname: 'Mustermann').save }
-    let(:tajana) { Schüler.new(vorname: 'Tajana', nachname: 'Bock', klasse: '4a').save }
-    let(:david) { Schüler.new(vorname: 'David', nachname: 'Mustermann', klasse: '7b').save }
-    let(:mika) { Schüler.new(vorname: 'Mika', nachname: 'Bock', klasse: '10c').save }
+    let(:tajana) { Schüler.new(vorname: 'Tajana', nachname: 'Bock', klasse: k4a).save }
+    let(:david) { Schüler.new(vorname: 'David', nachname: 'Mustermann', klasse: k7b).save }
+    let(:mika) { Schüler.new(vorname: 'Mika', nachname: 'Bock', klasse: k10c).save }
 
     before do
       tajana.add_eltern(martina)

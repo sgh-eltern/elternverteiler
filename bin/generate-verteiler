@@ -10,8 +10,18 @@ Sequel::Migrator.run(Sequel::Model.db, 'db/migrations')
 
 require 'sgh/elternverteiler'
 include SGH::Elternverteiler
-require 'sgh/elternverteiler/eltern_presenter'
-require 'sgh/elternverteiler/klasse_presenter'
+require 'sgh/elternverteiler/postmap_presenter'
 
-puts ElternPresenter.new('eltern@schickhardt-gymnasium-herrenberg.de')
-puts KlassePresenter.new('5A', 'eltern-5a@schickhardt-gymnasium-herrenberg.de')
+# Klasse.each do |klasse|
+#   puts PostmapPresenter.new("eltern-#{klasse.name.downcase}@schickhardt-gymnasium-herrenberg.de").present(klasse.eltern)
+# end
+
+Schüler.to_hash_groups(:klasse).each do |klasse, schueler|
+  parents = schueler.collect(&:eltern).flatten.uniq
+  puts PostmapPresenter.new("eltern-#{klasse.downcase}@schickhardt-gymnasium-herrenberg.de").present(parents)
+end
+
+if Erziehungsberechtigter.any?
+  eltern = Erziehungsberechtigter.all
+  puts PostmapPresenter.new('eltern@schickhardt-gymnasium-herrenberg.de').present(eltern)
+end

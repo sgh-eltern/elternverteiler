@@ -5,12 +5,13 @@ require 'timecop'
 
 describe Schüler do
   subject(:bart) { described_class.new }
+  let(:k4a) { Klasse.new(stufe: '4', zug: 'a').save }
 
   context 'a valid pupil' do
     before do
       bart.vorname = 'Bart'
       bart.nachname = 'Simpson'
-      bart.klasse = '4a'
+      bart.klasse = k4a
       bart.save
       bart.refresh
     end
@@ -19,7 +20,7 @@ describe Schüler do
       expect(bart).to be
       expect(bart.vorname).to eq('Bart')
       expect(bart.nachname).to eq('Simpson')
-      expect(bart.klasse).to eq('4a')
+      expect(bart.klasse).to eq(k4a)
     end
 
     it 'has a string representation' do
@@ -49,13 +50,13 @@ describe Schüler do
   context 'missing attributes' do
     it 'cannot exist without first name' do
       bart.nachname = 'Simpson'
-      bart.klasse = '4a'
+      bart.klasse = k4a
       expect { bart.save }.to raise_error(Sequel::NotNullConstraintViolation)
     end
 
     it 'cannot exist without last name' do
       bart.vorname = 'Bart'
-      bart.klasse = '4a'
+      bart.klasse = k4a
       expect { bart.save }.to raise_error(Sequel::NotNullConstraintViolation)
     end
 
@@ -63,14 +64,6 @@ describe Schüler do
       bart.vorname = 'Bart'
       bart.nachname = 'Simpson'
       expect { bart.save }.to raise_error(Sequel::NotNullConstraintViolation)
-    end
-
-    it 'cannot exist without grade too short' do
-      maggie = described_class.new
-      maggie.vorname = 'Maggie'
-      maggie.nachname = 'Simpson'
-      maggie.klasse = '0'
-      expect { maggie.save }.to raise_error(Sequel::CheckConstraintViolation)
     end
   end
 end
