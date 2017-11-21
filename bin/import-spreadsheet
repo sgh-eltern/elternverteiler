@@ -28,7 +28,7 @@ s.first_row.upto(s.last_row) do |line|
              when /(1?\d)([A-Z])/
                Klasse.find_or_create(stufe: Regexp.last_match(1), zug: Regexp.last_match(2))
              when /J(1|2)/
-               Klasse.find_or_create(stufe: 'J', zug: $1)
+               Klasse.find_or_create(stufe: 'J', zug: Regexp.last_match(1))
              else
                raise "Konnte Klasse #{klassenname} nicht in Stufe und Zug zerlegen."
              end

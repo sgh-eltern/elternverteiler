@@ -5,9 +5,9 @@ source 'https://rubygems.org'
 gem 'hashdiff'
 gem 'pg'
 gem 'rake'
+gem 'ruby-progressbar'
 gem 'sequel'
 gem 'simple-spreadsheet'
-gem 'ruby-progressbar'
 
 group 'development' do
   gem 'guard-bundler', require: false
