@@ -12,16 +12,13 @@ require 'sgh/elternverteiler'
 include SGH::Elternverteiler
 require 'sgh/elternverteiler/postmap_presenter'
 
-# Klasse.each do |klasse|
-#   puts PostmapPresenter.new("eltern-#{klasse.name.downcase}@schickhardt-gymnasium-herrenberg.de").present(klasse.eltern)
-# end
-
-Schüler.to_hash_groups(:klasse).each do |klasse, schueler|
-  parents = schueler.collect(&:eltern).flatten.uniq
-  puts PostmapPresenter.new("eltern-#{klasse.downcase}@schickhardt-gymnasium-herrenberg.de").present(parents)
+Klasse.each do |klasse|
+  warn "#{klasse}: #{klasse.schüler.count} Schüler, #{klasse.eltern.count} Eltern"
+  puts PostmapPresenter.new("eltern-#{klasse}@schickhardt-gymnasium-herrenberg.de").present(klasse.eltern)
 end
 
-if Erziehungsberechtigter.any?
-  eltern = Erziehungsberechtigter.all
-  puts PostmapPresenter.new('eltern@schickhardt-gymnasium-herrenberg.de').present(eltern)
-end
+warn "Alle Eltern: #{Erziehungsberechtigter.count} Adressen"
+puts PostmapPresenter.new('eltern@schickhardt-gymnasium-herrenberg.de').present(Erziehungsberechtigter.all)
+
+warn "Nicht per Mail erreichbar sind:"
+warn Schüler.all.select{|schüler| schüler.eltern.collect(&:mail).compact.empty?}
