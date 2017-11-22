@@ -3,10 +3,10 @@
 require 'spec_helper'
 
 describe Rolle do
-  subject(:pab) { Rolle.new(name: 'parent advisory board').save }
+  subject(:pab) { Rolle.new(name: 'Member of the Parent Advisory Board').save }
 
   it 'has a name' do
-    expect(pab.name).to eq('parent advisory board')
+    expect(pab.name).to eq('Member of the Parent Advisory Board')
   end
 
   it 'has an empty set of members' do
@@ -42,7 +42,7 @@ describe Rolle do
     end
 
     it 'has a string representation' do
-      expect(pab.to_s).to eq('parent advisory board')
+      expect(pab.to_s).to eq('Member of the Parent Advisory Board')
     end
 
     context 'some parents are members of multiple boards' do

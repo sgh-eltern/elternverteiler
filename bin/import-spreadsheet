@@ -34,13 +34,15 @@ s.first_row.upto(s.last_row) do |line|
              end
 
     child  = Schüler.find_or_create(vorname: s.cell(line, 1), nachname: s.cell(line, 2), klasse: klasse).save
+
+    # TODO Do not allow to create parents who do not have any information. This
+    #      is probably best checked in a callback on Erziehungsberechtigter.
     parent = Erziehungsberechtigter.find_or_create(vorname: s.cell(line, 4), nachname: s.cell(line, 5), mail: s.cell(line, 6)).save
     parent.add_kinder(child) unless parent.kinder.include?(child)
 
-    s.cell(line, 7).to_s.split(',').map(&:strip).each do |rollen_name|
+    s.cell(line, 7).to_s.split('/').map(&:strip).each do |rollen_name|
       rolle = Rolle.find_or_create(name: rollen_name)
-      warn "#{parent} ist #{rolle}"
-      parent.add_rollen(rolle)
+      parent.add_rollen(rolle) unless parent.rollen.include?(rolle)
     end
   rescue => error
     warn "Skipping #{child} because of: #{error.message}"
