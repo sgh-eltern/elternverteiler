@@ -5,7 +5,7 @@ require 'spec_helper'
 describe Erziehungsberechtigter do
   subject(:homer) { described_class.new }
 
-  context 'a valid parent' do
+  context 'an ordinary parent' do
     it 'persists' do
       homer.nachname = 'Simpson'
       homer.save
