@@ -41,6 +41,10 @@ describe Rolle do
       expect(marge.rollen).to_not include(pab)
     end
 
+    it 'has a string representation' do
+      expect(pab.to_s).to eq('parent advisory board')
+    end
+
     context 'some parents are members of multiple boards' do
       let(:cash_auditors) { Rolle.new(name: 'cash auditors').save }
 

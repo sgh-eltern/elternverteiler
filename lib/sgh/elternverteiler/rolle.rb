@@ -8,6 +8,10 @@ module SGH
         join_table: :erziehungsberechtigte_rollen,
         left_key: :rolle_id,
         right_key: :erziehungsberechtigter_id
+
+      def to_s
+        name
+      end
     end
   end
 end
