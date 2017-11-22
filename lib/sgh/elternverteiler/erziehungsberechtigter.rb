@@ -14,6 +14,10 @@ module SGH
         join_table: :erziehungsberechtigte_rollen,
         left_key: :erziehungsberechtigter_id,
         right_key: :rolle_id
+
+      def to_s
+        "#{vorname} #{nachname} <#{mail}>"
+      end
     end
   end
 end

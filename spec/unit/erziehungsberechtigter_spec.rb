@@ -46,6 +46,19 @@ describe Erziehungsberechtigter do
       homer.save
     end
 
+    context 'with first and last name and an email address' do
+      before do
+        homer.vorname = 'Homer'
+        homer.nachname = 'Simpson'
+        homer.mail = 'homer@thesimpsons.org'
+        homer.save
+      end
+
+      it 'has a string representation' do
+        expect(homer.to_s).to eq('Homer Simpson <homer@thesimpsons.org>')
+      end
+    end
+
     it 'has no roles' do
       expect(homer.rollen).to be_empty
     end
