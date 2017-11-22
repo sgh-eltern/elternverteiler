@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+$LOAD_PATH.unshift(File.expand_path('../lib', __dir__))
+
+require 'sequel'
+Sequel::Model.db = Sequel.connect(ENV.fetch('DB'))
+Sequel.extension :migration
+Sequel::Migrator.run(Sequel::Model.db, 'db/migrations')
+
+require 'sgh/elternverteiler'
+include SGH::Elternverteiler
+
+require 'pry'
+binding.pry
