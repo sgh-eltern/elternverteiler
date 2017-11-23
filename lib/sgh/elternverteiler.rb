@@ -6,6 +6,7 @@ Sequel::Model.plugin :timestamps
 module SGH
   module Elternverteiler
     class Klasse < Sequel::Model(:klasse); end
+    class Wahl < Sequel::Model(:erziehungsberechtigte_rollen); end
     class Rolle < Sequel::Model(:rollen); end
     class Schüler < Sequel::Model(:schüler); end
     class Erziehungsberechtigter < Sequel::Model(:erziehungsberechtigte); end
@@ -18,3 +19,4 @@ require 'sgh/elternverteiler/rolle'
 require 'sgh/elternverteiler/schüler'
 require 'sgh/elternverteiler/erziehungsberechtigung'
 require 'sgh/elternverteiler/erziehungsberechtigter'
+require 'sgh/elternverteiler/wahl'

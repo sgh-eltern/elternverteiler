@@ -4,6 +4,7 @@ require 'spec_helper'
 
 describe Rolle do
   subject(:pab) { Rolle.new(name: 'Member of the Parent Advisory Board').save }
+  let(:klasse) { Klasse.new(stufe: '4', zug: 'a').save }
 
   it 'has a name' do
     expect(pab.name).to eq('Member of the Parent Advisory Board')
