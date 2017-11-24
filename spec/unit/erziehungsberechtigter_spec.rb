@@ -19,8 +19,9 @@ describe Erziehungsberechtigter do
       expect(homer.vorname).to eq('Homer')
     end
 
-    it 'can have an empty first name' do
+    it 'can have an empty first name if mail is present' do
       homer.vorname = ''
+      homer.mail = 'Homer'
       homer.save
     end
 
@@ -30,18 +31,25 @@ describe Erziehungsberechtigter do
       expect(homer.mail).to eq('Homer')
     end
 
-    it 'can have an empty mail' do
+    it 'can have an empty mail if lastname is present' do
+      homer.nachname = 'Simpson'
       homer.mail = ''
       homer.save
     end
 
     it 'can have a phone number' do
+      homer.nachname = 'Simpson'
       homer.telefon = 'Homer'
       homer.save
       expect(homer.telefon).to eq('Homer')
     end
 
-    it 'can have an empty phone number' do
+    it 'must have at least one attribute' do
+      expect{homer.save}.to raise_error(RuntimeError)
+    end
+
+    it 'can have an empty phone number if lastname is present' do
+      homer.nachname = 'Simpson'
       homer.telefon = ''
       homer.save
     end
