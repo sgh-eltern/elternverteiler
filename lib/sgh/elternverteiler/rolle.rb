@@ -5,7 +5,7 @@ module SGH
     class Rolle < Sequel::Model(:rollen)
       many_to_many :mitglieder,
         class: Erziehungsberechtigter,
-        join_table: :erziehungsberechtigte_rollen,
+        join_table: :ämter,
         left_key: :rolle_id,
         right_key: :erziehungsberechtigter_id
 

@@ -60,17 +60,7 @@ describe Erziehungsberechtigter do
     end
 
     it 'has no roles' do
-      expect(homer.rollen).to be_empty
-    end
-
-    context 'that is a parent representative' do
-      let(:pab) { Rolle.new(name: 'parent advisory board').save }
-
-      it 'has the expected role' do
-        homer.save
-        homer.add_rollen(pab)
-        expect(homer.rollen).to include(pab)
-      end
+      expect(homer.ämter).to be_empty
     end
   end
 end

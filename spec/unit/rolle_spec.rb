@@ -20,8 +20,17 @@ describe Rolle do
     let(:marge) { Erziehungsberechtigter.new(vorname: 'Marge', nachname: 'Simpson').save }
 
     before do
-      pab.add_mitglieder(homer)
-      pab.add_mitglieder(chief_wiggum)
+      Amt.new(
+        erziehungsberechtigter: homer,
+        rolle: pab,
+        klasse: klasse
+        ).save
+
+      Amt.new(
+        erziehungsberechtigter: chief_wiggum,
+        rolle: pab,
+        klasse: klasse
+        ).save
       # Marge is not in the PAB
     end
 
@@ -34,32 +43,16 @@ describe Rolle do
     end
 
     it 'becomes an attribute of the parents' do
-      expect(homer.rollen).to include(pab)
-      expect(chief_wiggum.rollen).to include(pab)
+      expect(homer.ämter).to include(pab)
+      expect(chief_wiggum.ämter).to include(pab)
     end
 
     it 'does not become an attribute of parents who are not members' do
-      expect(marge.rollen).to_not include(pab)
+      expect(marge.ämter).to_not include(pab)
     end
 
     it 'has a string representation' do
       expect(pab.to_s).to eq('Member of the Parent Advisory Board')
-    end
-
-    context 'some parents are members of multiple boards' do
-      let(:cash_auditors) { Rolle.new(name: 'cash auditors').save }
-
-      before do
-        cash_auditors.add_mitglieder(chief_wiggum)
-      end
-
-      it 'adds all roles as an attribute of the member' do
-        expect(chief_wiggum.rollen).to include(pab).and include(cash_auditors)
-      end
-
-      it 'does not become an attribute of parents who are not members of additional boards' do
-        expect(homer.rollen).to_not include(cash_auditors)
-      end
     end
   end
 end
