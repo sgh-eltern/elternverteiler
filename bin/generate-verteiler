@@ -20,6 +20,18 @@ end
 warn "Alle Eltern: #{Erziehungsberechtigter.count} Adressen"
 puts PostmapPresenter.new('eltern@schickhardt-gymnasium-herrenberg.de').present(Erziehungsberechtigter.all)
 
+elternbeirat = Rolle.where(name: '1.EV').or(name: '2.EV').map(&:mitglieder).flatten
+warn "Elternbeirat: #{elternbeirat.count} Adressen"
+puts PostmapPresenter.new('elternbeirat@schickhardt-gymnasium-herrenberg.de').present(elternbeirat)
+
+evsk = Rolle.where(name: 'SK').map(&:mitglieder).flatten
+warn "Elternvertreter in der Schulkonferenz: #{evsk.count} Adressen"
+puts PostmapPresenter.new('elternvertreter-schulkonferenz@schickhardt-gymnasium-herrenberg.de').present(evsk)
+
+ebv = Rolle.where(name: '1.EBV').or(name: '2.EBV').map(&:mitglieder).flatten
+warn "Elternbeiratsvorsitzende: #{ebv.count} Adressen"
+puts PostmapPresenter.new('elternbeiratsvorsitzende@schickhardt-gymnasium-herrenberg.de').present(ebv)
+
 unreachable = Schüler.all.select { |sch| sch.eltern.collect(&:mail).compact.empty? }
 
 if unreachable.any?
