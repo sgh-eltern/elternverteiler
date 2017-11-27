@@ -45,7 +45,7 @@ describe Erziehungsberechtigter do
     end
 
     it 'must have at least one attribute' do
-      expect{homer.save}.to raise_error(RuntimeError)
+      expect { homer.save }.to raise_error(RuntimeError)
     end
 
     it 'can have an empty phone number if lastname is present' do
