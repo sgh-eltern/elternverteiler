@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= @title %> - <%= @topic %></title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="side-menu-old-ie.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="/css/layouts/side-menu.css">
+    <!--<![endif]-->
+    <link rel="stylesheet" href="/css/layouts/tables.css">
+    <link rel="stylesheet" href="/css/layouts/print.css" media="print">
+</head>
+<body>
+<div id="layout">
+    <a href="#menu" id="menuLink" class="menu-link"> <!-- Menu toggle -->
+        <span/><!-- Hamburger icon -->
+    </a>
+
+    <div id="menu">
+        <div class="pure-menu">
+            <a class="pure-menu-heading" href="/">Elternbeirat</a>
+            <ul class="pure-menu-list">
+                <% @menu.each do |key, value| %>
+                <li class="pure-menu-item
+                  <% if 'slug' == key %>
+                    menu-item-divided pure-menu-selected
+                  <% end %>
+                ">
+                  <a href="<%= key %>" class="pure-menu-link"><%= value %></a>
+                </li>
+                <% end %>
+            </ul>
+        </div>
+    </div>
+
+    <div id="main">
+        <div class="header">
+            <h1><%= @topic %></h1>
+            <h2><%= @title %></h2>
+        </div>
+
+        <div class="content">
+          <%= yield %>
+        </div>
+    </div>
+</div>
+<script src="/js/ui.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+# frozen_string_literal: true
+
+require 'spec_helper'
+ENV['RACK_ENV'] = 'test'
+require 'rack/test'
+
+require 'sgh/elternverteiler/web/app'
+
+describe SGH::Elternverteiler::Web::App do
+  include Rack::Test::Methods
+
+  def app
+    described_class
+  end
+
+  it 'has a root page' do
+    get '/'
+    expect(last_response).to be_ok
+  end
+end

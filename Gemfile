@@ -5,15 +5,19 @@ source 'https://rubygems.org'
 gem 'hashdiff'
 gem 'pg'
 gem 'rake'
+gem 'roda'
 gem 'ruby-progressbar'
 gem 'sequel'
 gem 'simple-spreadsheet'
+gem 'tilt'
 
 group 'development' do
   gem 'guard-bundler', require: false
   gem 'guard-rspec', require: false
   gem 'pry'
   gem 'pry-byebug'
+  gem 'rerun'
+  gem 'rack-test'
   gem 'rspec'
   gem 'rubocop'
   gem 'sqlite3'

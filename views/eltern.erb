@@ -1,0 +1,20 @@
+<table class="pure-table">
+  <thead>
+    <tr>
+      <th>Nachname</th>
+      <th>Vorname</th>
+      <th>eMail</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+  <% eltern.each do |elternteil| %>
+    <tr>
+      <td><%= elternteil.nachname %></td>
+      <td><%= elternteil.vorname %></td>
+      <td><%= elternteil.mail %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
