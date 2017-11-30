@@ -1,0 +1,30 @@
+<table class="pure-table pure-table-horizontal pure-table-striped">
+  <thead>
+    <tr>
+      <th>Klasse</th>
+      <th>Elternvertreter</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+  <% klassen.each do |klasse| %>
+    <tr>
+      <td><%= klasse %></td>
+      <td>
+        <% klasse.eltern.select{ |e| e.ämter.any?}.each do |elternteil| %>
+          <%= elternteil.ämter.join(', ') %>:
+
+          <% if elternteil.mail %>
+            <a href="mailto:<%= elternteil.mail %>"><%= elternteil %></a>
+          <% else %>
+            <%= elternteil.mail %>
+          <% end %>
+
+          <br/>
+        <% end %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

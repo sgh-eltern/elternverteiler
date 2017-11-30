@@ -1,8 +1,9 @@
-<table class="pure-table">
+<table class="pure-table pure-table-horizontal pure-table-striped">
   <thead>
     <tr>
       <th>Nachname</th>
       <th>Vorname</th>
+      <th>Ämter</th>
       <th>eMail</th>
     </tr>
   </thead>
@@ -13,7 +14,14 @@
     <tr>
       <td><%= elternteil.nachname %></td>
       <td><%= elternteil.vorname %></td>
-      <td><%= elternteil.mail %></td>
+      <td><%= elternteil.ämter.join(', ') %></td>
+      <td>
+        <% if elternteil.mail %>
+          <a href="mailto:<%= elternteil.mail %>"><%= elternteil.mail %></a>
+        <% else %>
+          <%= elternteil.mail %>
+        <% end %>
+      </td>
     </tr>
     <% end %>
   </tbody>

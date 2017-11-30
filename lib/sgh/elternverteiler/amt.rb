@@ -7,6 +7,10 @@ module SGH
       many_to_one :erziehungsberechtigter
       many_to_one :rolle
       many_to_one :klasse
+
+      def to_s
+        "#{rolle} Klasse #{klasse}"
+      end
     end
   end
 end
