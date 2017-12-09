@@ -9,7 +9,7 @@ module SGH
         left_key: :erziehungsberechtigter_id,
         right_key: :schüler_id
 
-      many_to_many :ämter,
+      many_to_many :rollen,
         class: Rolle,
         join_table: :ämter,
         left_key: :erziehungsberechtigter_id,

@@ -43,12 +43,12 @@ describe Rolle do
     end
 
     it 'becomes an attribute of the parents' do
-      expect(homer.ämter).to include(pab)
-      expect(chief_wiggum.ämter).to include(pab)
+      expect(homer.rollen).to include(pab)
+      expect(chief_wiggum.rollen).to include(pab)
     end
 
     it 'does not become an attribute of parents who are not members' do
-      expect(marge.ämter).to_not include(pab)
+      expect(marge.rollen).to_not include(pab)
     end
 
     it 'has a string representation' do

@@ -17,7 +17,7 @@ describe Amt do
     end
 
     it 'has a member of the PAB' do
-      expect(klasse_4a.ämter).to include(pab)
+      expect(klasse_4a.rollen).to include(pab)
     end
 
     it 'the PAB includes Homer' do
@@ -25,7 +25,7 @@ describe Amt do
     end
 
     it 'lists the PAB as one of Homers roles' do
-      expect(homer.ämter).to include(pab)
+      expect(homer.rollen).to include(pab)
     end
 
     context 'Chief Wiggum was also elected into the PAB' do
@@ -40,7 +40,7 @@ describe Amt do
       end
 
       it 'has two members of the PAB' do
-        expect(klasse_4a.ämter.count).to eq(2)
+        expect(klasse_4a.rollen.count).to eq(2)
       end
 
       it 'the PAB includes Chief Wiggum' do
@@ -52,11 +52,11 @@ describe Amt do
       end
 
       it "lists the PAB as one of Chief Wiggum's roles" do
-        expect(chief_wiggum.ämter).to include(pab)
+        expect(chief_wiggum.rollen).to include(pab)
       end
 
       it 'still lists the PAB as one of Homers roles' do
-        expect(homer.ämter).to include(pab)
+        expect(homer.rollen).to include(pab)
       end
     end
 

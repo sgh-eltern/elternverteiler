@@ -5,7 +5,7 @@ module SGH
     class Klasse < Sequel::Model(:klasse)
       one_to_many :schüler, class: Schüler
 
-      many_to_many :ämter,
+      many_to_many :rollen,
         class: Rolle,
         join_table: :ämter,
         left_key: :klasse_id,
