@@ -15,6 +15,10 @@ module SGH
         schüler.collect(&:eltern).flatten.uniq
       end
 
+      def inhaber(*roles)
+        Amt.where(rolle: roles, klasse: self).map(&:erziehungsberechtigter)
+      end
+
       def to_s
         "#{stufe}#{zug}"
       end
