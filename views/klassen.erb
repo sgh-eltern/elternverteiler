@@ -12,17 +12,14 @@
     <tr>
       <td><%= klasse %></td>
       <td>
-        <% klasse.eltern.select{ |e| e.ämter.any?}.each do |elternteil| %>
-          <%= elternteil.ämter.join(', ') %>:
-
-          <% if elternteil.mail %>
-            <a href="mailto:<%= elternteil.mail %>"><%= elternteil %></a>
-          <% else %>
-            <%= elternteil.mail %>
+          <% klasse.inhaber(*klasse.rollen).uniq.each do |elternteil| %>
+            <% if elternteil.mail %>
+              <a href="mailto:<%= elternteil.mail %>"><%= elternteil.nachname %>, <%= elternteil.vorname %></a>
+            <% else %>
+              <%= elternteil.nachname %>, <%= elternteil.vorname %>
+            <% end %> <%= elternteil.rollen.map(&:name).join(', ') %>
+            <br/>
           <% end %>
-
-          <br/>
-        <% end %>
       </td>
     </tr>
     <% end %>
