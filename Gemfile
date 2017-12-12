@@ -16,8 +16,8 @@ group 'development' do
   gem 'guard-rspec', require: false
   gem 'pry'
   gem 'pry-byebug'
-  gem 'rerun'
   gem 'rack-test'
+  gem 'rerun'
   gem 'rspec'
   gem 'rubocop'
   gem 'sqlite3'

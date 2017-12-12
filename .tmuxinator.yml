@@ -3,7 +3,10 @@ windows:
   - ruby:
       panes:
         - bundle exec guard
+        - rerun -i 'spec/*' bundle exec rackup
         -
   - db:
       panes:
         - bundle exec sequel $DB
+        - psql $DB
+        -
