@@ -28,6 +28,13 @@ describe Amt do
       expect(homer.rollen).to include(pab)
     end
 
+    it 'shows the Amt on Homer' do
+      expect(homer.ämter).not_to be_empty
+      expect(homer.ämter.size).to eq(1)
+      expect(homer.ämter.first.rolle).to eq(pab)
+      expect(homer.ämter.first.to_s).to eq('Member of the Parent Advisory Board Klasse 4a')
+    end
+
     context 'Chief Wiggum was also elected into the PAB' do
       let(:chief_wiggum) { Erziehungsberechtigter.new(vorname: 'Clancy', nachname: 'Wiggum').save }
 
@@ -110,14 +117,18 @@ describe Amt do
     context '2th grade has a PAB member' do
       let(:klasse_2c) { Klasse.new(stufe: '2', zug: 'c').save }
 
-      it 'allows the same person to have the same role in different classes' do
-        expect(
-          Amt.new(
-            erziehungsberechtigter: homer,
-            rolle: pab,
-            klasse: klasse_2c
-          ).save
-        ).to be
+      before do
+        Amt.new(
+          inhaber: homer,
+          rolle: pab,
+          klasse: klasse_2c
+        ).save
+      end
+
+      it 'shows the Amt on Homer' do
+        expect(homer.ämter.size).to eq(2)
+        expect(homer.ämter.last.rolle).to eq(pab)
+        expect(homer.ämter.last.to_s).to eq('Member of the Parent Advisory Board Klasse 2c')
       end
     end
   end

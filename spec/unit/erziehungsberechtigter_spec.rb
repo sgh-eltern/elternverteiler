@@ -70,5 +70,9 @@ describe Erziehungsberechtigter do
     it 'has no roles' do
       expect(homer.rollen).to be_empty
     end
+
+    it 'has no Ämter' do
+      expect(homer.ämter).to be_empty
+    end
   end
 end

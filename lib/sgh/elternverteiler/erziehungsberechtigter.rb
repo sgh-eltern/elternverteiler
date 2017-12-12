@@ -15,6 +15,11 @@ module SGH
         left_key: :inhaber_id,
         right_key: :rolle_id
 
+      # rubocop:disable Naming/MethodName
+      def ämter
+        rollen.map { |r| SGH::Elternverteiler::Amt.where(rolle: r, inhaber: self).all }.flatten.uniq
+      end
+
       def before_save
         raise 'At least one of vorname, nachname, or mail is required' if vorname.to_s.empty? && nachname.to_s.empty? && mail.to_s.empty?
         super
