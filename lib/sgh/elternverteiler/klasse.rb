@@ -16,7 +16,7 @@ module SGH
       end
 
       def inhaber(*roles)
-        Amt.where(rolle: roles, klasse: self).map(&:erziehungsberechtigter)
+        Amt.where(rolle: roles, klasse: self).map(&:inhaber)
       end
 
       def to_s

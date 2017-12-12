@@ -10,7 +10,7 @@ describe Amt do
   context 'Homer is member of the PAB' do
     before do
       Amt.new(
-        erziehungsberechtigter: homer,
+        inhaber: homer,
         rolle: pab,
         klasse: klasse_4a
       ).save
@@ -33,7 +33,7 @@ describe Amt do
 
       before do
         Amt.new(
-          erziehungsberechtigter: chief_wiggum,
+          inhaber: chief_wiggum,
           rolle: pab,
           klasse: klasse_4a
           ).save
@@ -66,14 +66,14 @@ describe Amt do
 
       before do
         Amt.new(
-          erziehungsberechtigter: kyles_dad,
+          inhaber: kyles_dad,
           rolle: pab,
           klasse: klasse_5a
         ).save
       end
 
       context '4th grade' do
-        let(:pab_members) { Amt.where(klasse: klasse_4a, rolle: pab).map(&:erziehungsberechtigter) }
+        let(:pab_members) { Amt.where(klasse: klasse_4a, rolle: pab).map(&:inhaber) }
 
         it 'still lists Homer as member of the PAB' do
           expect(pab_members).to include(homer)
@@ -85,7 +85,7 @@ describe Amt do
       end
 
       context '5th grade' do
-        let(:pab_members) { Amt.where(klasse: klasse_5a, rolle: pab).map(&:erziehungsberechtigter) }
+        let(:pab_members) { Amt.where(klasse: klasse_5a, rolle: pab).map(&:inhaber) }
 
         it 'has a member of the PAB' do
           expect(pab_members).to include(kyles_dad)
@@ -100,7 +100,7 @@ describe Amt do
     it 'it refuses to add Homer twice as member of the PAB' do
       expect {
         Amt.new(
-          erziehungsberechtigter: homer,
+          inhaber: homer,
           rolle: pab,
           klasse: klasse_4a
         ).save

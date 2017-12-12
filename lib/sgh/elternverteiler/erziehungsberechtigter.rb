@@ -12,7 +12,7 @@ module SGH
       many_to_many :rollen,
         class: Rolle,
         join_table: :ämter,
-        left_key: :erziehungsberechtigter_id,
+        left_key: :inhaber_id,
         right_key: :rolle_id
 
       def before_save

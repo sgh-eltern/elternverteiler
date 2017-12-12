@@ -62,7 +62,7 @@ describe Klasse do
 
     before do
       Amt.new(
-        erziehungsberechtigter: homer,
+        inhaber: homer,
         rolle: pab,
         klasse: klasse_4a
       ).save
@@ -81,7 +81,7 @@ describe Klasse do
 
       before do
         Amt.new(
-          erziehungsberechtigter: jerri,
+          inhaber: jerri,
           rolle: cash_auditor,
           klasse: klasse_4a
         ).save
@@ -103,7 +103,7 @@ describe Klasse do
 
       before do
         Amt.new(
-          erziehungsberechtigter: marge,
+          inhaber: marge,
           rolle: pab,
           klasse: klasse_2a
         ).save

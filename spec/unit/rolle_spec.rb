@@ -21,13 +21,13 @@ describe Rolle do
 
     before do
       Amt.new(
-        erziehungsberechtigter: homer,
+        inhaber: homer,
         rolle: pab,
         klasse: klasse
         ).save
 
       Amt.new(
-        erziehungsberechtigter: chief_wiggum,
+        inhaber: chief_wiggum,
         rolle: pab,
         klasse: klasse
         ).save

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'roda'
 require 'tilt'
 
@@ -14,6 +16,7 @@ module SGH
         plugin :static, ['/js', '/css']
         plugin :render
 
+        # rubocop:disable Metrics/BlockLength
         route do |r|
           @title = 'Elternbeirat am SGH'
           @menu = {
@@ -42,15 +45,13 @@ module SGH
           end
 
           r.on 'elternbeirat' do
-            elternbeirat = Rolle.where(name: '1.EV').or(name: '2.EV').map(&:mitglieder).flatten.sort do |l,r|
-              l.nachname <=> r.nachname
-            end
+            elternbeirat = Rolle.where(name: '1.EV').or(name: '2.EV').map(&:mitglieder).flatten.sort_by(&:nachname)
             @topic = "Alle #{elternbeirat.count} Elternbeiräte"
-            view 'eltern', locals: { eltern:  elternbeirat}
+            view 'eltern', locals: { eltern: elternbeirat }
           end
 
           r.on 'elternbeiratsvorsitzende' do
-            @topic = "Elternbeiratsvorsitzende"
+            @topic = 'Elternbeiratsvorsitzende'
             view 'eltern', locals: {
               eltern: Rolle.where(name: '1.EBV').or(name: '2.EBV').map(&:mitglieder).flatten
             }
@@ -63,9 +64,7 @@ module SGH
 
           r.on 'schulkonferenz' do
             @topic = 'Elternvertreter in der Schulkonferenz'
-            evsk = SGH::Elternverteiler::Rolle.where(name: 'SK').map(&:mitglieder).flatten.sort do |l,r|
-              l.nachname <=> r.nachname
-            end
+            evsk = SGH::Elternverteiler::Rolle.where(name: 'SK').map(&:mitglieder).flatten.sort_by(&:nachname)
 
             view 'eltern', locals: { eltern: evsk }
           end

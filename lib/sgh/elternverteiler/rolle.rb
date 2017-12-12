@@ -7,7 +7,7 @@ module SGH
         class: Erziehungsberechtigter,
         join_table: :ämter,
         left_key: :rolle_id,
-        right_key: :erziehungsberechtigter_id
+        right_key: :inhaber_id
 
       def to_s
         name
