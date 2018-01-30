@@ -22,6 +22,7 @@ module SGH
           @menu = {
             eltern: 'Alle Eltern',
             elternbeirat: 'Elternbeirat',
+            'elternbeirat/anwesenheit': 'Anwesenheitsliste',
             elternbeiratsvorsitzende: 'Elternbeiratsvorsitzende',
             schulkonferenz: 'Schulkonferenz',
             klassen: 'Klassen',
