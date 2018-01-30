@@ -1,14 +1,10 @@
-<p>
-<a href="anwesenheit">Anwesenheitsliste</a>
-</p>
-
 <table class="pure-table pure-table-horizontal pure-table-striped">
   <thead>
     <tr>
       <th>Nachname</th>
       <th>Vorname</th>
-      <th>Ämter</th>
-      <th>eMail</th>
+      <th>Klasse</th>
+      <th>Unterschrift</th>
     </tr>
   </thead>
 
@@ -18,14 +14,11 @@
     <tr>
       <td><%= elternteil.nachname %></td>
       <td><%= elternteil.vorname %></td>
-      <td><%= elternteil.ämter.join(', ') %></td>
       <td>
-        <% if elternteil.mail %>
-          <a href="mailto:<%= elternteil.mail %>"><%= elternteil.mail %></a>
-        <% else %>
-          <%= elternteil.mail %>
-        <% end %>
+        <%= elternteil.ämter.map(&:rolle).uniq.join(', ') %>
+        <%= elternteil.ämter.map{|a| "#{a.klasse}" }.uniq.join(', ') %>
       </td>
+      <td></td>
     </tr>
     <% end %>
   </tbody>

@@ -94,6 +94,14 @@ export DB=postgres://localhost/elternverteiler
 bundle exec rake db:migrate
 ```
 
+# Test
+
+```bash
+dropdb elternverteiler_test ; createdb elternverteiler_test ; rake db:migrate
+./bin/import-spreadsheet
+rerun -i 'spec/*' bundle exec rackup
+```
+
 # Troubleshooting
 
 ## Use the `sequel` database monitor

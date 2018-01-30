@@ -46,8 +46,16 @@ module SGH
 
           r.on 'elternbeirat' do
             elternbeirat = Rolle.where(name: '1.EV').or(name: '2.EV').map(&:mitglieder).flatten.sort_by(&:nachname)
-            @topic = "Alle #{elternbeirat.count} Elternbeiräte"
-            view 'eltern', locals: { eltern: elternbeirat }
+
+            r.on 'anwesenheit' do
+              @topic = "Anwesenheitsliste"
+              view 'anwesenheit', locals: { eltern: elternbeirat }
+            end
+
+            r.on do
+              @topic = "Alle #{elternbeirat.count} Elternbeiräte"
+              view 'eltern', locals: { eltern: elternbeirat }
+            end
           end
 
           r.on 'elternbeiratsvorsitzende' do
