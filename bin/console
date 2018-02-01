@@ -9,7 +9,10 @@ require 'sequel'
 Sequel::Model.db = Sequel.connect(ENV.fetch('DB'))
 
 require 'sgh/elternverteiler'
+
+# rubocop:disable Style/MixinUsage
 include SGH::Elternverteiler
+# rubocop:enable Style/MixinUsage
 
 require 'pry'
 Pry.start

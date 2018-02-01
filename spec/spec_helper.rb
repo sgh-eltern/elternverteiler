@@ -7,7 +7,9 @@ Sequel.extension :migration
 Sequel::Migrator.run(Sequel::Model.db, 'db/migrations')
 
 require 'sgh/elternverteiler'
+# rubocop:disable Style/MixinUsage
 include SGH::Elternverteiler
+# rubocop:enable Style/MixinUsage
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

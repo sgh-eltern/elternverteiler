@@ -21,13 +21,13 @@ module SGH
           @title = 'Elternbeirat am SGH'
           @menu = {
             'elternbeirat': 'Elternbeirat',
-              'elternbeirat/anwesenheit': '&nbsp;Anwesenheitsliste',
-              'elternbeirat/klassen': '&nbsp;nach Klasse',
-              'elternbeirat/vorsitzende': '&nbsp;Vorsitzende',
-              'elternbeirat/schulkonferenz': '&nbsp;Schulkonferenz',
+            'elternbeirat/anwesenheit': '&nbsp;Anwesenheitsliste',
+            'elternbeirat/klassen': '&nbsp;nach Klasse',
+            'elternbeirat/vorsitzende': '&nbsp;Vorsitzende',
+            'elternbeirat/schulkonferenz': '&nbsp;Schulkonferenz',
             'eltern': 'Alle Eltern',
             'schueler': 'Schüler',
-              'schueler/nicht-erreichbar': '&nbsp;Nicht erreichbar',
+            'schueler/nicht-erreichbar': '&nbsp;Nicht erreichbar',
           }
 
           r.root do
@@ -41,7 +41,6 @@ module SGH
               schueler_unreachable_percent: schueler_unreachable_total.to_f / Schüler.count * 100,
             }
           end
-
 
           r.on 'elternbeirat' do
             elternbeirat = Rolle.where(name: '1.EV').or(name: '2.EV').map(&:mitglieder).flatten.sort_by(&:nachname)
@@ -96,6 +95,7 @@ module SGH
             end
           end
         end
+        # rubocop:enable Metrics/BlockLength
 
         def schueler_unreachable
           Schüler.all.select { |sch| sch.eltern.collect(&:mail).compact.empty? }
