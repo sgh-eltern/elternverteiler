@@ -12,6 +12,7 @@ module SGH
       class App < Roda
         plugin :static, ['/js', '/css']
         plugin :render
+        plugin :partials
 
         # rubocop:disable Metrics/BlockLength
         route do |r|
@@ -22,7 +23,7 @@ module SGH
             'elternbeirat/klassen': '&nbsp;nach Klasse',
             'elternbeirat/vorsitzende': '&nbsp;Vorsitzende',
             'elternbeirat/schulkonferenz': '&nbsp;Schulkonferenz',
-            'eltern': 'Alle Eltern',
+            'eltern': 'Eltern',
             'schueler': 'Schüler',
             'schueler/nicht-erreichbar': '&nbsp;Nicht erreichbar',
           }
@@ -44,23 +45,29 @@ module SGH
 
             r.on 'klassen' do
               @topic = 'Elternbeiräte der Klassen'
-              view 'klassen', locals: { klassen: Klasse.all }
+              view 'klassen', locals: {
+                klassen: Klasse.all,
+              }
             end
 
             r.on 'anwesenheit' do
               @topic = 'Anwesenheitsliste'
+              @email = 'elternbeirat@schickhardt-gymnasium-herrenberg.de'
               view 'anwesenheit', locals: { eltern: elternbeirat }
             end
 
             r.on 'vorsitzende' do
               @topic = 'Elternbeiratsvorsitzende'
+              @email = 'elternbeiratsvorsitzende@schickhardt-gymnasium-herrenberg.de'
               view 'eltern', locals: {
-                eltern: Rolle.where(name: '1.EBV').or(name: '2.EBV').map(&:mitglieder).flatten
+                eltern: Rolle.where(name: '1.EBV').or(name: '2.EBV').map(&:mitglieder).flatten,
               }
             end
 
             r.on 'schulkonferenz' do
               @topic = 'Elternvertreter in der Schulkonferenz'
+              @email = 'elternvertreter-schulkonferenz@schickhardt-gymnasium-herrenberg.de'
+
               evsk  = SGH::Elternverteiler::Rolle.where(name: 'SK').map(&:mitglieder).flatten
               evsk += SGH::Elternverteiler::Rolle.where(name: '1.EBV').map(&:mitglieder).flatten
               evsk.uniq!
@@ -70,12 +77,14 @@ module SGH
 
             r.on do
               @topic = "Alle #{elternbeirat.count} Elternbeiräte"
+              @email = 'elternbeirat@schickhardt-gymnasium-herrenberg.de'
               view 'eltern', locals: { eltern: elternbeirat }
             end
           end
 
           r.on 'eltern' do
             @topic = "Alle #{Erziehungsberechtigter.count} Eltern"
+            @email = 'eltern@schickhardt-gymnasium-herrenberg.de'
             view 'eltern', locals: { eltern: Erziehungsberechtigter.order(:nachname) }
           end
 
