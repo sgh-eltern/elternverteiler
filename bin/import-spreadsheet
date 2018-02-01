@@ -20,8 +20,6 @@ progressbar = ProgressBar.create(total: s.last_row - s.first_row + 1)
 
 s.first_row.upto(s.last_row) do |line|
   progressbar.increment
-
-  # rubocop:disable Lint/RescueWithoutErrorClass
   begin
     klassenname = s.cell(line, 3).upcase
     klasse = case klassenname
@@ -44,7 +42,7 @@ s.first_row.upto(s.last_row) do |line|
       rolle = Rolle.find_or_create(name: rollen_name)
       Amt.find_or_create(inhaber: parent, rolle: rolle, klasse: klasse)
     end
-  rescue => error
+  rescue StandardError => error
     warn "Skipping #{child} because of: #{error.message}"
   end
 end
