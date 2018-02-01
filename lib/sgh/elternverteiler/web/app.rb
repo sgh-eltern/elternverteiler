@@ -26,6 +26,8 @@ module SGH
               'elternbeirat/vorsitzende': '&nbsp;Vorsitzende',
               'elternbeirat/schulkonferenz': '&nbsp;Schulkonferenz',
             'eltern': 'Alle Eltern',
+            'schueler': 'Schüler',
+              'schueler/nicht-erreichbar': '&nbsp;Nicht erreichbar',
           }
 
           r.root do
@@ -79,6 +81,19 @@ module SGH
           r.on 'eltern' do
             @topic = "Alle #{Erziehungsberechtigter.count} Eltern"
             view 'eltern', locals: { eltern: Erziehungsberechtigter.order(:nachname) }
+          end
+
+          r.on 'schueler' do
+            r.on 'nicht-erreichbar' do
+              schueler = schueler_unreachable
+              @topic = "#{schueler.count} nicht per eMail erreichbare Schüler"
+              view 'schueler', locals: { schueler: schueler }
+            end
+
+            r.on do
+              @topic = "Alle #{Schüler.count} Schüler"
+              view 'schueler', locals: { schueler: Schüler.order(:nachname) }
+            end
           end
         end
 

@@ -1,0 +1,20 @@
+<table class="pure-table pure-table-horizontal pure-table-striped">
+  <thead>
+    <tr>
+      <th>Nachname</th>
+      <th>Vorname</th>
+      <th>Klasse</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+  <% schueler.each do |sch| %>
+    <tr>
+      <td><%= sch.nachname %></td>
+      <td><%= sch.vorname %></td>
+      <td><%= sch.klasse %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
