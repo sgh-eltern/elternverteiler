@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
 ENV['RACK_ENV'] = 'test'
-require 'rack/test'
+ENV['DB'] = 'sqlite:/'
 
+require 'spec_helper'
+require 'rack/test'
 require 'sgh/elternverteiler/web/app'
 
 describe SGH::Elternverteiler::Web::App do

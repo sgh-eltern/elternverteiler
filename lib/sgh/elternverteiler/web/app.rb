@@ -3,9 +3,6 @@
 require 'roda'
 require 'tilt'
 
-require 'sequel'
-Sequel::Model.db = Sequel.connect(ENV.fetch('DB'))
-
 require 'sgh/elternverteiler'
 require 'sgh/elternverteiler/postmap_presenter'
 
