@@ -20,17 +20,17 @@ module SGH
         route do |r|
           @title = 'Elternbeirat am SGH'
           @menu = {
-            eltern: 'Alle Eltern',
-            elternbeirat: 'Elternbeirat',
-            'elternbeirat/anwesenheit': 'Anwesenheitsliste',
-            elternbeiratsvorsitzende: 'Elternbeiratsvorsitzende',
-            schulkonferenz: 'Schulkonferenz',
-            klassen: 'Klassen',
+            'elternbeirat': 'Elternbeirat',
+              'elternbeirat/anwesenheit': '&nbsp;Anwesenheitsliste',
+              'elternbeirat/klassen': '&nbsp;nach Klasse',
+              'elternbeirat/vorsitzende': '&nbsp;Vorsitzende',
+              'elternbeirat/schulkonferenz': '&nbsp;Schulkonferenz',
+            'eltern': 'Alle Eltern',
           }
 
           r.root do
             @topic = 'Elternverteiler'
-            schueler_unreachable_total = Schüler.all.select { |sch| sch.eltern.collect(&:mail).compact.empty? }.count
+            schueler_unreachable_total = schueler_unreachable.count
 
             view 'home', locals: {
               eltern_total: Erziehungsberechtigter.count,
@@ -40,17 +40,34 @@ module SGH
             }
           end
 
-          r.on 'klassen' do
-            @topic = 'Elternbeiräte der Klassen'
-            view 'klassen', locals: { klassen: Klasse.all }
-          end
 
           r.on 'elternbeirat' do
             elternbeirat = Rolle.where(name: '1.EV').or(name: '2.EV').map(&:mitglieder).flatten.sort_by(&:nachname)
 
+            r.on 'klassen' do
+              @topic = 'Elternbeiräte der Klassen'
+              view 'klassen', locals: { klassen: Klasse.all }
+            end
+
             r.on 'anwesenheit' do
-              @topic = "Anwesenheitsliste"
+              @topic = 'Anwesenheitsliste'
               view 'anwesenheit', locals: { eltern: elternbeirat }
+            end
+
+            r.on 'vorsitzende' do
+              @topic = 'Elternbeiratsvorsitzende'
+              view 'eltern', locals: {
+                eltern: Rolle.where(name: '1.EBV').or(name: '2.EBV').map(&:mitglieder).flatten
+              }
+            end
+
+            r.on 'schulkonferenz' do
+              @topic = 'Elternvertreter in der Schulkonferenz'
+              evsk  = SGH::Elternverteiler::Rolle.where(name: 'SK').map(&:mitglieder).flatten
+              evsk += SGH::Elternverteiler::Rolle.where(name: '1.EBV').map(&:mitglieder).flatten
+              evsk.uniq!
+
+              view 'eltern', locals: { eltern: evsk.sort_by(&:nachname) }
             end
 
             r.on do
@@ -59,24 +76,14 @@ module SGH
             end
           end
 
-          r.on 'elternbeiratsvorsitzende' do
-            @topic = 'Elternbeiratsvorsitzende'
-            view 'eltern', locals: {
-              eltern: Rolle.where(name: '1.EBV').or(name: '2.EBV').map(&:mitglieder).flatten
-            }
-          end
-
           r.on 'eltern' do
             @topic = "Alle #{Erziehungsberechtigter.count} Eltern"
             view 'eltern', locals: { eltern: Erziehungsberechtigter.order(:nachname) }
           end
+        end
 
-          r.on 'schulkonferenz' do
-            @topic = 'Elternvertreter in der Schulkonferenz'
-            evsk = SGH::Elternverteiler::Rolle.where(name: 'SK').map(&:mitglieder).flatten.sort_by(&:nachname)
-
-            view 'eltern', locals: { eltern: evsk }
-          end
+        def schueler_unreachable
+          Schüler.all.select { |sch| sch.eltern.collect(&:mail).compact.empty? }
         end
       end
     end
