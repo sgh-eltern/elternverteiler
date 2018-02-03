@@ -40,6 +40,6 @@ unreachable = Schüler.all.select { |sch| sch.eltern.collect(&:mail).compact.emp
 
 if unreachable.any?
   percent = unreachable.count.to_f / Schüler.count * 100
-  warn "Nicht per Mail erreichbar sind (#{sprintf('%.2f%', percent)}):"
+  warn "Nicht per Mail erreichbar sind (#{sprintf('%.2f%%', percent)}):"
   warn unreachable
 end
