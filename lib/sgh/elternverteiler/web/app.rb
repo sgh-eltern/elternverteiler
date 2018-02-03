@@ -68,7 +68,7 @@ module SGH
               @topic = 'Elternvertreter in der Schulkonferenz'
               @email = 'elternvertreter-schulkonferenz@schickhardt-gymnasium-herrenberg.de'
 
-              evsk  = SGH::Elternverteiler::Rolle.where(name: ['SK', '1.EBV']).flat_map(&:mitglieder)
+              evsk = SGH::Elternverteiler::Rolle.where(name: ['SK', '1.EBV']).flat_map(&:mitglieder)
               # BUG: The spreadsheet requires the 1.EBV to be marked as SK, too, so we get a duplicate.
               evsk.uniq!
 

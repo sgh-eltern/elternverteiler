@@ -3,7 +3,7 @@ Sequel.migration do
     create_table(:klasse) do
       primary_key :id
       String :stufe, null: false
-      String :zug, null: false
+      String :zug
       DateTime :created_at
       DateTime :updated_at
 
