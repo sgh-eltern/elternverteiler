@@ -18,15 +18,16 @@ module SGH
         route do |r|
           @title = 'Elternbeirat am SGH'
           @menu = {
-            'elternbeirat': 'Elternbeirat',
-            'elternbeirat/anwesenheit': '&nbsp;Anwesenheitsliste',
-            'elternbeirat/klassen': '&nbsp;nach Klasse',
-            'elternbeirat/vorsitzende': '&nbsp;Vorsitzende',
-            'elternbeirat/schulkonferenz': '&nbsp;Schulkonferenz',
-            'eltern': 'Eltern',
-            'schueler': 'Schüler',
-            'schueler/nicht-erreichbar': '&nbsp;Nicht erreichbar',
+            '/elternbeirat': 'Elternbeirat',
+            '/elternbeirat/anwesenheit': '&nbsp;Anwesenheitsliste',
+            '/elternbeirat/klassen': '&nbsp;nach Klasse',
+            '/elternbeirat/vorsitzende': '&nbsp;Vorsitzende',
+            '/elternbeirat/schulkonferenz': '&nbsp;Schulkonferenz',
+            '/eltern': 'Eltern',
+            '/schueler': 'Schüler',
+            '/schueler/nicht-erreichbar': '&nbsp;Nicht erreichbar',
           }
+          @current_path = r.path
 
           r.root do
             @topic = 'Elternverteiler'

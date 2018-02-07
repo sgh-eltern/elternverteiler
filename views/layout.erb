@@ -24,13 +24,12 @@
         <div class="pure-menu">
             <a class="pure-menu-heading" href="/">Elternbeirat</a>
             <ul class="pure-menu-list">
-                <% @menu.each do |key, value| %>
+                <% @menu.each do |path, title| %>
                 <li class="pure-menu-item
-                  <% if 'slug' == key %>
+                  <% if path.to_s == @current_path %>
                     menu-item-divided pure-menu-selected
-                  <% end %>
-                ">
-                  <a href="/<%= key %>" class="pure-menu-link"><%= value %></a>
+                  <% end %>">
+                  <a href="<%= path %>" class="pure-menu-link"><%= title %></a>
                 </li>
                 <% end %>
             </ul>
