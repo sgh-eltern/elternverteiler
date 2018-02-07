@@ -32,13 +32,11 @@ module SGH
           r.root do
             @topic = 'Elternverteiler'
             schueler_unreachable_total = schueler_unreachable.count
-
-            view 'home', locals: {
-              eltern_total: Erziehungsberechtigter.count,
-              schueler_total: Schüler.count,
-              schueler_unreachable_total: schueler_unreachable_total,
-              schueler_unreachable_percent: schueler_unreachable_total.to_f / Schüler.count * 100,
-            }
+            @eltern_total = Erziehungsberechtigter.count
+            @schueler_total = Schüler.count
+            @schueler_unreachable_total = schueler_unreachable_total
+            @schueler_unreachable_percent = schueler_unreachable_total.to_f / Schüler.count * 100
+            view :home
           end
 
           r.on 'elternbeirat' do
@@ -46,23 +44,22 @@ module SGH
 
             r.on 'klassen' do
               @topic = 'Elternbeiräte der Klassen'
-              view 'klassen', locals: {
-                klassen: Klasse.all,
-              }
+              @klassen = Klasse.all
+              view :klassen
             end
 
             r.on 'anwesenheit' do
               @topic = 'Anwesenheitsliste'
               @email = 'elternbeirat@schickhardt-gymnasium-herrenberg.de'
-              view 'anwesenheit', locals: { eltern: elternbeirat }
+              @eltern = elternbeirat
+              view :anwesenheit
             end
 
             r.on 'vorsitzende' do
               @topic = 'Elternbeiratsvorsitzende'
               @email = 'elternbeiratsvorsitzende@schickhardt-gymnasium-herrenberg.de'
-              view 'eltern', locals: {
-                eltern: Rolle.where(name: '1.EBV').or(name: '2.EBV').map(&:mitglieder).flatten,
-              }
+              @eltern = Rolle.where(name: '1.EBV').or(name: '2.EBV').map(&:mitglieder).flatten
+              view :eltern
             end
 
             r.on 'schulkonferenz' do
@@ -73,32 +70,36 @@ module SGH
               # BUG: The spreadsheet requires the 1.EBV to be marked as SK, too, so we get a duplicate.
               evsk.uniq!
 
-              view 'eltern', locals: { eltern: evsk.sort_by(&:nachname) }
+              @eltern = evsk.sort_by(&:nachname)
+              view :eltern
             end
 
             r.on do
               @topic = "Alle #{elternbeirat.count} Elternbeiräte"
               @email = 'elternbeirat@schickhardt-gymnasium-herrenberg.de'
-              view 'eltern', locals: { eltern: elternbeirat }
+              @eltern = elternbeirat
+              view :eltern
             end
           end
 
           r.on 'eltern' do
             @topic = "Alle #{Erziehungsberechtigter.count} Eltern"
             @email = 'eltern@schickhardt-gymnasium-herrenberg.de'
-            view 'eltern', locals: { eltern: Erziehungsberechtigter.order(:nachname) }
+            @eltern = Erziehungsberechtigter.order(:nachname)
+            view :eltern
           end
 
           r.on 'schueler' do
             r.on 'nicht-erreichbar' do
-              schueler = schueler_unreachable
-              @topic = "#{schueler.count} nicht per eMail erreichbare Schüler"
-              view 'schueler', locals: { schueler: schueler }
+              @schueler = schueler_unreachable
+              @topic = "#{@schueler.count} nicht per eMail erreichbare Schüler"
+              view :schueler
             end
 
             r.on do
               @topic = "Alle #{Schüler.count} Schüler"
-              view 'schueler', locals: { schueler: Schüler.order(:nachname) }
+              @schueler = Schüler.order(:nachname)
+              view :schueler
             end
           end
         end

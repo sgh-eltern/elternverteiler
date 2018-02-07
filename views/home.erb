@@ -3,15 +3,15 @@
 <ul>
   <li>
     <a href="/eltern">
-      <%= eltern_total %> Eltern gesamt
+      <%= @eltern_total %> Eltern gesamt
     </a>
   </li>
   <li>
-    <%= schueler_total %> Schüler gesamt
+    <%= @schueler_total %> Schüler gesamt
   </li>
   <li>
     <a href="/schueler/nicht-erreichbar">
-      <%= schueler_unreachable_total %> Schüler (<%= sprintf('%.2f%%', schueler_unreachable_percent) %>) nicht per Mail erreichbar
+      <%= @schueler_unreachable_total %> Schüler (<%= sprintf('%.2f%%', @schueler_unreachable_percent) %>) nicht per Mail erreichbar
     </a>
   </li>
 </ul>
