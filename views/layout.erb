@@ -29,7 +29,7 @@
                   <% if path.to_s == @current_path %>
                     menu-item-divided pure-menu-selected
                   <% end %>">
-                  <a href="<%= path %>" class="pure-menu-link"><%= title %></a>
+                  <a href="<%= path %>" class="pure-menu-link"><%== title %></a>
                 </li>
                 <% end %>
             </ul>
@@ -43,7 +43,7 @@
         </div>
 
         <div class="content">
-          <%= yield %>
+          <%== yield %>
         </div>
 
         <div class="footer">

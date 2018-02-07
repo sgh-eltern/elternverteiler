@@ -9,3 +9,8 @@
 #layout {
   padding-left: 0;
 }
+
+.no-print, .no-print *
+{
+  display: none !important;
+}

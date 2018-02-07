@@ -10,6 +10,8 @@ gem 'ruby-progressbar'
 gem 'sequel'
 gem 'simple-spreadsheet'
 gem 'tilt'
+gem 'forme'
+gem 'erubi'
 
 group 'development' do
   gem 'guard-bundler', require: false

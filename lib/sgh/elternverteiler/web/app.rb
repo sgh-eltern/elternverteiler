@@ -2,6 +2,7 @@
 
 require 'roda'
 require 'tilt'
+require 'forme'
 
 require 'sgh/elternverteiler'
 require 'sgh/elternverteiler/postmap_presenter'
@@ -11,8 +12,11 @@ module SGH
     module Web
       class App < Roda
         plugin :static, ['/js', '/css']
-        plugin :render
+        plugin :render, escape: true
         plugin :partials
+        plugin :forme
+        plugin :h
+        # TODO plugin :csrf
 
         # rubocop:disable Metrics/BlockLength
         route do |r|
@@ -83,10 +87,22 @@ module SGH
           end
 
           r.on 'eltern' do
-            @topic = "Alle #{Erziehungsberechtigter.count} Eltern"
-            @email = 'eltern@schickhardt-gymnasium-herrenberg.de'
-            @eltern = Erziehungsberechtigter.order(:nachname)
-            view :eltern
+            r.get Integer, 'edit' do |user_id|
+              @erziehungsberechtigter = Erziehungsberechtigter.first!(id: user_id)
+              @topic = "#{@erziehungsberechtigter.vorname} #{@erziehungsberechtigter.nachname}"
+              view :erziehungsberechtigter
+            end
+
+            r.post Integer do |user_id|
+              view content: "Benutzer #{user_id} wurde aktualisiert mit #{r.params}"
+            end
+
+            r.on do
+              @topic = "Alle #{Erziehungsberechtigter.count} Eltern"
+              @email = 'eltern@schickhardt-gymnasium-herrenberg.de'
+              @eltern = Erziehungsberechtigter.order(:nachname)
+              view :eltern
+            end
           end
 
           r.on 'schueler' do

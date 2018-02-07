@@ -1,4 +1,4 @@
-<%= partial('email') %>
+<%== partial('email') %>
 
 <table class="pure-table pure-table-horizontal pure-table-striped">
   <thead>
@@ -7,6 +7,7 @@
       <th>Vorname</th>
       <th>Ämter</th>
       <th>eMail</th>
+      <th class="no-print"></th>
     </tr>
   </thead>
 
@@ -23,6 +24,9 @@
         <% else %>
           <%= elternteil.mail %>
         <% end %>
+      </td>
+      <td class="no-print">
+        <a href="/eltern/<%= elternteil.id %>/edit">Bearbeiten</a>
       </td>
     </tr>
     <% end %>
