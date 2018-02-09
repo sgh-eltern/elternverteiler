@@ -6,7 +6,6 @@
       <th>Nachname</th>
       <th>Vorname</th>
       <th>Ämter</th>
-      <th>eMail</th>
       <th class="no-print"></th>
     </tr>
   </thead>
@@ -17,15 +16,13 @@
     <tr>
       <td><%= elternteil.nachname %></td>
       <td><%= elternteil.vorname %></td>
-      <td><%= elternteil.ämter.join(', ') %></td>
       <td>
-        <% if elternteil.mail %>
-          <a href="mailto:<%= elternteil.mail %>"><%= elternteil.mail %></a>
-        <% else %>
-          <%= elternteil.mail %>
+        <% elternteil.ämter.each do |amt| %>
+        <%= amt %><br/>
         <% end %>
       </td>
       <td class="no-print">
+        <a href="/eltern/<%= elternteil.id %>">Details</a> |
         <a href="/eltern/<%= elternteil.id %>/edit">Bearbeiten</a>
       </td>
     </tr>
