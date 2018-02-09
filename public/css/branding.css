@@ -1,0 +1,11 @@
+aside {
+  background: #d3eda3;
+  margin: 1em 0;
+  padding: 0.3em 1em;
+  border-radius: 3px;
+  color: #222;
+}
+
+aside a, aside a:visited {
+  color: rgb(169, 226, 255);
+}

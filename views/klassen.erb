@@ -1,8 +1,8 @@
-<table class="pure-table pure-table-horizontal pure-table-striped">
+<table class="pure-table pure-table-horizontal">
   <thead>
     <tr>
-      <th>Klasse</th>
       <th>Elternvertreter</th>
+      <th/>
     </tr>
   </thead>
 
@@ -10,18 +10,23 @@
 
   <% @klassen.each do |klasse| %>
     <tr>
-      <td><%= klasse %></td>
-      <td>
-          <% klasse.inhaber(*klasse.rollen).uniq.each do |elternteil| %>
-            <% if elternteil.mail %>
-              <a href="mailto:<%= elternteil.mail %>"><%= elternteil.nachname %>, <%= elternteil.vorname %></a>
-            <% else %>
-              <%= elternteil.nachname %>, <%= elternteil.vorname %>
-            <% end %> <%= elternteil.rollen.map(&:name).join(', ') %>
-            <br/>
-          <% end %>
-      </td>
+      <th colspan="2" style="text-align: left;"><%= klasse %></th>
     </tr>
+    <% klasse.inhaber(*klasse.rollen).uniq.each do |elternteil| %>
+      <tr>
+        <td style="padding-left: 2em;">
+          <% if elternteil.mail %>
+            <a href="mailto:<%= elternteil.mail %>"><%= elternteil.nachname %>, <%= elternteil.vorname %></a>
+          <% else %>
+            <%= elternteil.nachname %>, <%= elternteil.vorname %>
+          <% end %> <%= elternteil.rollen.map(&:name).join(', ') %>
+        </td>
+
+        <td class="no-print">
+          <a href="/eltern/<%= elternteil.id %>/edit">Bearbeiten</a>
+        </td>
+      </tr>
     <% end %>
+  <% end %>
   </tbody>
 </table>

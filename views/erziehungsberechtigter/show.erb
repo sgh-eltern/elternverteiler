@@ -1,0 +1,40 @@
+<table class="pure-table pure-table-horizontal">
+  <tr>
+    <th style="background-color: #f2f2f2; text-align: right;">Nachname</th>
+    <td><%= @erziehungsberechtigter.nachname %></td>
+  </tr>
+
+  <tr>
+    <th style="background-color: #f2f2f2; text-align: right;">Vorname</th>
+    <td><%= @erziehungsberechtigter.vorname %></td>
+  </tr>
+
+  <tr>
+    <th style="background-color: #f2f2f2; text-align: right;">Telefon</th>
+    <td><%= @erziehungsberechtigter.telefon %></td>
+  </tr>
+
+  <tr>
+    <th style="background-color: #f2f2f2; text-align: right;">eMail</th>
+    <td>
+      <% if @erziehungsberechtigter.mail %>
+        <a href="mailto:<%= @erziehungsberechtigter.mail %>"><%= @erziehungsberechtigter.mail %></a>
+      <% else %>
+        <%= @erziehungsberechtigter.mail %>
+      <% end %>
+    </td>
+  </tr>
+
+  <tr>
+    <th style="background-color: #f2f2f2; text-align: right;">Ämter</th>
+    <td>
+      <% @erziehungsberechtigter.ämter.each do |amt| %>
+      <%= amt %><br/>
+      <% end %>
+    </td>
+  </tr>
+</table>
+
+<p>
+  <a href="/eltern/<%= @erziehungsberechtigter.id %>/edit" class="pure-button">Bearbeiten</a>
+</p>

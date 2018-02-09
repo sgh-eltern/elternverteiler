@@ -11,12 +11,17 @@ module SGH
   module Elternverteiler
     module Web
       class App < Roda
-        plugin :static, ['/js', '/css']
-        plugin :render, escape: true
-        plugin :partials
+        use Rack::Session::Cookie, secret: ENV.fetch('SESSION_SECRET')
+
+        plugin :flash
         plugin :forme
         plugin :h
+        plugin :partials
+        plugin :render, escape: true
+        plugin :static, ['/js', '/css']
         # TODO plugin :csrf
+
+        Sequel::Model.plugin :forme
 
         # rubocop:disable Metrics/BlockLength
         route do |r|
@@ -87,14 +92,24 @@ module SGH
           end
 
           r.on 'eltern' do
+            r.get Integer do |user_id|
+              @erziehungsberechtigter = Erziehungsberechtigter.first!(id: user_id)
+              @topic = "#{@erziehungsberechtigter.vorname} #{@erziehungsberechtigter.nachname}"
+              view 'erziehungsberechtigter/show'
+            end
+
             r.get Integer, 'edit' do |user_id|
               @erziehungsberechtigter = Erziehungsberechtigter.first!(id: user_id)
               @topic = "#{@erziehungsberechtigter.vorname} #{@erziehungsberechtigter.nachname}"
-              view :erziehungsberechtigter
+              view 'erziehungsberechtigter/edit'
             end
 
             r.post Integer do |user_id|
-              view content: "Benutzer #{user_id} wurde aktualisiert mit #{r.params}"
+              @erziehungsberechtigter = Erziehungsberechtigter.first!(id: user_id)
+              @erziehungsberechtigter.set_fields(r.params[@erziehungsberechtigter.forme_namespace], %w(vorname nachname mail telefon))
+              @erziehungsberechtigter.save
+              flash[:success] = "Erziehungsberechtigter wurde aktualisiert"
+              r.redirect
             end
 
             r.on do
