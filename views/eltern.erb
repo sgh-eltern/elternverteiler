@@ -1,12 +1,17 @@
 <%== partial('email') %>
 
+<div style="position: fixed; right: 5%; top: 15%">
+  <% ('A'..'Z').each do |char| %>
+    <p><a href="#<%= char %>"><%= char %></a></p>
+  <% end %>
+</div>
+
 <table class="pure-table pure-table-horizontal pure-table-striped">
   <thead>
     <tr>
       <th>Nachname</th>
       <th>Vorname</th>
       <th>Ämter</th>
-      <th class="no-print"></th>
     </tr>
   </thead>
 
@@ -14,16 +19,17 @@
 
   <% @eltern.each do |elternteil| %>
     <tr>
-      <td><%= elternteil.nachname %></td>
-      <td><%= elternteil.vorname %></td>
+      <td>
+        <a name="<%= elternteil.nachname&.chars&.first %>"/>
+        <a href="/eltern/<%= elternteil.id %>"><%= elternteil.nachname %></a>
+      </td>
+      <td>
+        <a href="/eltern/<%= elternteil.id %>"><%= elternteil.vorname %></a>
+      </td>
       <td>
         <% elternteil.ämter.each do |amt| %>
-        <%= amt %><br/>
+          <%= amt %></br>
         <% end %>
-      </td>
-      <td class="no-print">
-        <a href="/eltern/<%= elternteil.id %>">Details</a> |
-        <a href="/eltern/<%= elternteil.id %>/edit">Bearbeiten</a>
       </td>
     </tr>
     <% end %>

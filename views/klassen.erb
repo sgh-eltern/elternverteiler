@@ -15,11 +15,9 @@
     <% klasse.inhaber(*klasse.rollen).uniq.each do |elternteil| %>
       <tr>
         <td style="padding-left: 2em;">
-          <% if elternteil.mail %>
-            <a href="mailto:<%= elternteil.mail %>"><%= elternteil.nachname %>, <%= elternteil.vorname %></a>
-          <% else %>
+          <a href="/eltern/<%= elternteil.id %>">
             <%= elternteil.nachname %>, <%= elternteil.vorname %>
-          <% end %> <%= elternteil.rollen.map(&:name).join(', ') %>
+          </a>
         </td>
 
         <td class="no-print">
