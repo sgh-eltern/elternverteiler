@@ -27,7 +27,7 @@ module SGH
         route do |r|
           @title = 'Elternbeirat am SGH'
           @menu = {
-            '/elternbeirat': 'Elternbeirat',
+            '/elternbeirat': 'Elternvertreter',
             '/elternbeirat/anwesenheit': '&nbsp;Anwesenheitsliste',
             '/elternbeirat/klassen': '&nbsp;nach Klasse',
             '/elternbeirat/vorsitzende': '&nbsp;Vorsitzende',
@@ -52,9 +52,16 @@ module SGH
             elternbeirat = Rolle.where(name: '1.EV').or(name: '2.EV').map(&:mitglieder).flatten.sort_by(&:nachname)
 
             r.on 'klassen' do
-              @topic = 'Elternbeiräte der Klassen'
-              @klassen = Klasse.all
-              view :klassen
+              @topic = 'Elternvertreter nach Klasse'
+              @klassen_ämter = Klasse.map do |klasse|
+                [
+                  klasse,
+                  Amt.where(
+                      rolle: Rolle.where(Sequel.like(:name, '%.EV')), klasse: klasse
+                    ).sort {|l,r| l.to_s <=> r.to_s }
+                ]
+              end
+              view 'elternvertreter/klassen'
             end
 
             r.on 'anwesenheit' do
@@ -84,7 +91,7 @@ module SGH
             end
 
             r.on do
-              @topic = "Alle #{elternbeirat.count} Elternbeiräte"
+              @topic = "Alle Elternvertreter"
               @email = 'elternbeirat@schickhardt-gymnasium-herrenberg.de'
               @eltern = elternbeirat
               view :eltern
