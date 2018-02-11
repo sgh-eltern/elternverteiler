@@ -25,16 +25,27 @@
     </td>
   </tr>
 
-  <tr>
-    <th style="background-color: #f2f2f2; text-align: right;">Ämter</th>
-    <td>
-      <% @erziehungsberechtigter.ämter.each do |amt| %>
-      <%= amt %><br/>
-      <% end %>
-    </td>
-  </tr>
+    <tr>
+      <th style="background-color: #f2f2f2; text-align: right;">Ämter</th>
+      <td>
+        <% @erziehungsberechtigter.ämter.each do |amt| %>
+        <%= amt %><br/>
+        <% end %>
+      </td>
+    </tr>
+
+    <tr>
+      <th style="background-color: #f2f2f2; text-align: right;">Kinder</th>
+      <td>
+        <% @erziehungsberechtigter.kinder.each do |kind| %>
+          <a href="/schüler/<%= kind.id %>">
+            <%= kind %>
+          </a><br/>
+        <% end %>
+      </td>
+    </tr>
 </table>
 
 <p>
-  <a href="/eltern/<%= @erziehungsberechtigter.id %>/edit" class="pure-button">Bearbeiten</a>
+  <a href="/eltern/<%= @erziehungsberechtigter.id %>/edit" class="pure-button pure-button-primary">Bearbeiten</a>
 </p>
