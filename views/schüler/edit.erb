@@ -1,14 +1,12 @@
-<% form(@erziehungsberechtigter,
+<% form(@schüler,
         :inputs_wrapper => :fieldset,
         class: 'pure-form pure-form-aligned',
-        action: "/eltern/#{@erziehungsberechtigter.id}",
+        action: "/schueler/#{@schüler.id}",
         method: 'post',
         ) do |f| %>
   <% f.inputs(legend: 'Stammdaten') do %>
     <%== f.input(:vorname,  size: 50, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>
     <%== f.input(:nachname, size: 50, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>
-    <%== f.input(:mail,     size: 50, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>
-    <%== f.input(:telefon,  size: 50, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>
   <% end %>
 
   <%== f.button(value: 'Aktualisieren', class: "pure-button pure-button-primary") %>

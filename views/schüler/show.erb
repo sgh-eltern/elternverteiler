@@ -1,0 +1,26 @@
+<h3>Schüler/in in der <a href="/klassen/<%= @schüler.klasse.id %>"><%= @schüler.klasse %></a></h3>
+
+<table class="pure-table pure-table-horizontal">
+  <tr>
+    <th style="background-color: #f2f2f2; text-align: right;">Nachname</th>
+    <td><%= @schüler.nachname %></td>
+  </tr>
+
+  <tr>
+    <th style="background-color: #f2f2f2; text-align: right;">Vorname</th>
+    <td><%= @schüler.vorname %></td>
+  </tr>
+
+  <tr>
+    <th style="background-color: #f2f2f2; text-align: right;">Eltern</th>
+    <td>
+      <% @schüler.eltern.each do |paren| %>
+        <a href="/eltern/<%= paren.id %>"><%= paren.vorname %> <%= paren.nachname %></a><br/>
+      <% end %>
+    </td>
+  </tr>
+</table>
+
+<p>
+  <a href="/schueler/<%= @schüler.id %>/edit" class="pure-button pure-button-primary">Bearbeiten</a>
+</p>

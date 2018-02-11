@@ -1,0 +1,26 @@
+<table class="pure-table pure-table-horizontal pure-table-striped">
+  <thead>
+    <tr>
+      <th>Nachname</th>
+      <th>Vorname</th>
+      <th>Klasse</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+  <% @schüler.each do |sch| %>
+    <tr>
+      <td>
+        <a href="/schueler/<%= sch.id %>"><%= sch.nachname %></a>
+      </td>
+      <td>
+        <a href="/schueler/<%= sch.id %>"><%= sch.vorname %></a>
+      </td>
+      <td>
+        <a href="/klassen/<%= sch.klasse.id %>"><%= sch.klasse %></a>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

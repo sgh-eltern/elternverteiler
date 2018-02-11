@@ -19,7 +19,7 @@ module SGH
         plugin :partials
         plugin :render, escape: true
         plugin :static, ['/js', '/css']
-        # TODO plugin :csrf
+        # TODO: plugin :csrf
 
         Sequel::Model.plugin :forme
 
@@ -27,19 +27,25 @@ module SGH
         route do |r|
           @title = 'Elternbeirat am SGH'
           @menu = {
-            '/elternbeirat': 'Elternvertreter',
-            '/elternbeirat/anwesenheit': '&nbsp;Anwesenheitsliste',
-            '/elternbeirat/klassen': '&nbsp;nach Klasse',
+            '/elternvertreter': 'Elternvertreter',
+            '/elternvertreter/klassen': '&nbsp;nach Klasse',
+
+            '/elternbeirat': 'Elternbeirat',
             '/elternbeirat/vorsitzende': '&nbsp;Vorsitzende',
             '/elternbeirat/schulkonferenz': '&nbsp;Schulkonferenz',
+
             '/eltern': 'Eltern',
+
             '/schueler': 'Schüler',
             '/schueler/nicht-erreichbar': '&nbsp;Nicht erreichbar',
+
+            '/klassen': 'Klassen',
           }
           @current_path = r.path
+          @elternbeirat = Rolle.where(name: '1.EV').or(name: '2.EV').map(&:mitglieder).flatten.sort_by(&:nachname)
 
           r.root do
-            @topic = 'Elternverteiler'
+            @topic = 'Übersicht'
             schueler_unreachable_total = schueler_unreachable.count
             @eltern_total = Erziehungsberechtigter.count
             @schueler_total = Schüler.count
@@ -48,31 +54,31 @@ module SGH
             view :home
           end
 
-          r.on 'elternbeirat' do
-            elternbeirat = Rolle.where(name: '1.EV').or(name: '2.EV').map(&:mitglieder).flatten.sort_by(&:nachname)
-
+          r.on 'elternvertreter' do
             r.on 'klassen' do
               @topic = 'Elternvertreter nach Klasse'
               @klassen_ämter = Klasse.map do |klasse|
                 [
                   klasse,
                   Amt.where(
-                      rolle: Rolle.where(Sequel.like(:name, '%.EV')), klasse: klasse
-                    ).sort {|l,r| l.to_s <=> r.to_s }
+                    rolle: Rolle.where(Sequel.like(:name, '%.EV')), klasse: klasse
+                    ).sort_by(&:to_s)
                 ]
               end
               view 'elternvertreter/klassen'
             end
 
-            r.on 'anwesenheit' do
-              @topic = 'Anwesenheitsliste'
+            r.on do
+              @topic = 'Alle Elternvertreter'
               @email = 'elternbeirat@schickhardt-gymnasium-herrenberg.de'
-              @eltern = elternbeirat
-              view :anwesenheit
+              @eltern = @elternbeirat
+              view :eltern
             end
+          end
 
+          r.on 'elternbeirat' do
             r.on 'vorsitzende' do
-              @topic = 'Elternbeiratsvorsitzende'
+              @topic = 'Vorsitzende'
               @email = 'elternbeiratsvorsitzende@schickhardt-gymnasium-herrenberg.de'
               @eltern = Rolle.where(name: '1.EBV').or(name: '2.EBV').map(&:mitglieder).flatten
               view :eltern
@@ -91,53 +97,79 @@ module SGH
             end
 
             r.on do
-              @topic = "Alle Elternvertreter"
+              @topic = 'Mitglieder'
               @email = 'elternbeirat@schickhardt-gymnasium-herrenberg.de'
-              @eltern = elternbeirat
-              view :eltern
+              @eltern = @elternbeirat
+              view :anwesenheit
             end
           end
 
           r.on 'eltern' do
-            r.get Integer do |user_id|
-              @erziehungsberechtigter = Erziehungsberechtigter.first!(id: user_id)
+            r.get Integer do |id|
+              @erziehungsberechtigter = Erziehungsberechtigter.first!(id: id)
               @topic = "#{@erziehungsberechtigter.vorname} #{@erziehungsberechtigter.nachname}"
               view 'erziehungsberechtigter/show'
             end
 
-            r.get Integer, 'edit' do |user_id|
-              @erziehungsberechtigter = Erziehungsberechtigter.first!(id: user_id)
+            r.get Integer, 'edit' do |id|
+              @erziehungsberechtigter = Erziehungsberechtigter.first!(id: id)
               @topic = "#{@erziehungsberechtigter.vorname} #{@erziehungsberechtigter.nachname}"
               view 'erziehungsberechtigter/edit'
             end
 
-            r.post Integer do |user_id|
-              @erziehungsberechtigter = Erziehungsberechtigter.first!(id: user_id)
-              @erziehungsberechtigter.set_fields(r.params[@erziehungsberechtigter.forme_namespace], %w(vorname nachname mail telefon))
+            r.post Integer do |id|
+              @erziehungsberechtigter = Erziehungsberechtigter.first!(id: id)
+              @erziehungsberechtigter.set_fields(r.params[@erziehungsberechtigter.forme_namespace], %w[vorname nachname mail telefon])
               @erziehungsberechtigter.save
-              flash[:success] = "Erziehungsberechtigter wurde aktualisiert"
+              flash[:success] = 'Erziehungsberechtigter wurde aktualisiert'
               r.redirect
             end
 
             r.on do
-              @topic = "Alle #{Erziehungsberechtigter.count} Eltern"
+              @topic = 'Alle Eltern'
               @email = 'eltern@schickhardt-gymnasium-herrenberg.de'
               @eltern = Erziehungsberechtigter.order(:nachname)
               view :eltern
             end
           end
 
-          r.on 'schueler' do
-            r.on 'nicht-erreichbar' do
-              @schueler = schueler_unreachable
-              @topic = "#{@schueler.count} nicht per eMail erreichbare Schüler"
-              view :schueler
+          r.on 'klassen' do
+            r.get Integer do |id|
+              @schüler = Klasse.first!(id: id).schüler
+              @topic = "Klasse #{@klasse}"
+              view 'schüler/list'
             end
 
             r.on do
-              @topic = "Alle #{Schüler.count} Schüler"
-              @schueler = Schüler.order(:nachname)
-              view :schueler
+              @topic = 'Alle Klassen'
+              @klassen = Klasse.all
+              view 'klassen/list'
+            end
+          end
+
+          r.on 'schueler' do
+            r.get Integer do |id|
+              @schüler = Schüler.first!(id: id)
+              @topic = "#{@schüler.vorname} #{@schüler.nachname}"
+              view 'schüler/show'
+            end
+
+            r.get Integer, 'edit' do |id|
+              @schüler = Schüler.first!(id: id)
+              @topic = "#{@schüler.vorname} #{@schüler.nachname}"
+              view 'schüler/edit'
+            end
+
+            r.on 'nicht-erreichbar' do
+              @schüler = schueler_unreachable
+              @topic = "#{@schüler.count} nicht per eMail erreichbare Schüler"
+              view 'schüler/list'
+            end
+
+            r.on do
+              @topic = 'Alle Schüler'
+              @schüler = Schüler.order(:nachname)
+              view 'schüler/list'
             end
           end
         end

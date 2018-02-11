@@ -174,3 +174,6 @@ Style/WordArray:
 
 Style/ZeroLengthPredicate:
   Enabled: false
+
+Naming/VariableName:
+  Enabled: false

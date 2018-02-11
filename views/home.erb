@@ -7,11 +7,15 @@
     </a>
   </li>
   <li>
-    <%= @schueler_total %> Schüler
-  </li>
-  <li>
-    <a href="/schueler/nicht-erreichbar">
-      <%= @schueler_unreachable_total %> Schüler (<%= sprintf('%.2f%%', @schueler_unreachable_percent) %>) nicht per Mail erreichbar
+    <a href="/schueler">
+      <%= @schueler_total %> Schüler
     </a>
+    <ul>
+      <li>
+        <a href="/schueler/nicht-erreichbar">
+          <%= @schueler_unreachable_total %> (<%= sprintf('%.2f%%', @schueler_unreachable_percent) %>) nicht per Mail erreichbar
+        </a>
+      </li>
+    </ul>
   </li>
 </ul>
