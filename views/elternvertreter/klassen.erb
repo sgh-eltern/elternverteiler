@@ -9,22 +9,20 @@
 
   <% @klassen_ämter.each do |klasse, ämter| %>
     <tr>
-      <th colspan="2" style="text-align: left;"><%= klasse %></th>
+      <th colspan="2" style="text-align: left;">
+        <a href="/klassen/<%= klasse.id %>"><%= klasse %></a>
+      </th>
     </tr>
 
+    <%# TODO Extract into common partial %>
     <% ämter.each do |amt| %>
       <tr>
         <td style="padding-left: 2em;">
           <%= amt.rolle %>
-          <span class="no-print">
-            (<a href="/elternvertreter/<%= klasse.id %>/rolle/<%= amt.rolle.id %>/edit">Ändern</a>)
-          </span>
         </td>
 
         <td valign="top">
-          <a href="/eltern/<%= amt.inhaber.id %>">
-            <%= amt.inhaber.nachname %>, <%= amt.inhaber.vorname %>
-          </a>
+          <a href="/eltern/<%= amt.inhaber.id %>"><%= amt.inhaber.nachname %>, <%= amt.inhaber.vorname %></a>
         </td>
       </tr>
     <% end %>

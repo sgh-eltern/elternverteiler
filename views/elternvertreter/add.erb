@@ -1,0 +1,12 @@
+<% form(@amt,
+        :inputs_wrapper => :fieldset,
+        class: 'pure-form pure-form-aligned',
+        method: 'post',
+        action: "/klassen/#{@amt.klasse.id}/rollen/add",
+        ) do |f| %>
+  <%# TODO Do not show all parents, but only parents from @amt.klasse %>
+  <%== f.input(:rolle, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>
+  <%== f.input(:inhaber, name_method: Proc.new{|p| "#{p&.nachname}, #{p&.vorname}"}, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>
+  <%== f.button(value: 'Speichern', class: "pure-button pure-button-primary") %>
+  <input type="reset" value="Zurücksetzen" class="pure-button">
+<% end %>

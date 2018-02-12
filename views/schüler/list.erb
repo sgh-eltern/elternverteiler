@@ -1,3 +1,60 @@
+<div style="position: fixed; right: 5%; top: 15%">
+  <% ('A'..'Z').each do |char| %>
+    <p><a href="#<%= char %>"><%= char %></a></p>
+  <% end %>
+</div>
+
+<% if @ämter %>
+  <h3>Elternvertreter</h3>
+
+  <table class="pure-table pure-table-horizontal">
+    <thead>
+      <tr>
+        <th>Amt</th>
+        <th>Inhaber</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+    <%# TODO Extract into common partial %>
+    <% @ämter.each do |amt| %>
+      <tr>
+        <td style="padding-left: 2em;">
+          <%= amt.rolle %>
+        </td>
+
+        <td valign="top">
+          <a href="/eltern/<%= amt.inhaber.id %>">
+            <%= amt.inhaber.nachname %>, <%= amt.inhaber.vorname %>
+          </a>
+        </td>
+
+        <td class="no-print">
+          <% form(@amt,
+                  :inputs_wrapper => :fieldset,
+                  class: 'pure-form pure-form-aligned',
+                  action: "/klassen/#{amt.klasse.id}/rollen/#{amt.rolle.id}/inhaber/#{amt.inhaber.id}",
+                  method: 'post',
+                  ) do |f| %>
+
+            <%== f.button(value: 'Entfernen', class: "pure-button pure-button-primary") %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    <tr>
+      <td colspan="3">
+        <a href="/klassen/<%= @klasse.id %>/rollen/add">Hinzufügen</a>
+      </td>
+    </tr>
+  </tbody>
+  </table>
+<% end %>
+
+<h3>Schüler</h3>
+
 <table class="pure-table pure-table-horizontal pure-table-striped">
   <thead>
     <tr>
@@ -12,6 +69,7 @@
   <% @schüler.each do |sch| %>
     <tr>
       <td>
+        <a name="<%= sch.nachname&.chars&.first %>"/>
         <a href="/schueler/<%= sch.id %>"><%= sch.nachname %></a>
       </td>
       <td>

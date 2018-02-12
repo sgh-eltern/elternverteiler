@@ -88,11 +88,8 @@ module SGH
               @topic = 'Elternvertreter in der Schulkonferenz'
               @email = 'elternvertreter-schulkonferenz@schickhardt-gymnasium-herrenberg.de'
 
-              evsk = SGH::Elternverteiler::Rolle.where(name: ['SK', '1.EBV']).flat_map(&:mitglieder)
               # BUG: The spreadsheet requires the 1.EBV to be marked as SK, too, so we get a duplicate.
-              evsk.uniq!
-
-              @eltern = evsk.sort_by(&:nachname)
+              @eltern = SGH::Elternverteiler::Rolle.where(name: ['SK', 'SKV']).flat_map(&:mitglieder).sort_by(&:nachname)
               view :eltern
             end
 
@@ -119,7 +116,7 @@ module SGH
 
             r.post Integer do |id|
               @erziehungsberechtigter = Erziehungsberechtigter.first!(id: id)
-              @erziehungsberechtigter.set_fields(r.params[@erziehungsberechtigter.forme_namespace], %w[vorname nachname mail telefon])
+              @erziehungsberechtigter.set_fields(r.params['sgh/elternverteiler/erziehungsberechtigter'], %w[vorname nachname mail telefon])
               @erziehungsberechtigter.save
               flash[:success] = 'Erziehungsberechtigter wurde aktualisiert'
               r.redirect
@@ -135,9 +132,39 @@ module SGH
 
           r.on 'klassen' do
             r.get Integer do |id|
-              @schüler = Klasse.first!(id: id).schüler
+              @klasse = Klasse.first!(id: id)
+              @schüler = @klasse.schüler
               @topic = "Klasse #{@klasse}"
+              @ämter = Amt.where(
+                rolle: Rolle.where(Sequel.like(:name, '%.EV')), klasse: @klasse
+                ).sort_by(&:to_s)
               view 'schüler/list'
+            end
+
+            r.get Integer, 'rollen', 'add' do |klasse_id|
+              @topic = 'Neuer Amtsinhaber'
+              klasse = Klasse.first!(id: klasse_id)
+              @amt = Amt.new(klasse: klasse)
+              view 'elternvertreter/add'
+            end
+
+            r.post Integer, 'rollen', 'add' do |klasse_id|
+              klasse = Klasse.first!(id: klasse_id)
+              rolle = Rolle.first!(id: r.params['sgh/elternverteiler/amt']['rolle_id'])
+              inhaber = Erziehungsberechtigter.first!(id: r.params['sgh/elternverteiler/amt']['inhaber_id'])
+              Amt.new(klasse: klasse, rolle: rolle, inhaber: inhaber).save
+              flash[:success] = "#{inhaber} ist jetzt #{rolle} in der #{klasse}"
+              r.redirect "/klassen/#{klasse.id}"
+            end
+
+            r.post Integer, 'rollen', Integer, 'inhaber', Integer do |klasse_id, rolle_id, inhaber_id|
+              @topic = 'Amtsinhaber löschen'
+              klasse = Klasse.first!(id: klasse_id)
+              rolle = Rolle.first!(id: rolle_id)
+              inhaber = Erziehungsberechtigter.first!(id: inhaber_id)
+              Amt.first!(klasse: klasse, rolle: rolle, inhaber: inhaber).delete
+              flash[:success] = "#{inhaber} ist nicht mehr #{rolle} in der #{klasse}."
+              r.redirect "/klassen/#{klasse.id}"
             end
 
             r.on do
