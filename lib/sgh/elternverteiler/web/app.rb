@@ -111,6 +111,12 @@ module SGH
               view 'erziehungsberechtigter/show'
             end
 
+            r.post Integer, 'delete' do |id|
+              @erziehungsberechtigter = Erziehungsberechtigter.first!(id: id).destroy
+              flash[:success] = "#{@erziehungsberechtigter} wurde gelöscht."
+              r.redirect '/eltern'
+            end
+
             r.get Integer, 'edit' do |id|
               @erziehungsberechtigter = Erziehungsberechtigter.first!(id: id)
               @topic = "#{@erziehungsberechtigter.vorname} #{@erziehungsberechtigter.nachname}"

@@ -46,6 +46,9 @@
     </tr>
 </table>
 
+<form action="/eltern/<%= @erziehungsberechtigter.id %>/delete" class="pure-form pure-form-aligned" method="post">
 <p>
   <a href="/eltern/<%= @erziehungsberechtigter.id %>/edit" class="pure-button pure-button-primary">Bearbeiten</a>
+  <input class="pure-button" type="submit" value="Löschen" style="color: white; background: rgb(202, 60, 60)"/>
 </p>
+</form>
