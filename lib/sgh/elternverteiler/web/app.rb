@@ -3,6 +3,7 @@
 require 'roda'
 require 'tilt'
 require 'forme'
+require 'English'
 
 require 'sgh/elternverteiler'
 require 'sgh/elternverteiler/postmap_presenter'
@@ -223,7 +224,7 @@ module SGH
               name = r.params['sgh/elternverteiler/backups']
 
               if name.nil?
-                flash[:warning] = "Kein Backup ausgewählt"
+                flash[:warning] = 'Kein Backup ausgewählt'
                 r.redirect
               end
 
@@ -232,9 +233,9 @@ module SGH
               r.redirect
             rescue Recovery::Manager::ExecutionError
               flash[:error] = "Backup #{name} konnte nicht eingespielt werden."
-              warn "Command: #{$!.command}"
-              warn "STDOUT: #{$!.stdout}"
-              warn "STDERR: #{$!.stderr}"
+              warn "Command: #{$ERROR_INFO.command}"
+              warn "STDOUT: #{$ERROR_INFO.stdout}"
+              warn "STDERR: #{$ERROR_INFO.stderr}"
               r.redirect
             end
 
@@ -244,8 +245,8 @@ module SGH
               @backup_manager.backup(@backup)
               flash[:success] = "Backup #{@backup.name} wurde angelegt."
               r.redirect
-            rescue
-              flash.now[:error] = $!.message
+            rescue StandardError
+              flash.now[:error] = $ERROR_INFO.message
               view 'backups/new'
             end
 

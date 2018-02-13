@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'pathname'
 require 'shellwords'
 require 'open3'
@@ -16,12 +18,18 @@ module SGH
           attr_reader :command, :stdout, :stderr, :status
 
           def initialize(command, stdout, stderr, status)
-            @command, @stdout, @stderr, @status = command, stdout, stderr, status
+            @command = command
+            @stdout = stdout
+            @stderr = stderr
+            @status = status
+            super(stderr)
           end
         end
 
         def initialize(root)
+          raise 'Root directory is required' unless root
           @root = Pathname(root)
+          raise 'Backup directory does not exist' unless @root.exist?
         end
 
         def all
@@ -33,13 +41,13 @@ module SGH
           raise 'Backup name is required' unless backup.name
           path = path(backup)
           raise DuplicateName.new(backup.name) if path.exist?
-          execute("set -o pipefail; pg_dump --clean #{ENV.fetch('DB')} | gzip > #{ Shellwords.escape(path)}")
+          execute("set -o pipefail; pg_dump --clean #{ENV.fetch('DB')} | gzip > #{Shellwords.escape(path)}")
         end
 
         def restore(backup)
           path = path(backup)
           raise "Could not find #{backup.name}" unless path.exist? && path.file?
-          execute("set -o pipefail; gunzip -c #{ Shellwords.escape(path)} | psql #{ENV.fetch('DB')}")
+          execute("set -o pipefail; gunzip -c #{Shellwords.escape(path)} | psql #{ENV.fetch('DB')}")
         end
 
         private
