@@ -1,0 +1,36 @@
+<% form(@backup_manager,
+        :inputs_wrapper => :fieldset,
+        class: 'pure-form pure-form-aligned',
+        action: '/backups/restore',
+        method: 'post',
+        ) do |f| %>
+  <p>
+    <%== f.button(value: 'Einspielen', class: "pure-button pure-button-primary") %>
+  </p>
+
+  <table class="pure-table pure-table-horizontal">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Datum</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @backup_manager.all.each do |backup| %>
+      <tr>
+        <td>
+          <input name="sgh/elternverteiler/backups" type="radio" value="<%= backup.name %>"/>
+        </td>
+        <td><%= backup.created_at %></td>
+        <td><%= backup.name %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <p>
+    <%== f.button(value: 'Einspielen', class: "pure-button pure-button-primary") %>
+  </p>
+<% end %>

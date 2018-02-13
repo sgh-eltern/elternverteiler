@@ -1,0 +1,9 @@
+<% form(@backup,
+        :inputs_wrapper => :fieldset,
+        class: 'pure-form pure-form-aligned',
+        action: "/backups",
+        method: 'post',
+        ) do |f| %>
+  <%== f.input(:name, size: 50) %>
+  <%== f.button(value: 'Erstellen', class: "pure-button pure-button-primary") %>
+<% end %>

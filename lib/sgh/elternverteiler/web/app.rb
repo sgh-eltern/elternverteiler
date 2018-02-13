@@ -224,6 +224,12 @@ module SGH
               @backup_manager.restore(Recovery::Backup.new(name))
               flash[:success] = "Backup #{name} wurde eingespielt."
               r.redirect
+            rescue Recovery::Manager::ExecutionError
+              flash[:error] = "Backup #{name} konnte nicht eingespielt werden."
+              warn "Command: #{$!.command}"
+              warn "STDOUT: #{$!.stdout}"
+              warn "STDERR: #{$!.stderr}"
+              r.redirect
             end
 
             r.post do

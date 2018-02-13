@@ -2,5 +2,5 @@
 .bundle
 .cache_rake_t
 .envrc
-backups/
+backups/*.tgz
 spec/failure-state
