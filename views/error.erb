@@ -1,0 +1,17 @@
+<p>
+Entschuldigung, hier ging etwas schief.
+</p>
+
+<p>
+  <code>
+  <%= @error.message %>
+  </code>
+</p>
+
+<p style="width: max-content;">
+  <code>
+  <% @error.backtrace.each do |line| %>
+    <%= line %><br/>
+  <% end %>
+  </code>
+</p>

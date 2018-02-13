@@ -1,5 +1,6 @@
+.DS_Store
 .bundle
 .cache_rake_t
 .envrc
+backups/
 spec/failure-state
-.DS_Store

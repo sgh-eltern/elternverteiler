@@ -1,9 +1,21 @@
 aside {
-  background: #d3eda3;
   margin: 1em 0;
   padding: 0.3em 1em;
   border-radius: 3px;
   color: #222;
+}
+
+aside.success {
+  background: #00cc66;
+}
+
+aside.warning {
+  background: #ffff00;
+}
+
+aside.error {
+  background: #ff3300;
+  color: #fff;
 }
 
 aside a, aside a:visited {

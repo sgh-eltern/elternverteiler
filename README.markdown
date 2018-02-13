@@ -67,6 +67,16 @@ scp elternverteiler.txt ***REMOVED***.schickhardt-gymnasium-herrenberg.de:
   - nein, aber sinnvoll TODO
 * TODO Spreadsheet hat ***REMOVED*** in verschlüsseltem ZIP-File (Passwort: ***REMOVED***)
 * keine Metriken erhoben (Bounces, Anzahl der zugestellten Mails, etc.)
+* Farbenvorschlag:
+
+    # grün
+    00cc66
+
+    # gelb
+    FFFF00
+
+    # rot
+    FF3300
 
 # Ausblick
 

@@ -6,6 +6,7 @@ require 'forme'
 
 require 'sgh/elternverteiler'
 require 'sgh/elternverteiler/postmap_presenter'
+require 'sgh/elternverteiler/recovery'
 
 module SGH
   module Elternverteiler
@@ -13,6 +14,7 @@ module SGH
       class App < Roda
         use Rack::Session::Cookie, secret: ENV.fetch('SESSION_SECRET')
 
+        plugin :error_handler
         plugin :flash
         plugin :forme
         plugin :h
@@ -20,7 +22,6 @@ module SGH
         plugin :render, escape: true
         plugin :static, ['/js', '/css']
         # TODO: plugin :csrf
-
         Sequel::Model.plugin :forme
 
         # rubocop:disable Metrics/BlockLength
@@ -40,6 +41,8 @@ module SGH
             '/schueler/nicht-erreichbar': '&nbsp;Nicht erreichbar',
 
             '/klassen': 'Klassen',
+            '/backups': 'Backups',
+            '/backups/new': '&nbsp;Neu',
           }
           @current_path = r.path
           @elternbeirat = Rolle.where(name: '1.EV').or(name: '2.EV').map(&:mitglieder).flatten.sort_by(&:nachname)
@@ -199,8 +202,55 @@ module SGH
               view 'schüler/list'
             end
           end
+
+          r.on 'backups' do |sure|
+            @backup_manager = Recovery::Manager.new('backups')
+
+            r.get 'new' do
+              @topic = 'Neues Backup anlegen'
+              @backup = Recovery::Backup.new
+              view 'backups/new'
+            end
+
+            r.post 'restore' do
+              @topic = 'Backup einspielen'
+              name = r.params['sgh/elternverteiler/backups']
+
+              if name.nil?
+                flash[:warning] = "Kein Backup ausgewählt"
+                r.redirect
+              end
+
+              @backup_manager.restore(Recovery::Backup.new(name))
+              flash[:success] = "Backup #{name} wurde eingespielt."
+              r.redirect
+            end
+
+            r.post do
+              @topic = 'Neues Backup'
+              @backup = Recovery::Backup.new(r.params['name'])
+              @backup_manager.backup(@backup)
+              flash[:success] = "Backup #{@backup.name} wurde angelegt."
+              r.redirect
+            rescue
+              flash.now[:error] = $!.message
+              view 'backups/new'
+            end
+
+            r.on do
+              @topic = 'Verfügbare Backups'
+              view 'backups/list'
+            end
+          end
         end
         # rubocop:enable Metrics/BlockLength
+
+        error do |e|
+          @topic = 'Sorry'
+          @error = e
+          response.status = 500
+          view 'error'
+        end
 
         def schueler_unreachable
           Schüler.all.select { |sch| sch.eltern.collect(&:mail).compact.empty? }
