@@ -3,9 +3,12 @@
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 
-task default: ['spec:ci']
+task default: ['spec:all']
 
 namespace :spec do
+  desc 'Run all tests'
+  task all: %w[rubocop:auto_correct unit system acceptance]
+
   desc 'Run ci tests'
   task ci: ['rubocop:auto_correct', :unit]
 

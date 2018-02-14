@@ -14,6 +14,8 @@ gem 'simple-spreadsheet'
 gem 'tilt'
 
 group 'development' do
+  gem 'capybara'
+  gem 'chromedriver-helper'
   gem 'guard-bundler', require: false
   gem 'guard-rspec', require: false
   gem 'pry'
@@ -22,6 +24,7 @@ group 'development' do
   gem 'rerun'
   gem 'rspec'
   gem 'rubocop'
+  gem 'selenium-webdriver'
   gem 'sqlite3'
   gem 'timecop'
 end
