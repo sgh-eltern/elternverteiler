@@ -26,14 +26,17 @@ module SGH
           end
         end
 
-        def initialize(root)
+        def initialize(root, db_url)
           raise 'Root directory is required' unless root
           @root = Pathname(root)
           raise 'Backup directory does not exist' unless @root.exist?
+
+          raise 'Database URL is required' if db_url.to_s.empty?
+          @db_url = db_url
         end
 
         def all
-          @root.glob('*.tgz').map { |f| Backup.new(f.basename.sub_ext(''), f.mtime) }
+          @root.glob('*.gz').map { |f| Backup.new(f.basename.sub_ext(''), f.mtime) }
         end
 
         def backup(backup)
@@ -41,19 +44,19 @@ module SGH
           raise 'Backup name is required' unless backup.name
           path = path(backup)
           raise DuplicateName.new(backup.name) if path.exist?
-          execute("set -o pipefail; pg_dump --clean #{ENV.fetch('DB')} | gzip > #{Shellwords.escape(path)}")
+          execute("set -o pipefail; pg_dump --clean #{@db_url} | gzip > #{Shellwords.escape(path)}")
         end
 
         def restore(backup)
           path = path(backup)
           raise "Could not find #{backup.name}" unless path.exist? && path.file?
-          execute("set -o pipefail; gunzip -c #{Shellwords.escape(path)} | psql #{ENV.fetch('DB')}")
+          execute("set -o pipefail; gunzip -c #{Shellwords.escape(path)} | psql --set ON_ERROR_STOP=on #{@db_url}")
         end
 
         private
 
         def path(backup)
-          (@root / backup.name).sub_ext('.tgz')
+          (@root / backup.name).sub_ext('.gz')
         end
 
         def execute(command)
