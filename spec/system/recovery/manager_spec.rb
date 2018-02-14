@@ -3,6 +3,10 @@
 require 'spec_helper'
 require 'sgh/elternverteiler/recovery'
 require 'tmpdir'
+require 'tempfile'
+require 'English'
+require 'shellwords'
+require 'zlib'
 
 describe Recovery::Manager do
   subject { described_class.new(root) }
@@ -11,10 +15,10 @@ describe Recovery::Manager do
   before(:all) do
     @db_dir = Pathname(Dir.mktmpdir)
 
-    `initdb -D #{@db_dir}`
+    %x(initdb -D #{Shellwords.escape(@db_dir)})
     expect($CHILD_STATUS.success?).to be_truthy
 
-    `createdb elternverteiler-systemtest`
+    %x(createdb #{@db_name})
     expect($CHILD_STATUS.success?).to be_truthy
 
     ENV['DB'] = 'postgres://localhost/elternverteiler-systemtest'
@@ -32,7 +36,7 @@ describe Recovery::Manager do
   end
 
   after(:all) do
-    `dropdb elternverteiler-systemtest`
+    %x(dropdb #{@db_name})
     expect($CHILD_STATUS.success?).to be_truthy
     FileUtils.remove_entry(@db_dir)
   end

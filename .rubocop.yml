@@ -177,3 +177,6 @@ Style/ZeroLengthPredicate:
 
 Naming/VariableName:
   Enabled: false
+
+Style/CommandLiteral:
+  EnforcedStyle: percent_x

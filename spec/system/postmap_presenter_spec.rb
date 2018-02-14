@@ -36,6 +36,6 @@ describe 'A file with all parents presented with PostmapPresenter', type: 'syste
   end
 
   it 'is parsable by postmap without errors' do
-    expect { `postmap hash:#{subject.path}` }.to_not output.to_stderr
+    expect { %x(postmap hash:#{subject.path}) }.to_not output.to_stderr
   end
 end
