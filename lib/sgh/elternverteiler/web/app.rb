@@ -211,7 +211,7 @@ module SGH
           end
 
           r.on 'backups' do |sure|
-            @backup_manager = Recovery::Manager.new('backups')
+            @backup_manager = Recovery::Manager.new('backups', ENV.fetch('DB'))
 
             r.get 'new' do
               @topic = 'Neues Backup anlegen'

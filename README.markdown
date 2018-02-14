@@ -119,8 +119,3 @@ rerun -i 'spec/*' bundle exec rackup
 ```bash
 $ bundle exec sequel $DB
 ```
-
-# TODO
-
-* deleted_at with https://github.com/sdepold/sequel-paranoid
-* audit trail
