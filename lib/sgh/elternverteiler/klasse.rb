@@ -22,6 +22,8 @@ module SGH
       def to_s
         "#{stufe}#{zug}"
       end
+
+      alias :name :to_s
     end
   end
 end

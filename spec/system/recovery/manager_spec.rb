@@ -11,6 +11,7 @@ require 'zlib'
 describe Recovery::Manager do
   subject { described_class.new(root, db_url) }
   let(:root) { Pathname(Dir.mktmpdir) }
+
   let(:db_url) { "postgres://localhost/#{@db_name}" }
 
   before(:all) do

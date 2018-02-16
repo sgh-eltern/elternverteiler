@@ -26,6 +26,10 @@ module SGH
         super
       end
 
+      def name
+        "#{nachname}, #{vorname}"
+      end
+
       def to_s
         "#{vorname} #{nachname} <#{mail}>"
       end
