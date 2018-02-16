@@ -172,7 +172,7 @@ module SGH
               klasse = Klasse.first!(id: klasse_id)
               rolle = Rolle.first!(id: rolle_id)
               inhaber = Erziehungsberechtigter.first!(id: inhaber_id)
-              Amt.first!(klasse: klasse, rolle: rolle, inhaber: inhaber).delete
+              Amt.first!(klasse: klasse, rolle: rolle, inhaber: inhaber).destroy
               flash[:success] = "#{inhaber} ist nicht mehr #{rolle} in der #{klasse}."
               r.redirect "/klassen/#{klasse.id}"
             end
