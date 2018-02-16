@@ -1,0 +1,13 @@
+<% form(@klasse,
+        :inputs_wrapper => :fieldset,
+        class: 'pure-form pure-form-aligned',
+        action: "/klassen",
+        method: 'post',
+        ) do |f| %>
+  <% f.inputs(legend: 'Stammdaten') do %>
+    <%== f.input(:stufe,  size: 10, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>
+    <%== f.input(:zug, size: 10, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>
+  <% end %>
+
+  <%== f.button(value: 'Anlegen', class: "pure-button pure-button-primary") %>
+<% end %>

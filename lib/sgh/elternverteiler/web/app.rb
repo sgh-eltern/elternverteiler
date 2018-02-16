@@ -141,6 +141,18 @@ module SGH
           end
 
           r.on 'klassen' do
+            r.get 'neu' do |id|
+              @klasse = Klasse.new
+              view 'klassen/new'
+            end
+
+            r.post do
+              klasse = Klasse.new
+              klasse.set_fields(r.params['sgh/elternverteiler/klasse'], %w[stufe zug])
+              klasse.save
+              r.redirect "/klassen/#{klasse.id}"
+            end
+
             r.get Integer do |id|
               @klasse = Klasse.first!(id: id)
               @schüler = @klasse.schüler
@@ -195,6 +207,24 @@ module SGH
               @schüler = Schüler.first!(id: id)
               @topic = "#{@schüler.vorname} #{@schüler.nachname}"
               view 'schüler/edit'
+            end
+
+            r.get 'neu' do |id|
+              @schüler = Schüler.new
+              view 'schüler/new'
+            end
+
+            r.post do
+              schüler = Schüler.new
+              schüler.set_fields(r.params['SGH--Elternverteiler--Schüler'], %w[vorname nachname klasse_id])
+              schüler.save
+              r.redirect "/schueler/#{schüler.id}"
+            end
+
+            r.post Integer, 'delete' do |id|
+              @schüler = Schüler.first!(id: id).destroy
+              flash[:success] = "#{@schüler} wurde gelöscht."
+              r.redirect '/schueler'
             end
 
             r.on 'nicht-erreichbar' do

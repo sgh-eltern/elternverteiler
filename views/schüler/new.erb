@@ -1,0 +1,14 @@
+<% form(@schüler,
+        :inputs_wrapper => :fieldset,
+        class: 'pure-form pure-form-aligned',
+        action: "/schueler",
+        method: 'post',
+        ) do |f| %>
+  <% f.inputs(legend: 'Stammdaten') do %>
+    <%== f.input(:vorname,  size: 50, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>
+    <%== f.input(:nachname, size: 50, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>
+    <%== f.input(:klasse, as: :select, size: 1, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>
+  <% end %>
+
+  <%== f.button(value: 'Anlegen', class: "pure-button pure-button-primary") %>
+<% end %>

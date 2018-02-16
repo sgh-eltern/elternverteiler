@@ -3,7 +3,6 @@
 require 'spec_helper'
 require 'sgh/elternverteiler/recovery'
 require 'tmpdir'
-require 'tempfile'
 require 'English'
 require 'shellwords'
 require 'zlib'
