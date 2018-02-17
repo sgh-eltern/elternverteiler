@@ -15,7 +15,7 @@ describe 'Schüler', type: :feature do
     end
 
     context "Bart's page" do
-      before(:all){ create_pupil('Simpson', 'Bart', '5C')}
+      before(:all) { create_pupil('Simpson', 'Bart', '5C') }
 
       before do
         visit '/'

@@ -23,7 +23,7 @@ module SGH
         "#{stufe}#{zug}"
       end
 
-      alias :name :to_s
+      alias_method :name, :to_s
     end
   end
 end
