@@ -21,6 +21,7 @@ describe Schüler do
       expect(bart.vorname).to eq('Bart')
       expect(bart.nachname).to eq('Simpson')
       expect(bart.klasse).to eq(k4a)
+      expect(bart.name).to eq('Simpson, Bart')
     end
 
     it 'has a string representation' do

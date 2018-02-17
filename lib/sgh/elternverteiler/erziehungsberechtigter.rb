@@ -27,11 +27,15 @@ module SGH
       end
 
       def name
-        "#{nachname}, #{vorname}"
+        if vorname.to_s.empty?
+          nachname
+        else
+          "#{nachname}, #{vorname}"
+        end.strip
       end
 
       def to_s
-        "#{vorname} #{nachname} <#{mail}>"
+        "#{vorname} #{nachname} <#{mail}>".strip
       end
     end
   end

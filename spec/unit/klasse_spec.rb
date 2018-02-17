@@ -10,6 +10,10 @@ describe Klasse do
     expect(klasse_4a.to_s).to eq('4a')
   end
 
+  it 'has a name' do
+    expect(klasse_4a.name).to eq('4a')
+  end
+
   context 'some kids with parents' do
     let(:sherri) { Schüler.new(vorname: 'Sherri', nachname: 'Mackleberry', klasse: klasse_4a).save }
     let(:terri) { Schüler.new(vorname: 'Terri', nachname: 'Mackleberry', klasse: klasse_4a).save }

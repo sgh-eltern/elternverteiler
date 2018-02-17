@@ -16,6 +16,10 @@ module SGH
         eltern.each { |ezb| ezb.destroy if ezb.kinder.size == 1 }
       end
 
+      def name
+        "#{nachname}, #{vorname}"
+      end
+
       def to_s
         "#{vorname} #{nachname}, #{klasse}"
       end
