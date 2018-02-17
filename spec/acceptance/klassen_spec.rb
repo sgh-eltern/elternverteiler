@@ -3,6 +3,11 @@
 require_relative 'helper'
 
 describe 'Klassen', type: :feature do
+  before(:all) {
+    create_class('5', 'A')
+    create_class('J', '1')
+  }
+
   it 'lists all Klassen' do
     visit '/'
 

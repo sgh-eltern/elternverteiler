@@ -8,7 +8,7 @@ describe 'Homepage', type: :feature do
 
     within('.content') do
       expect(page).to have_content 'Statistik'
-      expect(page).to_not have_content '0 Eltern'
+      expect(page).to have_content '0 Eltern'
     end
   end
 end

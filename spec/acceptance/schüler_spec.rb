@@ -3,31 +3,6 @@
 require_relative 'helper'
 
 describe 'Schüler', type: :feature do
-  def create_pupil(last, first, clazz)
-    visit '/'
-    within('#menu') { click_link('Schüler') }
-    click_link('Anlegen')
-    fill_in('Vorname', with: first)
-    fill_in('Nachname', with: last)
-    find('#SGH--Elternverteiler--Schüler_klasse_id').click
-    select(clazz)
-    click_button('Anlegen')
-  end
-
-  def create_class(stufe, zug=nil)
-    visit '/'
-    within('#menu') { click_link('Klassen') }
-    click_link('Anlegen')
-    fill_in('Stufe', with: stufe)
-    fill_in('Zug', with: zug)
-    click_button('Anlegen')
-  end
-
-  before(:all) do
-    # bring to foreground
-    page.switch_to_window(page.current_window)
-  end
-
   context 'Klasse 5C' do
     before(:all) { create_class('5', 'C') }
 

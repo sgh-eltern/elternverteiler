@@ -7,7 +7,34 @@ require 'securerandom'
 require 'sequel'
 require 'tmpdir'
 
+module FixtureHelpers
+  def create_pupil(last, first, clazz)
+    visit '/'
+    within('#menu') { click_link('Schüler') }
+    click_link('Anlegen')
+    fill_in('Vorname', with: first)
+    fill_in('Nachname', with: last)
+    find('#SGH--Elternverteiler--Schüler_klasse_id').click
+    select(clazz)
+    click_button('Anlegen')
+  end
+
+  def create_class(stufe, zug=nil)
+    visit '/'
+    within('#menu') { click_link('Klassen') }
+    click_link('Anlegen')
+    fill_in('Stufe', with: stufe)
+    fill_in('Zug', with: zug)
+    click_button('Anlegen')
+  end
+end
+
+DB_NAME = "acceptance-test-#{SecureRandom.uuid}"
+DB_DIR = Pathname(Dir.mktmpdir('acceptance-test-db_'))
+
 RSpec.configure do |config|
+  config.include FixtureHelpers
+
   Capybara.default_driver = :selenium_chrome # TODO: _headless
 
   config.expect_with :rspec do |expectations|
@@ -42,17 +69,14 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 
-  config.before(:all) do
-    @db_dir = Pathname(Dir.mktmpdir('acceptance-test-db_'))
-    @db_name = "acceptance-test-#{SecureRandom.uuid}"
-
-    %x(initdb -D #{Shellwords.escape(@db_dir)})
+  config.before(:suite) do
+    %x(initdb -D #{Shellwords.escape(DB_DIR)})
     expect($CHILD_STATUS.success?).to be_truthy
 
-    %x(createdb #{@db_name})
+    %x(createdb #{DB_NAME})
     expect($CHILD_STATUS.success?).to be_truthy
 
-    Sequel::Model.db = Sequel.connect("postgres://localhost/#{@db_name}")
+    Sequel::Model.db = Sequel.connect("postgres://localhost/#{DB_NAME}")
     Sequel.extension :migration
     Sequel::Migrator.run(Sequel::Model.db, 'db/migrations')
 
@@ -60,10 +84,14 @@ RSpec.configure do |config|
     Capybara.app = SGH::Elternverteiler::Web::App
   end
 
-  config.after(:all) do
+  config.before do
+    page.switch_to_window(page.current_window) # bring browser window to foreground
+  end
+
+  config.after(:suite) do
     Sequel::Model.db.disconnect
-    %x(dropdb #{@db_name})
+    %x(dropdb #{DB_NAME})
     expect($CHILD_STATUS.success?).to be_truthy
-    FileUtils.remove_entry(@db_dir)
+    FileUtils.remove_entry(DB_DIR)
   end
 end
