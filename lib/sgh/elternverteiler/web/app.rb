@@ -214,17 +214,17 @@ module SGH
               view 'schüler/new'
             end
 
+            r.post Integer, 'delete' do |id|
+              @schüler = Schüler.first!(id: id).destroy
+              flash[:success] = "#{@schüler} wurde gelöscht."
+              r.redirect '/schueler'
+            end
+
             r.post do
               schüler = Schüler.new
               schüler.set_fields(r.params['SGH--Elternverteiler--Schüler'], %w[vorname nachname klasse_id])
               schüler.save
               r.redirect "/schueler/#{schüler.id}"
-            end
-
-            r.post Integer, 'delete' do |id|
-              @schüler = Schüler.first!(id: id).destroy
-              flash[:success] = "#{@schüler} wurde gelöscht."
-              r.redirect '/schueler'
             end
 
             r.on 'nicht-erreichbar' do
