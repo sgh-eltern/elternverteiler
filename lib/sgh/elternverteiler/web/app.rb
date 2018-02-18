@@ -76,7 +76,7 @@ module SGH
               @topic = 'Alle Elternvertreter'
               @email = 'elternbeirat@schickhardt-gymnasium-herrenberg.de'
               @eltern = @elternbeirat
-              view :eltern
+              view 'erziehungsberechtigter/list'
             end
           end
 
@@ -85,7 +85,7 @@ module SGH
               @topic = 'Vorsitzende'
               @email = 'elternbeiratsvorsitzende@schickhardt-gymnasium-herrenberg.de'
               @eltern = Rolle.where(name: '1.EBV').or(name: '2.EBV').map(&:mitglieder).flatten
-              view :eltern
+              view 'erziehungsberechtigter/list'
             end
 
             r.on 'schulkonferenz' do
@@ -94,7 +94,7 @@ module SGH
 
               # BUG: The spreadsheet requires the 1.EBV to be marked as SK, too, so we get a duplicate.
               @eltern = SGH::Elternverteiler::Rolle.where(name: ['SK', 'SKV']).flat_map(&:mitglieder).sort_by(&:nachname)
-              view :eltern
+              view 'erziehungsberechtigter/list'
             end
 
             r.on do
@@ -106,6 +106,11 @@ module SGH
           end
 
           r.on 'eltern' do
+            r.get 'neu' do |id|
+              @erziehungsberechtigter = Erziehungsberechtigter.new
+              view 'erziehungsberechtigter/new'
+            end
+
             r.get Integer do |id|
               @erziehungsberechtigter = Erziehungsberechtigter.first!(id: id)
               @topic = "#{@erziehungsberechtigter.vorname} #{@erziehungsberechtigter.nachname}"
@@ -126,17 +131,36 @@ module SGH
 
             r.post Integer do |id|
               @erziehungsberechtigter = Erziehungsberechtigter.first!(id: id)
-              @erziehungsberechtigter.set_fields(r.params['sgh/elternverteiler/erziehungsberechtigter'], %w[vorname nachname mail telefon])
-              @erziehungsberechtigter.save
-              flash[:success] = 'Erziehungsberechtigter wurde aktualisiert'
-              r.redirect
+              @erziehungsberechtigter.set_fields(r.params['SGH--Elternverteiler--Erziehungsberechtigter'], %w[vorname nachname mail telefon])
+
+              begin
+                @erziehungsberechtigter.save
+                flash[:success] = 'Erziehungsberechtigter wurde aktualisiert'
+                r.redirect
+              rescue SGH::Elternverteiler::Erziehungsberechtigter::ValidationError
+                flash.now[:error] = $ERROR_INFO.message
+                view 'erziehungsberechtigter/new'
+              end
+            end
+
+            r.post do
+              @erziehungsberechtigter = Erziehungsberechtigter.new
+              @erziehungsberechtigter.set_fields(r.params['SGH--Elternverteiler--Erziehungsberechtigter'], %w[vorname nachname mail telefon])
+
+              begin
+                @erziehungsberechtigter.save
+                r.redirect "/eltern/#{@erziehungsberechtigter.id}"
+              rescue SGH::Elternverteiler::Erziehungsberechtigter::ValidationError
+                flash.now[:error] = $ERROR_INFO.message
+                view 'erziehungsberechtigter/new'
+              end
             end
 
             r.on do
               @topic = 'Alle Eltern'
               @email = 'eltern@schickhardt-gymnasium-herrenberg.de'
               @eltern = Erziehungsberechtigter.order(:nachname)
-              view :eltern
+              view 'erziehungsberechtigter/list'
             end
           end
 
@@ -144,13 +168,6 @@ module SGH
             r.get 'neu' do |id|
               @klasse = Klasse.new
               view 'klassen/new'
-            end
-
-            r.post do
-              klasse = Klasse.new
-              klasse.set_fields(r.params['sgh/elternverteiler/klasse'], %w[stufe zug])
-              klasse.save
-              r.redirect "/klassen/#{klasse.id}"
             end
 
             r.get Integer do |id|
@@ -172,8 +189,8 @@ module SGH
 
             r.post Integer, 'rollen', 'add' do |klasse_id|
               klasse = Klasse.first!(id: klasse_id)
-              rolle = Rolle.first!(id: r.params['sgh/elternverteiler/amt']['rolle_id'])
-              inhaber = Erziehungsberechtigter.first!(id: r.params['sgh/elternverteiler/amt']['inhaber_id'])
+              rolle = Rolle.first!(id: r.params['SGH--Elternverteiler--Amt']['rolle_id'])
+              inhaber = Erziehungsberechtigter.first!(id: r.params['SGH--Elternverteiler--Amt']['inhaber_id'])
               Amt.new(klasse: klasse, rolle: rolle, inhaber: inhaber).save
               flash[:success] = "#{inhaber} ist jetzt #{rolle} in der #{klasse}"
               r.redirect "/klassen/#{klasse.id}"
@@ -186,6 +203,13 @@ module SGH
               inhaber = Erziehungsberechtigter.first!(id: inhaber_id)
               Amt.first!(klasse: klasse, rolle: rolle, inhaber: inhaber).destroy
               flash[:success] = "#{inhaber} ist nicht mehr #{rolle} in der #{klasse}."
+              r.redirect "/klassen/#{klasse.id}"
+            end
+
+            r.post do
+              klasse = Klasse.new
+              klasse.set_fields(r.params['SGH--Elternverteiler--Klasse'], %w[stufe zug])
+              klasse.save
               r.redirect "/klassen/#{klasse.id}"
             end
 
@@ -209,6 +233,15 @@ module SGH
               view 'schüler/edit'
             end
 
+            r.get Integer, 'erziehungsberechtigter', 'add' do |id|
+
+              Schüler.first!(id: id).add_eltern
+              @erziehungsberechtigung = Erziehungsberechtigung.new
+              @erziehungsberechtigung.add_kinder()
+raise ""
+              view 'schüler/assign_parent'
+            end
+
             r.get 'neu' do |id|
               @schüler = Schüler.new
               view 'schüler/new'
@@ -218,6 +251,14 @@ module SGH
               @schüler = Schüler.first!(id: id).destroy
               flash[:success] = "#{@schüler} wurde gelöscht."
               r.redirect '/schueler'
+            end
+
+            r.post Integer, 'erziehungsberechtigter', 'add' do |id|
+              schüler = Schüler.first!(id: id)
+              erziehungsberechtigter = Erziehungsberechtigter.first!(id: r.params['SGH--Elternverteiler--Erziehungsberechtigter']['id'])
+              Erziehungsberechtigung.new(schueler: schüler, erziehungsberechtigter: erziehungsberechtigter).save
+              flash[:success] = "#{erziehungsberechtigter} ist jetzt als Erziehungsberechtigte(r) von #{schüler} registriert."
+              r.redirect "/schueler/#{schüler.id}"
             end
 
             r.post do

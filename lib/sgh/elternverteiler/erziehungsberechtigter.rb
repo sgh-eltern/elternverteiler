@@ -15,6 +15,8 @@ module SGH
         left_key: :inhaber_id,
         right_key: :rolle_id
 
+      ValidationError = Class.new(StandardError)
+
       # rubocop:disable Naming/MethodName
       def ämter
         rollen.map { |r| SGH::Elternverteiler::Amt.where(rolle: r, inhaber: self).all }.flatten.uniq
@@ -22,7 +24,10 @@ module SGH
       # rubocop:enable Naming/MethodName
 
       def before_save
-        raise 'At least one of vorname, nachname, or mail is required' if vorname.to_s.empty? && nachname.to_s.empty? && mail.to_s.empty?
+        if vorname.to_s.empty? && nachname.to_s.empty? && mail.to_s.empty?
+          raise ValidationError.new('At least one of vorname, nachname, or mail is required')
+        end
+
         super
       end
 
@@ -36,6 +41,10 @@ module SGH
 
       def to_s
         "#{vorname} #{nachname} <#{mail}>".strip
+      end
+
+      def forme_namespace
+        self.class.name.tr(':', '-')
       end
     end
   end

@@ -24,6 +24,10 @@ module SGH
       end
 
       alias_method :name, :to_s
+
+      def forme_namespace
+        self.class.name.tr(':', '-')
+      end
     end
   end
 end

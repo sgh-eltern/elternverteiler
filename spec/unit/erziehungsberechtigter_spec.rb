@@ -57,6 +57,10 @@ describe Erziehungsberechtigter do
       homer.save
     end
 
+    it 'has a forme namespace' do
+      expect(homer.forme_namespace).to eq('SGH--Elternverteiler--Erziehungsberechtigter')
+    end
+
     context 'with first and last name and an email address' do
       before do
         homer.vorname = 'Homer'

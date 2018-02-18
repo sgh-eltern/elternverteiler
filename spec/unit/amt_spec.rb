@@ -16,6 +16,10 @@ describe Amt do
       ).save
     end
 
+    it 'has a forme namespace' do
+      expect(homer.ämter.first.forme_namespace).to eq('SGH--Elternverteiler--Amt')
+    end
+
     it 'has a member of the PAB' do
       expect(klasse_4a.rollen).to include(pab)
     end

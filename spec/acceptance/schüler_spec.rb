@@ -27,9 +27,16 @@ describe 'Schüler', type: :feature do
         expect(page).to have_content 'Simpson'
       end
 
-      xit 'lists parents' do
-        click_link('Simpson')
-        expect(page).to have_content 'springfield.us'
+      context "Homer is Bart's son" do
+        before do
+          create_parent('Simpson', 'Homer')
+          assign_parent('Bart Simpson', 'Homer Simpson')
+        end
+
+        fit 'lists parents' do
+          click_link('Simpson')
+          expect(page).to have_content 'springfield.us'
+        end
       end
 
       context 'pressing the delete button' do

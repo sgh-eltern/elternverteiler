@@ -1,10 +1,16 @@
-<%== partial('email') %>
-
 <div style="position: fixed; right: 5%; top: 15%">
   <% ('A'..'Z').each do |char| %>
-    <p><a href="#<%= char %>"><%= char %></a></p>
+  <p><a href="#<%= char %>"><%= char %></a></p>
   <% end %>
 </div>
+
+<p>
+  <%== partial('email') %>
+</p>
+
+<p>
+  <a href="/eltern/neu" class="pure-button pure-button-primary">Anlegen</a>
+</p>
 
 <table class="pure-table pure-table-horizontal pure-table-striped">
   <thead>

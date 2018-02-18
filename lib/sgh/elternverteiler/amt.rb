@@ -11,6 +11,10 @@ module SGH
       def to_s
         "#{rolle} Klasse #{klasse}"
       end
+
+      def forme_namespace
+        self.class.name.tr(':', '-')
+      end
     end
   end
 end

@@ -17,6 +17,9 @@
       <% @schüler.eltern.each do |paren| %>
         <a href="/eltern/<%= paren.id %>"><%= paren.vorname %> <%= paren.nachname %></a><br/>
       <% end %>
+      <p>
+        <a href="/schueler/<%= @schüler.id %>/erziehungsberechtigter/add">Hinzufügen</a>
+      </p>
     </td>
   </tr>
 </table>

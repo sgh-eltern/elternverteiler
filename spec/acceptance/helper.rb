@@ -27,6 +27,18 @@ module FixtureHelpers
     fill_in('Zug', with: zug)
     click_button('Anlegen')
   end
+
+  def create_parent(last, first=nil, email=nil)
+    visit '/'
+    within('#menu') { click_link('Eltern') }
+    click_link('Anlegen')
+    fill_in('Nachname', with: last)
+    fill_in('Vorname', with: first)
+    click_button('Anlegen')
+  end
+
+  def assign_parent(child, parent)
+  end
 end
 
 DB_NAME = "acceptance-test-#{SecureRandom.uuid}"
@@ -85,7 +97,7 @@ RSpec.configure do |config|
   end
 
   config.before do
-    page.switch_to_window(page.current_window) # bring browser window to foreground
+    #    page.switch_to_window(page.current_window) # bring browser window to foreground
   end
 
   config.after(:suite) do

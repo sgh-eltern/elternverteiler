@@ -28,6 +28,10 @@ describe Schüler do
       expect(bart.to_s).to eq('Bart Simpson, 4a')
     end
 
+    it 'has a forme namespace' do
+      expect(bart.forme_namespace).to eq('SGH--Elternverteiler--Schüler')
+    end
+
     it 'has a created_at timestamp' do
       expect(bart.created_at).to be
     end
