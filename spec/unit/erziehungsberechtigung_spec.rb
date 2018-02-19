@@ -5,6 +5,10 @@ require 'spec_helper'
 describe Erziehungsberechtigung do
   let(:k4a) { Klasse.new(stufe: '4', zug: 'a').save }
 
+  it 'has a forme namespace' do
+    expect(subject.forme_namespace).to eq('SGH--Elternverteiler--Erziehungsberechtigung')
+  end
+
   context 'the Simpsons' do
     let(:bart) { Schüler.new(vorname: 'Bart', nachname: 'Simpson', klasse: k4a).save }
     let(:homer) { Erziehungsberechtigter.new(vorname: 'Homer', nachname: 'Simpson').save }

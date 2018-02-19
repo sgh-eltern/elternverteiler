@@ -36,7 +36,7 @@ module SGH
           nachname
         else
           "#{nachname}, #{vorname}"
-        end.strip
+        end
       end
 
       def to_s

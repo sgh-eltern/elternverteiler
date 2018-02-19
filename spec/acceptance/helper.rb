@@ -37,8 +37,7 @@ module FixtureHelpers
     click_button('Anlegen')
   end
 
-  def assign_parent(child, parent)
-  end
+  def assign_parent(child, parent); end
 end
 
 DB_NAME = "acceptance-test-#{SecureRandom.uuid}"

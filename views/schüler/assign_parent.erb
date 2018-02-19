@@ -2,9 +2,9 @@
         :inputs_wrapper => :fieldset,
         class: 'pure-form pure-form-aligned',
         method: 'post',
-        action: "/schueler/#{@erziehungsberechtigung.kind}/erziehungsberechtigter/add",
+        action: "/schueler/#{@erziehungsberechtigung.schüler.id}/erziehungsberechtigter/add",
         ) do |f| %>
-  <%= @erziehungsberechtigung.kind %>
+  <%= @erziehungsberechtigung.schüler %>
   <%== f.input(:erziehungsberechtigter, size: 1, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>
   <%== f.button(value: 'Speichern', class: "pure-button pure-button-primary") %>
   <input type="reset" value="Zurücksetzen" class="pure-button">

@@ -234,11 +234,8 @@ module SGH
             end
 
             r.get Integer, 'erziehungsberechtigter', 'add' do |id|
-
-              Schüler.first!(id: id).add_eltern
               @erziehungsberechtigung = Erziehungsberechtigung.new
-              @erziehungsberechtigung.add_kinder()
-raise ""
+              @erziehungsberechtigung.schüler = Schüler.first!(id: id)
               view 'schüler/assign_parent'
             end
 
@@ -255,8 +252,8 @@ raise ""
 
             r.post Integer, 'erziehungsberechtigter', 'add' do |id|
               schüler = Schüler.first!(id: id)
-              erziehungsberechtigter = Erziehungsberechtigter.first!(id: r.params['SGH--Elternverteiler--Erziehungsberechtigter']['id'])
-              Erziehungsberechtigung.new(schueler: schüler, erziehungsberechtigter: erziehungsberechtigter).save
+              erziehungsberechtigter = Erziehungsberechtigter.first!(id: r.params['SGH--Elternverteiler--Erziehungsberechtigung']['erziehungsberechtigter_id'])
+              Erziehungsberechtigung.new(schüler: schüler, erziehungsberechtigter: erziehungsberechtigter).save
               flash[:success] = "#{erziehungsberechtigter} ist jetzt als Erziehungsberechtigte(r) von #{schüler} registriert."
               r.redirect "/schueler/#{schüler.id}"
             end
