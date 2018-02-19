@@ -20,7 +20,7 @@ describe 'Schüler', type: :feature do
       before do
         visit '/'
         within('#menu') { click_link('Schüler') }
-        click_link('Bart')
+        click_link('Simpson')
       end
 
       it 'has the last name' do
@@ -30,12 +30,12 @@ describe 'Schüler', type: :feature do
       context "Homer is Bart's son" do
         before do
           create_parent('Simpson', 'Homer')
-          assign_parent('Bart Simpson', 'Homer Simpson')
+          assign_parent('Simpson', 'Simpson, Homer')
         end
 
-        fit 'lists parents' do
+        it 'lists parents' do
           click_link('Simpson')
-          expect(page).to have_content 'springfield.us'
+          expect(page).to have_content 'Homer'
         end
       end
 

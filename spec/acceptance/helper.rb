@@ -37,7 +37,15 @@ module FixtureHelpers
     click_button('Anlegen')
   end
 
-  def assign_parent(child, parent); end
+  def assign_parent(child, parent)
+    visit '/'
+    within('#menu') { click_link('Schüler') }
+    click_link(child)
+    click_link('Hinzufügen')
+    find('#SGH--Elternverteiler--Erziehungsberechtigung_erziehungsberechtigter_id').click
+    select(parent)
+    click_button('Speichern')
+  end
 end
 
 DB_NAME = "acceptance-test-#{SecureRandom.uuid}"
@@ -96,7 +104,7 @@ RSpec.configure do |config|
   end
 
   config.before do
-    #    page.switch_to_window(page.current_window) # bring browser window to foreground
+    page.switch_to_window(page.current_window) # bring browser window to foreground
   end
 
   config.after(:suite) do

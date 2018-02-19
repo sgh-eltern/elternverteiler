@@ -48,7 +48,7 @@ describe Erziehungsberechtigter do
     end
 
     it 'must have at least a last name' do
-      expect { homer.save }.to raise_error(RuntimeError)
+      expect { homer.save }.to raise_error(Erziehungsberechtigter::ValidationError)
     end
 
     it 'can have an empty phone number if lastname is present' do
