@@ -42,6 +42,8 @@ module SGH
       def to_s
         if vorname.to_s.empty? && nachname.to_s.empty?
           mail
+        elsif mail.to_s.empty?
+          "#{vorname} #{nachname}".strip
         else
           "#{vorname} #{nachname} <#{mail}>".strip
         end
