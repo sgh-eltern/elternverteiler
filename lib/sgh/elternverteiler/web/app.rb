@@ -107,6 +107,7 @@ module SGH
 
           r.on 'eltern' do
             r.get 'neu' do |id|
+              @topic = 'Erziehungsberechtigten hinzufügen'
               @erziehungsberechtigter = Erziehungsberechtigter.new
               view 'erziehungsberechtigter/new'
             end
@@ -125,7 +126,7 @@ module SGH
 
             r.get Integer, 'edit' do |id|
               @erziehungsberechtigter = Erziehungsberechtigter.first!(id: id)
-              @topic = "#{@erziehungsberechtigter.vorname} #{@erziehungsberechtigter.nachname}"
+              @topic = "#{@erziehungsberechtigter.vorname} #{@erziehungsberechtigter.nachname} bearbeiten"
               view 'erziehungsberechtigter/edit'
             end
 
@@ -166,6 +167,7 @@ module SGH
 
           r.on 'klassen' do
             r.get 'neu' do |id|
+              @topic = 'Neue Klasse anlegen'
               @klasse = Klasse.new
               view 'klassen/new'
             end
@@ -229,17 +231,19 @@ module SGH
 
             r.get Integer, 'edit' do |id|
               @schüler = Schüler.first!(id: id)
-              @topic = "#{@schüler.vorname} #{@schüler.nachname}"
+              @topic = "#{@schüler.vorname} #{@schüler.nachname} bearbeiten"
               view 'schüler/edit'
             end
 
             r.get Integer, 'erziehungsberechtigter', 'add' do |id|
+              @topic = 'Erziehungsberechtigten zuweisen'
               @erziehungsberechtigung = Erziehungsberechtigung.new
               @erziehungsberechtigung.schüler = Schüler.first!(id: id)
               view 'schüler/assign_parent'
             end
 
             r.get 'neu' do |id|
+              @topic = 'Schüler anlegen'
               @schüler = Schüler.new
               view 'schüler/new'
             end
