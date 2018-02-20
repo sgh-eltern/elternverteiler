@@ -7,8 +7,8 @@ describe 'Homepage', type: :feature do
     visit '/'
 
     within('.content') do
-      expect(page).to have_content 'Statistik'
-      expect(page).to have_content '0 Eltern'
+      expect(page).to have_content('Statistik')
+      expect(page).to have_content(/\d+ Eltern/)
     end
   end
 end
