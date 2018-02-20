@@ -15,7 +15,7 @@
     <th style="background-color: #f2f2f2; text-align: right;">Eltern</th>
     <td>
       <% @schüler.eltern.each do |paren| %>
-        <a href="/eltern/<%= paren.id %>"><%= paren.vorname %> <%= paren.nachname %></a><br/>
+        <a href="/eltern/<%= paren.id %>"><%= paren %></a><br/>
       <% end %>
       <p>
         <a href="/schueler/<%= @schüler.id %>/erziehungsberechtigter/add">Hinzufügen</a>

@@ -61,6 +61,17 @@ describe Erziehungsberechtigter do
       expect(homer.forme_namespace).to eq('SGH--Elternverteiler--Erziehungsberechtigter')
     end
 
+    context 'with just an email address' do
+      before do
+        homer.mail = 'homer@thesimpsons.org'
+        homer.save
+      end
+
+      it 'has a string representation' do
+        expect(homer.to_s).to eq('homer@thesimpsons.org')
+      end
+    end
+
     context 'with first and last name and an email address' do
       before do
         homer.vorname = 'Homer'

@@ -40,7 +40,11 @@ module SGH
       end
 
       def to_s
-        "#{vorname} #{nachname} <#{mail}>".strip
+        if vorname.to_s.empty? && nachname.to_s.empty?
+          mail
+        else
+          "#{vorname} #{nachname} <#{mail}>".strip
+        end
       end
 
       def forme_namespace
