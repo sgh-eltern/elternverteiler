@@ -61,7 +61,7 @@ module SGH
           r.on 'elternvertreter' do
             r.on 'klassen' do
               @topic = 'Elternvertreter nach Klasse'
-              @klassen_ämter = Klasse.map do |klasse|
+              @klassen_ämter = Klasse.sort.map do |klasse|
                 [
                   klasse,
                   Amt.where(
@@ -217,7 +217,7 @@ module SGH
 
             r.on do
               @topic = 'Alle Klassen'
-              @klassen = Klasse.all
+              @klassen = Klasse.sort
               view 'klassen/list'
             end
           end

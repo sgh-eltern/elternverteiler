@@ -132,4 +132,18 @@ describe Klasse do
       end
     end
   end
+
+  context 'comparing instances' do
+    subject(:klasse_8a) { described_class.new(stufe: '8', zug: 'a').save }
+    subject(:klasse_9b) { described_class.new(stufe: '9', zug: 'b').save }
+    subject(:klasse_9c) { described_class.new(stufe: '9', zug: 'c').save }
+    subject(:klasse_10d) { described_class.new(stufe: '10', zug: 'd').save }
+    subject(:klasse_j1) { described_class.new(stufe: 'j', zug: '1').save }
+    subject(:klasse_j2) { described_class.new(stufe: 'j', zug: '2').save }
+
+    it 'sorts by Stufe, then Zug' do
+      klassen = [klasse_10d, klasse_j1, klasse_8a, klasse_9b, klasse_9c, klasse_j2].shuffle.sort
+      expect(klassen.sort).to eq([klasse_8a, klasse_9b, klasse_9c, klasse_10d, klasse_j1, klasse_j2])
+    end
+  end
 end

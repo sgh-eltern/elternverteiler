@@ -28,6 +28,26 @@ module SGH
       def forme_namespace
         self.class.name.tr(':', '-')
       end
+
+      include Comparable
+
+      def <=>(other)
+        if numeric?(stufe) && numeric?(other.stufe)
+          [stufe.to_i, zug] <=> [other.stufe.to_i, other.zug]
+        elsif !numeric?(stufe) && !numeric?(other.stufe)
+          [stufe, zug] <=> [other.stufe, other.zug]
+        elsif numeric?(stufe) && !numeric?(other.stufe)
+          -1
+        elsif !numeric?(stufe) && numeric?(other.stufe)
+          1
+        else
+          raise "Unable to compare #{self} with #{other}"
+        end
+      end
+
+      def numeric?(value)
+        value.to_i.to_s == value
+      end
     end
   end
 end
