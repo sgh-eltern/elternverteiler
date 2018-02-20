@@ -54,7 +54,7 @@ DB_DIR = Pathname(Dir.mktmpdir('acceptance-test-db_'))
 RSpec.configure do |config|
   config.include FixtureHelpers
 
-  Capybara.default_driver = :selenium_chrome # TODO: _headless
+  Capybara.default_driver = :selenium_chrome
 
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
