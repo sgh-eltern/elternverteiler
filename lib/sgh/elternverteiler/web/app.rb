@@ -132,7 +132,7 @@ module SGH
 
             r.post Integer do |id|
               @erziehungsberechtigter = Erziehungsberechtigter.first!(id: id)
-              @erziehungsberechtigter.set_fields(r.params['SGH--Elternverteiler--Erziehungsberechtigter'], %w[vorname nachname mail telefon])
+              @erziehungsberechtigter.set_fields(r.params['sgh-elternverteiler-erziehungsberechtigter'], %w[vorname nachname mail telefon])
 
               begin
                 @erziehungsberechtigter.save
@@ -146,7 +146,7 @@ module SGH
 
             r.post do
               @erziehungsberechtigter = Erziehungsberechtigter.new
-              @erziehungsberechtigter.set_fields(r.params['SGH--Elternverteiler--Erziehungsberechtigter'], %w[vorname nachname mail telefon])
+              @erziehungsberechtigter.set_fields(r.params['sgh-elternverteiler-erziehungsberechtigter'], %w[vorname nachname mail telefon])
 
               begin
                 @erziehungsberechtigter.save
@@ -191,8 +191,8 @@ module SGH
 
             r.post Integer, 'rollen', 'add' do |klasse_id|
               klasse = Klasse.first!(id: klasse_id)
-              rolle = Rolle.first!(id: r.params['SGH--Elternverteiler--Amt']['rolle_id'])
-              inhaber = Erziehungsberechtigter.first!(id: r.params['SGH--Elternverteiler--Amt']['inhaber_id'])
+              rolle = Rolle.first!(id: r.params['sgh-elternverteiler-amt']['rolle_id'])
+              inhaber = Erziehungsberechtigter.first!(id: r.params['sgh-elternverteiler-amt']['inhaber_id'])
               Amt.new(klasse: klasse, rolle: rolle, inhaber: inhaber).save
               flash[:success] = "#{inhaber} ist jetzt #{rolle} in der #{klasse}"
               r.redirect "/klassen/#{klasse.id}"
@@ -210,7 +210,7 @@ module SGH
 
             r.post do
               klasse = Klasse.new
-              klasse.set_fields(r.params['SGH--Elternverteiler--Klasse'], %w[stufe zug])
+              klasse.set_fields(r.params['sgh-elternverteiler-klasse'], %w[stufe zug])
               klasse.save
               r.redirect "/klassen/#{klasse.id}"
             end
@@ -256,7 +256,7 @@ module SGH
 
             r.post Integer, 'erziehungsberechtigter', 'add' do |id|
               schüler = Schüler.first!(id: id)
-              erziehungsberechtigter = Erziehungsberechtigter.first!(id: r.params['SGH--Elternverteiler--Erziehungsberechtigung']['erziehungsberechtigter_id'])
+              erziehungsberechtigter = Erziehungsberechtigter.first!(id: r.params['sgh-elternverteiler-erziehungsberechtigung']['erziehungsberechtigter_id'])
               Erziehungsberechtigung.new(schüler: schüler, erziehungsberechtigter: erziehungsberechtigter).save
               flash[:success] = "#{erziehungsberechtigter} ist jetzt als Erziehungsberechtigte(r) von #{schüler} registriert."
               r.redirect "/schueler/#{schüler.id}"
@@ -264,7 +264,7 @@ module SGH
 
             r.post do
               schüler = Schüler.new
-              schüler.set_fields(r.params['SGH--Elternverteiler--Schüler'], %w[vorname nachname klasse_id])
+              schüler.set_fields(r.params['sgh-elternverteiler-schüler'], %w[vorname nachname klasse_id])
               schüler.save
               r.redirect "/schueler/#{schüler.id}"
             end

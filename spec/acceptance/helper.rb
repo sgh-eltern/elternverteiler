@@ -14,7 +14,7 @@ module FixtureHelpers
     click_link('Anlegen')
     fill_in('Vorname', with: first)
     fill_in('Nachname', with: last)
-    find('#SGH--Elternverteiler--Schüler_klasse_id').click
+    find('#sgh-elternverteiler-schüler_klasse_id').click
     select(clazz)
     click_button('Anlegen')
   end
@@ -42,7 +42,7 @@ module FixtureHelpers
     within('#menu') { click_link('Schüler') }
     click_link(child)
     click_link('Hinzufügen')
-    find('#SGH--Elternverteiler--Erziehungsberechtigung_erziehungsberechtigter_id').click
+    find('#sgh-elternverteiler-erziehungsberechtigung_erziehungsberechtigter_id').click
     select(parent)
     click_button('Speichern')
   end

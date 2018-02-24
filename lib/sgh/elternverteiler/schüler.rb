@@ -3,6 +3,8 @@
 module SGH
   module Elternverteiler
     class Schüler < Sequel::Model(:schüler)
+      include FormeHelper
+
       many_to_many :eltern,
         class: Erziehungsberechtigter,
         join_table: :erziehungsberechtigung,
@@ -22,10 +24,6 @@ module SGH
 
       def to_s
         "#{vorname} #{nachname}, #{klasse}"
-      end
-
-      def forme_namespace
-        self.class.name.tr(':', '-')
       end
     end
   end

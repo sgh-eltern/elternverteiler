@@ -14,6 +14,7 @@ module SGH
   end
 end
 
+require 'sgh/elternverteiler/forme_helper'
 require 'sgh/elternverteiler/klasse'
 require 'sgh/elternverteiler/rolle'
 require 'sgh/elternverteiler/schüler'

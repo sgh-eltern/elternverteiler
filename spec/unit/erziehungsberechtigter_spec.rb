@@ -58,7 +58,7 @@ describe Erziehungsberechtigter do
     end
 
     it 'has a forme namespace' do
-      expect(homer.forme_namespace).to eq('SGH--Elternverteiler--Erziehungsberechtigter')
+      expect(homer.forme_namespace).to eq('sgh-elternverteiler-erziehungsberechtigter')
     end
 
     context 'without an email address' do

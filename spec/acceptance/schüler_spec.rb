@@ -88,7 +88,7 @@ describe 'Schüler', type: :feature do
 
         it 'has the new class' do
           click_link('Bearbeiten')
-          find('#SGH--Elternverteiler--Schüler_klasse_id').click
+          find('#sgh-elternverteiler-schüler_klasse_id').click
           select(klasse)
           click_button('Aktualisieren')
           expect(find('.sgh-elternverteiler-schüler')).to have_content(klasse)

@@ -17,7 +17,7 @@ describe Amt do
     end
 
     it 'has a forme namespace' do
-      expect(homer.ämter.first.forme_namespace).to eq('SGH--Elternverteiler--Amt')
+      expect(homer.ämter.first.forme_namespace).to eq('sgh-elternverteiler-amt')
     end
 
     it 'has a member of the PAB' do

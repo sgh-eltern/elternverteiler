@@ -3,6 +3,9 @@
 module SGH
   module Elternverteiler
     class Klasse < Sequel::Model(:klasse)
+      include FormeHelper
+      include Comparable
+
       one_to_many :schüler, class: Schüler
 
       many_to_many :rollen,
@@ -24,12 +27,6 @@ module SGH
       end
 
       alias_method :name, :to_s
-
-      def forme_namespace
-        self.class.name.tr(':', '-')
-      end
-
-      include Comparable
 
       def <=>(other)
         if numeric?(stufe) && numeric?(other.stufe)

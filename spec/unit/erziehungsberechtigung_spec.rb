@@ -6,7 +6,7 @@ describe Erziehungsberechtigung do
   let(:k4a) { Klasse.new(stufe: '4', zug: 'a').save }
 
   it 'has a forme namespace' do
-    expect(subject.forme_namespace).to eq('SGH--Elternverteiler--Erziehungsberechtigung')
+    expect(subject.forme_namespace).to eq('sgh-elternverteiler-erziehungsberechtigung')
   end
 
   context 'the Simpsons' do

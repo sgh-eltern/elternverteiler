@@ -15,7 +15,7 @@ describe Klasse do
   end
 
   it 'has a forme namespace' do
-    expect(klasse_4a.forme_namespace).to eq('SGH--Elternverteiler--Klasse')
+    expect(klasse_4a.forme_namespace).to eq('sgh-elternverteiler-klasse')
   end
 
   context 'some kids with parents' do
