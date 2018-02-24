@@ -1,3 +1,9 @@
+* Rewrite expectations to not search in the whole page, but e.g. `find('.sgh-elternverteiler-schüler')`
+* Refactor forme namespaces from `SGH--Elternverteiler--Schüler` to `sgh-elternverteiler-schüler`
+* Rename a class (will be useful for moving up after summer)
+* Delete a class with all pupils (J2 leaves after Abitur)
+  Make sure parents with other kids in school are kept
+* Export and scp the email list from the UI
 * Save backups to object storage instead of the local filesystem
 * Double-check web security
 * Can we build an audit trail, or at least add a note of what happened?

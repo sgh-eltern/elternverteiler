@@ -1,6 +1,6 @@
-<h3>Schüler/in in der <a href="/klassen/<%= @schüler.klasse.id %>"><%= @schüler.klasse %></a></h3>
+<h3>Schüler/in</h3>
 
-<table class="pure-table pure-table-horizontal">
+<table class="pure-table pure-table-horizontal sgh-elternverteiler-schüler">
   <tr>
     <th style="background-color: #f2f2f2; text-align: right;">Nachname</th>
     <td><%= @schüler.nachname %></td>
@@ -9,6 +9,11 @@
   <tr>
     <th style="background-color: #f2f2f2; text-align: right;">Vorname</th>
     <td><%= @schüler.vorname %></td>
+  </tr>
+
+  <tr>
+    <th style="background-color: #f2f2f2; text-align: right;">Klasse</th>
+    <td><a href="/klassen/<%= @schüler.klasse.id %>"><%= @schüler.klasse %></a></td>
   </tr>
 
   <tr>
