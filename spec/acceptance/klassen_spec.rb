@@ -15,7 +15,9 @@ describe 'Klassen', type: :feature do
       click_link('Klassen')
     end
 
-    expect(page).to have_content '5A'
-    expect(page).to have_content 'J1'
+    within('.content') do
+      expect(page).to have_content '5A'
+      expect(page).to have_content 'J1'
+    end
   end
 end

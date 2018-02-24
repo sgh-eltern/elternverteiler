@@ -12,8 +12,10 @@ describe 'Schüler', type: :feature do
 
     it 'can create a new pupil' do
       create_pupil(simpson, bart, '5C')
-      expect(page).to have_content(bart)
-      expect(page).to have_content(simpson)
+      within(find('.sgh-elternverteiler-schüler')) do
+        expect(page).to have_content(bart)
+        expect(page).to have_content(simpson)
+      end
     end
 
     context 'Bart exists' do
@@ -26,7 +28,7 @@ describe 'Schüler', type: :feature do
       end
 
       it 'has the last name' do
-        expect(page).to have_content(simpson)
+        expect(find('.sgh-elternverteiler-schüler')).to have_content(simpson)
       end
 
       context "and is registered as Homer's son" do
@@ -39,21 +41,19 @@ describe 'Schüler', type: :feature do
 
         it "lists Bart as Homer's son" do
           click_link(simpson)
-          expect(page).to have_content(simpson)
+          expect(find('.sgh-elternverteiler-erziehungsberechtigter')).to have_content(simpson)
         end
 
         context 'pressing the delete button' do
           before { click_button('Löschen') }
 
           it 'removes the pupil' do
-            within('table') do
-              expect(page).to_not have_content(bart)
-            end
+            expect(find('table.sgh-elternverteiler-schüler')).to_not have_content(bart)
           end
 
           it 'removes his parents' do
             within('#menu') { click_link('Eltern') }
-            expect(page).to_not have_content(simpson)
+            expect(find('.sgh-elternverteiler-erziehungsberechtigter')).to_not have_content(simpson)
           end
         end
       end

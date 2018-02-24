@@ -1,4 +1,3 @@
-* Rewrite expectations to not search in the whole page, but e.g. `find('.sgh-elternverteiler-schüler')`
 * Rename a class (will be useful for moving up after summer)
 * Delete a class with all pupils (J2 leaves after Abitur)
   => Make sure parents with other kids in school are kept
