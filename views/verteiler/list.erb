@@ -1,0 +1,19 @@
+<pre>
+# Klassen
+<%== render_each(@klassen, :klasse, views: 'views/verteiler') %>
+
+# Klassenstufen
+<%== render_each(@klassen.group_by(&:stufe), :klassenstufe, views: 'views/verteiler') %>
+
+# Alle Eltern: <%= eltern.count %> Adressen
+<%= SGH::Elternverteiler::PostmapPresenter.new('eltern@schickhardt-gymnasium-herrenberg.de').present(eltern) %>
+
+# Elternbeirat: <%= elternbeirat.count %> Adressen
+<%= SGH::Elternverteiler::PostmapPresenter.new('elternbeirat@schickhardt-gymnasium-herrenberg.de').present(elternbeirat) %>
+
+# Elternvertreter in der Schulkonferenz: <%= evsk.count %> Adressen
+<%= SGH::Elternverteiler::PostmapPresenter.new('elternvertreter-schulkonferenz@schickhardt-gymnasium-herrenberg.de').present(evsk) %>
+
+# Elternbeiratsvorsitzende: <%= ebv.count %> Adressen
+<%= SGH::Elternverteiler::PostmapPresenter.new('elternbeiratsvorsitzende@schickhardt-gymnasium-herrenberg.de').present(ebv) %>
+</pre>

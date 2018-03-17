@@ -21,6 +21,7 @@ module SGH
         plugin :h
         plugin :partials
         plugin :render, escape: true
+        plugin :render_each
         plugin :static, ['/js', '/css']
         # TODO: plugin :csrf
         Sequel::Model.plugin :forme
@@ -49,9 +50,9 @@ module SGH
             '/klassen': 'Klassen',
             '/backups': 'Backups',
             '/backups/new': '&nbsp;Neu',
+            '/verteiler': 'Verteiler',
           }
           @current_path = r.path
-          @elternbeirat = Rolle.where(name: '1.EV').or(name: '2.EV').map(&:mitglieder).flatten.sort_by(&:nachname)
 
           r.root do
             @topic = 'Übersicht'
@@ -80,7 +81,7 @@ module SGH
             r.on do
               @topic = 'Alle Elternvertreter'
               @email = 'elternbeirat@schickhardt-gymnasium-herrenberg.de'
-              @eltern = @elternbeirat
+              @eltern = Rolle.where(name: '1.EV').or(name: '2.EV').map(&:mitglieder).flatten.sort_by(&:nachname)
               view 'erziehungsberechtigter/list'
             end
           end
@@ -105,7 +106,8 @@ module SGH
             r.on do
               @topic = 'Mitglieder'
               @email = 'elternbeirat@schickhardt-gymnasium-herrenberg.de'
-              @eltern = @elternbeirat
+              @eltern = Rolle.where(name: '1.EV').or(name: '2.EV').map(&:mitglieder).flatten.sort_by(&:nachname)
+
               view :anwesenheit
             end
           end
@@ -332,6 +334,13 @@ module SGH
               view 'backups/list'
             end
           end
+
+          r.on 'verteiler' do |sure|
+            @topic = 'eMail-Verteiler'
+            @klassen = Klasse.sort
+
+            view 'verteiler/list'
+          end
         end
         # rubocop:enable Metrics/BlockLength
 
@@ -340,6 +349,22 @@ module SGH
           @error = e
           response.status = 500
           view 'error'
+        end
+
+        def ebv
+          @ebv ||= Rolle.where(name: ['1.EBV', '2.EBV']).map(&:mitglieder).flatten.sort_by(&:nachname)
+        end
+
+        def evsk
+          @evsk ||= Rolle.where(name: ['SK', 'SKV']).map(&:mitglieder).flatten.sort_by(&:nachname)
+        end
+
+        def elternbeirat
+          @elternbeirat ||= Rolle.where(name: ['1.EV', '2.EV']).map(&:mitglieder).flatten.sort_by(&:nachname)
+        end
+
+        def eltern
+          @eltern ||= Erziehungsberechtigter.order(:nachname)
         end
 
         def schueler_unreachable
