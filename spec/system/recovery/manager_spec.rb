@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
 require 'sgh/elternverteiler/recovery'
 require 'tmpdir'
 require 'English'

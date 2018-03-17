@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 describe Erziehungsberechtigter do
   subject(:homer) { described_class.new }
 

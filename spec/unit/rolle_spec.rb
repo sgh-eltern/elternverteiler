@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 describe Rolle do
   subject(:pab) { Rolle.new(name: 'Member of the Parent Advisory Board').save }
   let(:klasse) { Klasse.new(stufe: '4', zug: 'a').save }

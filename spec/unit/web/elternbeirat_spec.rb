@@ -3,7 +3,6 @@
 ENV['RACK_ENV'] = 'test'
 ENV['DB'] = 'sqlite:/'
 
-require 'spec_helper'
 require 'rack/test'
 require 'sgh/elternverteiler/web/app'
 

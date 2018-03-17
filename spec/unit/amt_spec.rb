@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-
 describe Amt do
   let(:homer) { Erziehungsberechtigter.new(vorname: 'Homer', nachname: 'Simpson').save }
   let(:klasse_4a) { Klasse.new(stufe: '4', zug: 'a').save }
