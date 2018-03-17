@@ -1,9 +1,9 @@
 <pre>
 # Klassen
-<%== render_each(@klassen, :klasse, views: 'views/verteiler') %>
+<%== render_each(klassen, :klasse, views: 'views/verteiler') %>
 
 # Klassenstufen
-<%== render_each(@klassen.group_by(&:stufe), :klassenstufe, views: 'views/verteiler') %>
+<%== render_each(klassen.group_by(&:stufe), :klassenstufe, views: 'views/verteiler') %>
 
 # Alle Eltern: <%= eltern.count %> Adressen
 <%= SGH::Elternverteiler::PostmapPresenter.new('eltern@schickhardt-gymnasium-herrenberg.de').present(eltern) %>

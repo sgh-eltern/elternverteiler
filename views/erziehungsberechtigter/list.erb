@@ -23,7 +23,7 @@
 
   <tbody>
 
-  <% @eltern.each do |elternteil| %>
+  <% eltern.each do |elternteil| %>
     <tr>
       <td>
         <a name="<%= elternteil.nachname&.chars&.first %>"/>

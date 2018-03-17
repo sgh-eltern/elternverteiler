@@ -27,13 +27,13 @@ module SGH
         Sequel::Model.plugin :forme
         plugin :status_handler
         status_handler(404) do
-          @topic = 'Nicht gefunden'
+          topic 'Nicht gefunden'
           view :not_found
         end
 
         # rubocop:disable Metrics/BlockLength
         route do |r|
-          @title = 'Elternbeirat am SGH'
+          title 'Elternbeirat am SGH'
           @menu = {
             '/elternvertreter': 'Elternvertreter',
             '/elternvertreter/klassen': '&nbsp;nach Klasse',
@@ -55,18 +55,13 @@ module SGH
           @current_path = r.path
 
           r.root do
-            @topic = 'Übersicht'
-            schueler_unreachable_total = schueler_unreachable.count
-            @eltern_total = Erziehungsberechtigter.count
-            @schueler_total = Schüler.count
-            @schueler_unreachable_total = schueler_unreachable_total
-            @schueler_unreachable_percent = schueler_unreachable_total.to_f / Schüler.count * 100
+            topic 'Übersicht'
             view :home
           end
 
           r.on 'elternvertreter' do
             r.on 'klassen' do
-              @topic = 'Elternvertreter nach Klasse'
+              topic 'Elternvertreter nach Klasse'
               @klassen_ämter = Klasse.sort.map do |klasse|
                 [
                   klasse,
@@ -79,34 +74,34 @@ module SGH
             end
 
             r.on do
-              @topic = 'Alle Elternvertreter'
+              topic 'Alle Elternvertreter'
               @email = 'elternbeirat@schickhardt-gymnasium-herrenberg.de'
-              @eltern = Rolle.where(name: '1.EV').or(name: '2.EV').map(&:mitglieder).flatten.sort_by(&:nachname)
+              @eltern = elternbeirat
               view 'erziehungsberechtigter/list'
             end
           end
 
           r.on 'elternbeirat' do
             r.on 'vorsitzende' do
-              @topic = 'Vorsitzende'
+              topic 'Vorsitzende'
               @email = 'elternbeiratsvorsitzende@schickhardt-gymnasium-herrenberg.de'
-              @eltern = Rolle.where(name: '1.EBV').or(name: '2.EBV').map(&:mitglieder).flatten
+              @eltern = ebv
               view 'erziehungsberechtigter/list'
             end
 
             r.on 'schulkonferenz' do
-              @topic = 'Elternvertreter in der Schulkonferenz'
+              topic 'Elternvertreter in der Schulkonferenz'
               @email = 'elternvertreter-schulkonferenz@schickhardt-gymnasium-herrenberg.de'
 
               # BUG: The spreadsheet requires the 1.EBV to be marked as SK, too, so we get a duplicate.
-              @eltern = SGH::Elternverteiler::Rolle.where(name: ['SK', 'SKV']).flat_map(&:mitglieder).sort_by(&:nachname)
+              @eltern = evsk
               view 'erziehungsberechtigter/list'
             end
 
             r.on do
-              @topic = 'Mitglieder'
+              topic 'Mitglieder'
               @email = 'elternbeirat@schickhardt-gymnasium-herrenberg.de'
-              @eltern = Rolle.where(name: '1.EV').or(name: '2.EV').map(&:mitglieder).flatten.sort_by(&:nachname)
+              @eltern = elternbeirat
 
               view :anwesenheit
             end
@@ -114,14 +109,14 @@ module SGH
 
           r.on 'eltern' do
             r.get 'neu' do |id|
-              @topic = 'Erziehungsberechtigten hinzufügen'
+              topic 'Erziehungsberechtigten hinzufügen'
               @erziehungsberechtigter = Erziehungsberechtigter.new
               view 'erziehungsberechtigter/new'
             end
 
             r.get Integer do |id|
               @erziehungsberechtigter = Erziehungsberechtigter.first!(id: id)
-              @topic = "#{@erziehungsberechtigter.vorname} #{@erziehungsberechtigter.nachname}"
+              topic "#{@erziehungsberechtigter.vorname} #{@erziehungsberechtigter.nachname}"
               view 'erziehungsberechtigter/show'
             end
 
@@ -133,7 +128,7 @@ module SGH
 
             r.get Integer, 'edit' do |id|
               @erziehungsberechtigter = Erziehungsberechtigter.first!(id: id)
-              @topic = "#{@erziehungsberechtigter.vorname} #{@erziehungsberechtigter.nachname} bearbeiten"
+              topic "#{@erziehungsberechtigter.vorname} #{@erziehungsberechtigter.nachname} bearbeiten"
               view 'erziehungsberechtigter/edit'
             end
 
@@ -165,16 +160,16 @@ module SGH
             end
 
             r.on do
-              @topic = 'Alle Eltern'
+              topic 'Alle Eltern'
               @email = 'eltern@schickhardt-gymnasium-herrenberg.de'
-              @eltern = Erziehungsberechtigter.order(:nachname)
+              @eltern = eltern
               view 'erziehungsberechtigter/list'
             end
           end
 
           r.on 'klassen' do
             r.get 'neu' do |id|
-              @topic = 'Neue Klasse anlegen'
+              topic 'Neue Klasse anlegen'
               @klasse = Klasse.new
               view 'klassen/new'
             end
@@ -182,7 +177,7 @@ module SGH
             r.get Integer do |id|
               @klasse = Klasse.first!(id: id)
               @schüler = @klasse.schüler
-              @topic = "Klasse #{@klasse}"
+              topic "Klasse #{@klasse}"
               @ämter = Amt.where(
                 rolle: Rolle.where(Sequel.like(:name, '%.EV')), klasse: @klasse
                 ).sort_by(&:to_s)
@@ -190,7 +185,7 @@ module SGH
             end
 
             r.get Integer, 'rollen', 'add' do |klasse_id|
-              @topic = 'Neuer Amtsinhaber'
+              topic 'Neuer Amtsinhaber'
               klasse = Klasse.first!(id: klasse_id)
               @amt = Amt.new(klasse: klasse)
               view 'elternvertreter/add'
@@ -206,7 +201,7 @@ module SGH
             end
 
             r.post Integer, 'rollen', Integer, 'inhaber', Integer do |klasse_id, rolle_id, inhaber_id|
-              @topic = 'Amtsinhaber löschen'
+              topic 'Amtsinhaber löschen'
               klasse = Klasse.first!(id: klasse_id)
               rolle = Rolle.first!(id: rolle_id)
               inhaber = Erziehungsberechtigter.first!(id: inhaber_id)
@@ -223,8 +218,7 @@ module SGH
             end
 
             r.on do
-              @topic = 'Alle Klassen'
-              @klassen = Klasse.sort
+              topic 'Alle Klassen'
               view 'klassen/list'
             end
           end
@@ -232,25 +226,25 @@ module SGH
           r.on 'schueler' do
             r.get Integer do |id|
               @schüler = Schüler.first!(id: id)
-              @topic = "#{@schüler.vorname} #{@schüler.nachname}"
+              topic "#{@schüler.vorname} #{@schüler.nachname}"
               view 'schüler/show'
             end
 
             r.get Integer, 'edit' do |id|
               @schüler = Schüler.first!(id: id)
-              @topic = "#{@schüler.vorname} #{@schüler.nachname} bearbeiten"
+              topic "#{@schüler.vorname} #{@schüler.nachname} bearbeiten"
               view 'schüler/edit'
             end
 
             r.get Integer, 'erziehungsberechtigter', 'add' do |id|
-              @topic = 'Erziehungsberechtigten zuweisen'
+              topic 'Erziehungsberechtigten zuweisen'
               @erziehungsberechtigung = Erziehungsberechtigung.new
               @erziehungsberechtigung.schüler = Schüler.first!(id: id)
               view 'schüler/assign_parent'
             end
 
             r.get 'neu' do |id|
-              @topic = 'Schüler anlegen'
+              topic 'Schüler anlegen'
               @schüler = Schüler.new
               view 'schüler/new'
             end
@@ -277,13 +271,13 @@ module SGH
             end
 
             r.on 'nicht-erreichbar' do
-              @schüler = schueler_unreachable
-              @topic = "#{@schüler.count} nicht per eMail erreichbare Schüler"
+              @schüler = schüler_unreachable
+              topic "#{@schüler.count} nicht per eMail erreichbare Schüler"
               view 'schüler/list'
             end
 
             r.on do
-              @topic = 'Alle Schüler'
+              topic 'Alle Schüler'
               @schüler = Schüler.order(:nachname)
               view 'schüler/list'
             end
@@ -293,13 +287,13 @@ module SGH
             @backup_manager = Recovery::Manager.new('backups', ENV.fetch('DB'))
 
             r.get 'new' do
-              @topic = 'Neues Backup anlegen'
+              topic 'Neues Backup anlegen'
               @backup = Recovery::Backup.new
               view 'backups/new'
             end
 
             r.post 'restore' do
-              @topic = 'Backup einspielen'
+              topic 'Backup einspielen'
               name = r.params['sgh/elternverteiler/backups']
 
               if name.nil?
@@ -319,7 +313,7 @@ module SGH
             end
 
             r.post do
-              @topic = 'Neues Backup'
+              topic 'Neues Backup'
               @backup = Recovery::Backup.new(r.params['name'])
               @backup_manager.backup(@backup)
               flash[:success] = "Backup #{@backup.name} wurde angelegt."
@@ -330,22 +324,20 @@ module SGH
             end
 
             r.on do
-              @topic = 'Verfügbare Backups'
+              topic 'Verfügbare Backups'
               view 'backups/list'
             end
           end
 
           r.on 'verteiler' do |sure|
-            @topic = 'eMail-Verteiler'
-            @klassen = Klasse.sort
-
+            topic 'eMail-Verteiler'
             view 'verteiler/list'
           end
         end
         # rubocop:enable Metrics/BlockLength
 
         error do |e|
-          @topic = 'Sorry'
+          topic 'Sorry'
           @error = e
           response.status = 500
           view 'error'
@@ -367,8 +359,46 @@ module SGH
           @eltern ||= Erziehungsberechtigter.order(:nachname)
         end
 
-        def schueler_unreachable
-          Schüler.all.select { |sch| sch.eltern.collect(&:mail).compact.empty? }
+        def klassen
+          @klassen ||= Klasse.sort
+        end
+
+        def eltern_total
+          @eltern_total ||= Erziehungsberechtigter.count
+        end
+
+        # rubocop:disable Naming/MethodName
+        def schüler_unreachable
+          @schüler_unreachable ||= Schüler.all.select { |sch| sch.eltern.collect(&:mail).compact.empty? }.sort_by(&:nachname)
+        end
+
+        def schüler_unreachable_total
+          @schüler_unreachable_total ||= schüler_unreachable.count
+        end
+
+        def schüler_total
+          @schüler_total ||= Schüler.count
+        end
+
+        def schüler_unreachable_percent
+          @schüler_unreachable_percent ||= schüler_unreachable_total.to_f / Schüler.count * 100
+        end
+        # rubocop:enable Naming/MethodName
+
+        def title(title=nil)
+          if title
+            @title = title
+          else
+            @title
+          end
+        end
+
+        def topic(topic=nil)
+          if topic
+            @topic = topic
+          else
+            @topic
+          end
         end
       end
     end
