@@ -24,6 +24,11 @@ module SGH
         plugin :static, ['/js', '/css']
         # TODO: plugin :csrf
         Sequel::Model.plugin :forme
+        plugin :status_handler
+        status_handler(404) do
+          @topic = 'Nicht gefunden'
+          view :not_found
+        end
 
         # rubocop:disable Metrics/BlockLength
         route do |r|
