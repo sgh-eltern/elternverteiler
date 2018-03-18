@@ -1,2 +1,0 @@
-# <%= klasse %>: <%= klasse.schüler.count %> Schüler, <%= klasse.eltern.count %> Eltern
-<%= SGH::Elternverteiler::PostmapPresenter.new("eltern-#{klasse.to_s.downcase}@schickhardt-gymnasium-herrenberg.de").present(klasse.eltern) %>

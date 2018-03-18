@@ -4,10 +4,13 @@ require 'roda'
 require 'tilt'
 require 'forme'
 require 'English'
+require 'hashdiff'
 
 require 'sgh/elternverteiler'
 require 'sgh/elternverteiler/postmap_presenter'
+require 'sgh/elternverteiler/postmap_parser'
 require 'sgh/elternverteiler/recovery'
+require 'sgh/elternverteiler/mail_server'
 
 module SGH
   module Elternverteiler
@@ -331,7 +334,13 @@ module SGH
 
           r.on 'verteiler' do |sure|
             topic 'eMail-Verteiler'
-            view 'verteiler/list'
+
+            parser = SGH::Elternverteiler::PostmapParser.new
+            server = parser.parse(SGH::Elternverteiler::MailServer.new.download)
+            local = parser.parse(Tilt::ERBTemplate.new('views/verteiler/all.erb').render(self))
+
+            @diff = HashDiff.diff(server, local)
+            view 'verteiler/diff'
           end
         end
         # rubocop:enable Metrics/BlockLength

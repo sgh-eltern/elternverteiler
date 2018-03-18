@@ -1,6 +1,0 @@
-<%
-klassenstufe, klassen = klassenstufe
-eltern = klassen.flat_map(&:eltern)
-%>
-# <%= klassenstufe %>: <%= klassen.flat_map(&:schüler).count %> Schüler, <%= eltern.count %> Eltern
-<%= SGH::Elternverteiler::PostmapPresenter.new("eltern-#{klassenstufe.to_s.downcase}@schickhardt-gymnasium-herrenberg.de").present(eltern) %>
