@@ -25,6 +25,7 @@ module SGH
         plugin :partials
         plugin :render, escape: true
         plugin :render_each
+        plugin :request_headers
         plugin :static, ['/js', '/css']
         # TODO: plugin :csrf
         Sequel::Model.plugin :forme
@@ -56,6 +57,7 @@ module SGH
             '/verteiler': 'Verteiler',
           }
           @current_path = r.path
+          @user = r.headers['Multipass-Handle']
 
           r.root do
             topic 'Übersicht'
