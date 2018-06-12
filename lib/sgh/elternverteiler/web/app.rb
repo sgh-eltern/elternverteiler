@@ -288,7 +288,7 @@ module SGH
             end
           end
 
-          r.on 'backups' do |sure|
+          r.on 'backups' do
             @backup_manager = Recovery::Manager.new('backups', ENV.fetch('DB'))
 
             r.get 'new' do
@@ -334,15 +334,22 @@ module SGH
             end
           end
 
-          r.on 'verteiler' do |sure|
+          r.on 'verteiler' do
             topic 'eMail-Verteiler'
 
-            parser = SGH::Elternverteiler::PostmapParser.new
-            server = parser.parse(SGH::Elternverteiler::MailServer.new.download)
-            local = parser.parse(Tilt::ERBTemplate.new('views/verteiler/all.erb').render(self))
+            r.get 'diff' do
+              parser = SGH::Elternverteiler::PostmapParser.new
+              server = parser.parse(SGH::Elternverteiler::MailServer.new.download)
+              local = parser.parse(Tilt::ERBTemplate.new('views/verteiler/all.erb').render(self))
 
-            @diff = HashDiff.diff(server, local)
-            view 'verteiler/diff'
+              @diff = HashDiff.diff(server, local)
+              view 'verteiler/diff'
+            end
+
+            r.on do
+              response['Content-Type'] = 'text/plain; charset=utf-8'
+              view 'verteiler/all', layout: nil
+            end
           end
         end
         # rubocop:enable Metrics/BlockLength
