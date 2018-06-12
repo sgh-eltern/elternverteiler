@@ -1,6 +1,14 @@
 * Export and scp the email list from the UI
 * Refactor the duplicate queries in app.rb to methods on the app instance
 * Idee von Monika Beck: elternvertreter-9c@schickhardt...
+
+  ```ruby
+  Amt.where(
+    rolle: Rolle.where(Sequel.like(:name, '%.EV')),
+    klasse: Klasse.where(stufe: "9")
+  )
+  ```
+
 * Use Ruby's [faker gem](https://github.com/stympy/faker) in tests (maybe there is a Simpsons domain?)
 * Rename a class (will be useful for moving up after summer)
 * Delete a class with all pupils (J2 leaves after Abitur)
