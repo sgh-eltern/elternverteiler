@@ -34,6 +34,7 @@ module FixtureHelpers
     click_link('Anlegen')
     fill_in('Nachname', with: last)
     fill_in('Vorname', with: first)
+    fill_in('Mail', with: email)
     click_button('Anlegen')
   end
 
