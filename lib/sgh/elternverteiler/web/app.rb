@@ -54,7 +54,7 @@ module SGH
             '/klassen': 'Klassen',
             '/backups': 'Backups',
             '/backups/new': '&nbsp;Neu',
-            '/verteiler': 'Verteiler',
+            '/verteiler': 'Verteiler'
           }
           @current_path = r.path
           @user = r.headers['Multipass-Handle']
