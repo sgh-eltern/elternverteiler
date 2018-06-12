@@ -21,3 +21,8 @@ aside.error {
 aside a, aside a:visited {
   color: rgb(169, 226, 255);
 }
+
+.footer {
+  margin-left: 1em;
+  font-size: small;
+}
