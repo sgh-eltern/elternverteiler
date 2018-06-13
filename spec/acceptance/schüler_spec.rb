@@ -3,15 +3,14 @@
 require_relative 'helper'
 
 describe 'Schüler', type: :feature do
-  context 'Klasse 5C' do
-    before(:all) { create_class('5', 'C') }
+  context 'Klasse 5S' do
+    before(:all) { create_class('5', 'S') }
 
-    # instead of creating a fresh database for every example, we create unique names
     let(:simpson) { "Simpson-#{rand(1000)}" }
     let(:bart) { "Bart-#{rand(1000)}" }
 
     it 'can create a new pupil' do
-      create_pupil(simpson, bart, '5C')
+      create_pupil(simpson, bart, '5S')
       within(find('.sgh-elternverteiler-schüler')) do
         expect(page).to have_content(bart)
         expect(page).to have_content(simpson)
@@ -19,7 +18,7 @@ describe 'Schüler', type: :feature do
     end
 
     context 'Bart exists' do
-      before { create_pupil(simpson, bart, '5C') }
+      before { create_pupil(simpson, bart, '5S') }
 
       before do
         visit '/'

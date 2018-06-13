@@ -1,0 +1,9 @@
+<% form(@rolle,
+        :inputs_wrapper => :fieldset,
+        class: 'pure-form pure-form-aligned',
+        action: "/rollen",
+        method: 'post',
+        ) do |f| %>
+  <%== f.input(:name, label: 'Name', size: 50) %>
+  <%== f.button(value: 'Anlegen', class: "pure-button pure-button-primary") %>
+<% end %>

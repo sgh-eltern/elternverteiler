@@ -12,10 +12,20 @@ namespace :spec do
   desc 'Run ci tests'
   task ci: ['rubocop:auto_correct', :unit]
 
-  %w[unit system acceptance].each do |type|
+  %w[unit system].each do |type|
     desc "Run #{type} tests"
     RSpec::Core::RakeTask.new(type) do |t|
       t.pattern = "spec/#{type}/**/*_spec.rb"
+    end
+  end
+
+  desc 'Run acceptance tests'
+  task :acceptance do
+    # Acceptance tests are not fully reentrant yet, so we'd like to run them serially, for now.
+    FileList.new('spec/acceptance/*_spec.rb').each do |spec|
+      sh "bundle exec rspec #{spec}"
+    rescue
+      warn "#{spec} failed"
     end
   end
 end

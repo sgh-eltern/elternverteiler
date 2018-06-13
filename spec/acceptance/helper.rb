@@ -28,6 +28,19 @@ module FixtureHelpers
     click_button('Anlegen')
   end
 
+  def delete_class(name)
+    visit '/'
+    within('#menu') { click_link('Klassen') }
+    within('.content') do
+      click_link(name)
+      accept_alert { click_button('Löschen') }
+    end
+  end
+
+  def delete_class!(name)
+    delete_class(name) if page.has_link?(name)
+  end
+
   def create_parent(last, first=nil, email=nil)
     visit '/'
     within('#menu') { click_link('Eltern') }
@@ -45,6 +58,29 @@ module FixtureHelpers
     click_link('Hinzufügen')
     find('#sgh-elternverteiler-erziehungsberechtigung_erziehungsberechtigter_id').click
     select(parent)
+    click_button('Speichern')
+  end
+
+  def create_role(name)
+    visit '/'
+    within('#menu') { click_link('Rollen') }
+    click_link('Anlegen')
+    fill_in('Name', with: name)
+    click_button('Anlegen')
+  end
+
+  def assign_role(klasse, name, role)
+    visit '/'
+    within('#menu') { click_link('Klassen') }
+    within('.content') { click_link(klasse) }
+    within('.content') { click_link('Hinzufügen') }
+
+    find('#sgh-elternverteiler-amt_rolle_id').click
+    select(role)
+
+    find('#sgh-elternverteiler-amt_inhaber_id').click
+    select(name)
+
     click_button('Speichern')
   end
 end

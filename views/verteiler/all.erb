@@ -1,16 +1,27 @@
 # Klassen
 <% klassen.each do |klasse| %>
 
-# <%= klasse %>: <%= klasse.schüler.count %> Schüler, <%= klasse.eltern.count %> Eltern
+## Klasse <%= klasse %>: <%= klasse.elternvertreter.count %> Elternvertreter
+<%= SGH::Elternverteiler::PostmapPresenter.new("elternvertreter-#{klasse.to_s.downcase}@schickhardt-gymnasium-herrenberg.de").present(klasse.elternvertreter) %>
+
+## Klasse <%= klasse %>: <%= klasse.schüler.count %> Schüler, <%= klasse.eltern.count %> Adressen der Eltern
 <%= SGH::Elternverteiler::PostmapPresenter.new("eltern-#{klasse.to_s.downcase}@schickhardt-gymnasium-herrenberg.de").present(klasse.eltern) %>
 <% end %>
 
 # Klassenstufen
 <% klassen.group_by(&:stufe).each do |klassenstufe, klassen| %>
-  <% klassen_eltern = klassen.flat_map(&:eltern) %>
+  <%
+    klassenstufe_eltern = klassen.flat_map(&:eltern)
+    klassenstufe_elternvertreter = klassen.flat_map(&:elternvertreter)
+  %>
 
-# <%= klassenstufe %>: <%= klassen.flat_map(&:schüler).count %> Schüler, <%= klassen_eltern.count %> Eltern
-<%= SGH::Elternverteiler::PostmapPresenter.new("eltern-#{klassenstufe.to_s.downcase}@schickhardt-gymnasium-herrenberg.de").present(klassen_eltern) %>
+## Klassenstufe <%= klassenstufe %>
+
+### Elternvertreter der Klassenstufe <%= klassenstufe %>
+<%= SGH::Elternverteiler::PostmapPresenter.new("elternvertreter-#{klassenstufe.to_s.downcase}@schickhardt-gymnasium-herrenberg.de").present(klassenstufe_elternvertreter) %>
+
+### Klassenstufe <%= klassenstufe %>: <%= klassen.flat_map(&:schüler).count %> Schüler, <%= klassenstufe_eltern.count %> Adressen
+<%= SGH::Elternverteiler::PostmapPresenter.new("eltern-#{klassenstufe.to_s.downcase}@schickhardt-gymnasium-herrenberg.de").present(klassenstufe_eltern) %>
 <% end %>
 
 # Alle Eltern: <%= eltern.count %> Adressen

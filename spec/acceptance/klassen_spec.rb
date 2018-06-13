@@ -3,21 +3,64 @@
 require_relative 'helper'
 
 describe 'Klassen', type: :feature do
-  before(:all) {
-    create_class('5', 'A')
-    create_class('J', '1')
-  }
-
-  it 'lists all Klassen' do
-    visit '/'
-
-    within('#menu') do
-      click_link('Klassen')
+  context '5K exists' do
+    before(:all) do
+      create_class('5', 'K')
     end
 
-    within('.content') do
-      expect(page).to have_content '5A'
-      expect(page).to have_content 'J1'
+    after(:all) do
+      delete_class!('5K')
+    end
+
+    before do
+      visit '/'
+      within('#menu') { click_link('Klassen') }
+      within('.content') { click_link('5K') }
+    end
+
+    it 'Lists Elternvertreter' do
+      expect(page).to have_content 'Elternvertreter'
+    end
+
+    it 'has a generic address to reach the Elternvertreter of this class' do
+      expect(page).to have_content 'eMail: elternvertreter-5k@schickhardt-gymnasium-herrenberg.de'
+    end
+
+    context 'J1 exists' do
+      before(:all) do
+        create_class('J', '1')
+      end
+
+      after(:all) do
+        delete_class!('J1')
+      end
+
+      before do
+        visit '/'
+        within('#menu') { click_link('Klassen') }
+      end
+
+      it 'lists both 5K and J1' do
+        within('.content') do
+          expect(page).to have_content '5K'
+          expect(page).to have_content 'J1'
+        end
+      end
+
+      context '5K is deleted' do
+        before do
+          visit '/'
+          within('#menu') { click_link('Klassen') }
+        end
+
+        it '5K is not listed anymore, but J1 still is' do
+          delete_class!('5K')
+          within('.sgh-elternverteiler-klassen') do
+            expect(page).to_not have_content('5K')
+            expect(page).to have_content 'J1'
+          end
+        end
+      end
     end
   end
 end

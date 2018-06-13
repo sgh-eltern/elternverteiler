@@ -30,6 +30,7 @@ module SGH
         # TODO: plugin :csrf
         Sequel::Model.plugin :forme
         plugin :status_handler
+
         status_handler(404) do
           topic 'Nicht gefunden'
           view :not_found
@@ -52,9 +53,12 @@ module SGH
             '/schueler/nicht-erreichbar': '&nbsp;Nicht erreichbar',
 
             '/klassen': 'Klassen',
+            '/rollen': 'Rollen',
             '/backups': 'Backups',
             '/backups/new': '&nbsp;Neu',
-            '/verteiler': 'Verteiler'
+
+            '/verteiler': 'Verteiler',
+            '/verteiler/diff': '&nbsp;Diff',
           }
           @current_path = r.path
           @user = r.headers['Multipass-Handle']
@@ -186,6 +190,7 @@ module SGH
               @ämter = Amt.where(
                 rolle: Rolle.where(Sequel.like(:name, '%.EV')), klasse: @klasse
                 ).sort_by(&:to_s)
+              @email = "elternvertreter-#{@klasse.to_s.downcase}@schickhardt-gymnasium-herrenberg.de"
               view 'schüler/list'
             end
 
@@ -215,6 +220,12 @@ module SGH
               r.redirect "/klassen/#{klasse.id}"
             end
 
+            r.post Integer, 'delete' do |id|
+              @klasse = Klasse.first!(id: id).destroy
+              flash[:success] = "#{@klasse} wurde gelöscht."
+              r.redirect '/klassen'
+            end
+
             r.post do
               klasse = Klasse.new
               klasse.set_fields(r.params['sgh-elternverteiler-klasse'], %w[stufe zug])
@@ -225,6 +236,32 @@ module SGH
             r.on do
               topic 'Alle Klassen'
               view 'klassen/list'
+            end
+          end
+
+          r.on 'rollen' do
+            r.get 'neu' do |id|
+              topic 'Neue Rolle anlegen'
+              @rolle = Rolle.new
+              view 'rollen/new'
+            end
+
+            r.post do
+              rolle = Rolle.new
+              rolle.name = r.params['sgh-elternverteiler-rolle']['name']
+              rolle.save
+              r.redirect "/rollen/#{rolle.id}"
+            end
+
+            r.get Integer do |id|
+              @rolle = Rolle.first!(id: id)
+              topic 'Rolle'
+              view 'rollen/show'
+            end
+
+            r.on do
+              topic 'Alle Rollen'
+              view 'rollen/list'
             end
           end
 
@@ -379,6 +416,10 @@ module SGH
 
         def klassen
           @klassen ||= Klasse.sort
+        end
+
+        def rollen
+          @rollen ||= Rolle.sort
         end
 
         def eltern_total

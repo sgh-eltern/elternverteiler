@@ -3,6 +3,9 @@
 module SGH
   module Elternverteiler
     class Rolle < Sequel::Model(:rollen)
+      include FormeHelper
+      include Comparable
+
       many_to_many :mitglieder,
         class: Erziehungsberechtigter,
         join_table: :ämter,
@@ -11,6 +14,10 @@ module SGH
 
       def to_s
         name
+      end
+
+      def <=>(other)
+        name <=> other.name
       end
     end
   end

@@ -7,6 +7,14 @@
 <% if @ämter %>
   <h3>Elternvertreter</h3>
 
+  <p>
+    <%== partial('email') %>
+  </p>
+
+  <p>
+    <a href="/klassen/<%= @klasse.id %>/rollen/add" class="pure-button pure-button-primary">Hinzufügen</a>
+  </p>
+
   <table class="pure-table pure-table-horizontal sgh-elternverteiler-erziehungsberechtigter">
     <thead>
       <tr>
@@ -43,11 +51,6 @@
         </td>
       </tr>
     <% end %>
-    <tr>
-      <td colspan="3">
-        <a href="/klassen/<%= @klasse.id %>/rollen/add">Hinzufügen</a>
-      </td>
-    </tr>
   </tbody>
   </table>
 <% end %>
@@ -85,3 +88,18 @@
     <% end %>
   </tbody>
 </table>
+
+<% if @klasse %>
+<h3>Meta</h3>
+
+<form action="/klassen/<%= @klasse.id %>/delete" class="pure-form pure-form-aligned" method="post">
+<p>
+  <input class="pure-button"
+         type="submit"
+         value="Löschen"
+         style="color: white; background: rgb(202, 60, 60)"
+         onclick="return confirm('Sind Sie sicher, daß Sie die Klasse <%= @klasse %> löschen möchten?')"
+  />
+</p>
+</form>
+<% end %>

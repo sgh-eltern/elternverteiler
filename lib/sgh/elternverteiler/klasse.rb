@@ -22,6 +22,13 @@ module SGH
         Amt.where(rolle: roles, klasse: self).map(&:inhaber)
       end
 
+      def elternvertreter
+        Amt.where(
+          rolle: Rolle.where(Sequel.like(:name, '%.EV')),
+          klasse: self
+        ).map(&:inhaber)
+      end
+
       def to_s
         "#{stufe}#{zug}"
       end

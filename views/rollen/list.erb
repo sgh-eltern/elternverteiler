@@ -1,0 +1,22 @@
+<p>
+  <a href="/rollen/neu" class="pure-button pure-button-primary">Anlegen</a>
+</p>
+
+<table class="pure-table pure-table-horizontal pure-table-striped">
+  <thead>
+    <tr>
+      <th>Rolle</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+  <% rollen.each do |rolle| %>
+    <tr>
+      <td>
+        <a href="/rollen/<%= rolle.id %>"><%= rolle %></a>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
