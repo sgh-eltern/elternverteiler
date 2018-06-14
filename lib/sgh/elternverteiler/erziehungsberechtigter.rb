@@ -27,7 +27,7 @@ module SGH
 
       def before_save
         if vorname.to_s.empty? && nachname.to_s.empty? && mail.to_s.empty?
-          raise ValidationError.new('At least one of vorname, nachname, or mail is required')
+          raise ValidationError.new('Mindestens eines der Attribute Vorname, Nachname oder Mail wird benötigt.')
         end
 
         super
