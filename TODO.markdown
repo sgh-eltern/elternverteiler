@@ -1,10 +1,17 @@
 * Export and scp the email list from the UI
-* `plugin :csrf`
-* Refactor the duplicate queries in app.rb to methods on the app instance
-* Use Ruby's [faker gem](https://github.com/stympy/faker) in tests (maybe there is a Simpsons domain?)
 * Rename a class (will be useful for moving up after summer)
 * Delete a class with all pupils (J2 leaves after Abitur)
   => Make sure parents with other kids in school are kept
+* Pressing "Add a pupil" (within a class list) selects the right class in the dropdown of the "New Pupil" form
+* Rename roles
+* More validations:
+  - There can only be one EBV1 / EBV2
+  - Only EV can become EBV
+  - A person can only be EV in a class of their children
+  - EBV1 cannot be elected member of the SK
+* `plugin :csrf`
+* Refactor the duplicate queries in app.rb to methods on the app instance
+* Use Ruby's [faker gem](https://github.com/stympy/faker) in tests (maybe there is a Simpsons domain?)
 * Dropdown boxes have the class list in the wrong order
 * Save backups to object storage instead of the local filesystem
   => Encrypt using gpg: `backup-encryption.markdown`
