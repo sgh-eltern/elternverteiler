@@ -22,11 +22,14 @@ namespace :spec do
   desc 'Run acceptance tests'
   task :acceptance do
     # Acceptance tests are not fully reentrant yet, so we'd like to run them serially, for now.
-    FileList.new('spec/acceptance/*_spec.rb').each do |spec|
+    failing_specs = FileList.new('spec/acceptance/*_spec.rb').map do |spec|
       sh "bundle exec rspec #{spec}"
-    rescue
-      warn "#{spec} failed"
-    end
+      nil
+    rescue StandardError
+      spec
+    end.compact
+
+    warn "#{failing_specs.size} specs failed: #{failing_specs}" if failing_specs.any?
   end
 end
 
