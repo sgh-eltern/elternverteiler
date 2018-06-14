@@ -10,7 +10,7 @@ namespace :spec do
   task all: %w[rubocop:auto_correct unit system acceptance]
 
   desc 'Run ci tests'
-  task ci: ['rubocop:auto_correct', :unit]
+  task ci: ['rubocop', :unit]
 
   %w[unit system].each do |type|
     desc "Run #{type} tests"

@@ -10,7 +10,7 @@ describe 'Homepage', type: :feature do
       expect(page).to have_content('Statistik')
       expect(page).to have_content('0 Eltern')
       expect(page).to have_content('0 Schüler')
-      # expect(page).to have_content('0 (0%) nicht per Mail erreichbar')
+      expect(page).to have_content('0 (0.00%) nicht per Mail erreichbar')
     end
   end
 end

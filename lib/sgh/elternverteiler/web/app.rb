@@ -445,7 +445,12 @@ module SGH
         end
 
         def schüler_unreachable_percent
-          @schüler_unreachable_percent ||= schüler_unreachable_total.to_f / Schüler.count * 100
+          @schüler_unreachable_percent ||=
+            if schüler_total == 0
+              0
+            else
+              schüler_unreachable_total.to_f / schüler_total * 100
+            end
         end
         # rubocop:enable Naming/MethodName
 
