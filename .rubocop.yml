@@ -1,13 +1,16 @@
 AllCops:
-  TargetRubyVersion: 2.5.0
+  TargetRubyVersion: 2.5.1
   Include:
     - '**/Gemfile'
     - '**/Rakefile'
     - '**/config.ru'
     - '**/*.rake'
+    - lib/**/*
+    - spec/**/*
   Exclude:
     - vendor/**/*
     - db/migrations/**/*
+    - spec/failure-state
 
   DisplayCopNames:
     Enabled: true

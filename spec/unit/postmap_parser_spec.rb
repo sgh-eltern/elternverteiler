@@ -12,7 +12,7 @@ describe PostmapParser do
 
     # 2nd grade
     eltern-2@springfield-elementary.edu homer@simpson.org,marge@simpson.org
-    CONTENT
+  CONTENT
   }
 
   subject(:parser) { described_class.new }

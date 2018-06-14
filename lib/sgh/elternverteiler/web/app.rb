@@ -446,7 +446,7 @@ module SGH
 
         def schüler_unreachable_percent
           @schüler_unreachable_percent ||=
-            if schüler_total == 0
+            if schüler_total.zero?
               0
             else
               schüler_unreachable_total.to_f / schüler_total * 100
