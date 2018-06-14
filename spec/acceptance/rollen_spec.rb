@@ -22,9 +22,16 @@ describe 'Rollen', type: :feature do
       end
     end
 
-    it 'refuses to create another role with the same name' do
-      create_role('Klassenkasper')
-      expect(page).to have_content('Sorry - eine Rolle mit dem Namen Klassenkasper existiert bereits')
+    context 'attempting to create another role with the same name' do
+      before do
+        create_role('Klassenkasper')
+      end
+
+      it 'provides details on the error' do
+        within('aside.error') do
+          expect(page).to have_content('Die Rolle Klassenkasper existiert bereits')
+        end
+      end
     end
 
     context 'Klassenkasper is deleted' do

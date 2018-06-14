@@ -254,10 +254,14 @@ module SGH
             end
 
             r.post do
-              rolle = Rolle.new
-              rolle.name = r.params['sgh-elternverteiler-rolle']['name']
-              rolle.save
-              r.redirect "/rollen/#{rolle.id}"
+              @rolle = Rolle.new
+              @rolle.name = r.params['sgh-elternverteiler-rolle']['name']
+              @rolle.save
+              r.redirect "/rollen/#{@rolle.id}"
+            rescue Sequel::UniqueConstraintViolation => e
+              flash.now[:error] = "Die Rolle #{@rolle.name} existiert bereits"
+              topic 'Neue Rolle anlegen'
+              view 'rollen/new'
             end
 
             r.on do
@@ -304,6 +308,18 @@ module SGH
               Erziehungsberechtigung.new(schüler: schüler, erziehungsberechtigter: erziehungsberechtigter).save
               flash[:success] = "#{erziehungsberechtigter} ist jetzt als Erziehungsberechtigte(r) von #{schüler} registriert."
               r.redirect "/schueler/#{schüler.id}"
+            end
+
+            r.post Integer do |id|
+              @schüler = Schüler.first!(id: id)
+              @schüler.set_fields(r.params['sgh-elternverteiler-schüler'], %w[vorname nachname klasse_id])
+              @schüler.save
+              flash[:success] = 'Schüler wurde aktualisiert'
+              r.redirect
+            rescue Sequel::ConstraintViolation
+              flash.now[:error] = 'Alle Pflichtfelder müssen ausgefüllt werden.'
+              topic 'Schüler bearbeiten'
+              view 'schüler/edit'
             end
 
             r.post do
