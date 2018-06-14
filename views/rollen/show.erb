@@ -1,10 +1,24 @@
-Name: <%= @rolle %>
+<table class="pure-table pure-table-horizontal sgh-elternverteiler-rolle">
+  <tr>
+    <th style="background-color: #f2f2f2; text-align: right;">Name</th>
+    <td><%= @rolle %></td>
+  </tr>
 
-<!-- TODO
+  <tr>
+    <th style="background-color: #f2f2f2; text-align: right;">Inhaber</th>
+    <td>
+      TODO
+    </td>
+  </tr>
+</table>
+
 <form action="/rollen/<%= @rolle.id %>/delete" class="pure-form pure-form-aligned" method="post">
 <p>
-  <a href="/rollen/<%= @rolle.id %>/edit" class="pure-button pure-button-primary">Bearbeiten</a>
-  <input class="pure-button" type="submit" value="Löschen" style="color: white; background: rgb(202, 60, 60)"/>
+  <input class="pure-button"
+         type="submit"
+         value="Löschen"
+         style="color: white; background: rgb(202, 60, 60)"
+         onclick="return confirm('Sind Sie sicher, daß Sie die Rolle <%= @rolle %> löschen möchten?')"
+  />
 </p>
 </form>
--->

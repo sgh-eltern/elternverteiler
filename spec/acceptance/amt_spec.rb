@@ -42,6 +42,10 @@ describe 'Ämter', type: :feature do
       assign_role('5A', simpson_homer, '1.EV')
     end
 
+    after do
+      delete_role('1.EV')
+    end
+
     it 'lists Homer in his role in the class' do
       visit '/'
       within('#menu') { click_link('Klassen') }

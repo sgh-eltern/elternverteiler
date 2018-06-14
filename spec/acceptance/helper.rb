@@ -83,6 +83,17 @@ module FixtureHelpers
 
     click_button('Speichern')
   end
+
+  def delete_role(name)
+    visit '/'
+    within('#menu') { click_link('Rollen') }
+    within('.content') do
+      if page.has_link?(name)
+        click_link(name)
+        accept_alert { click_button('Löschen') }
+      end
+    end
+  end
 end
 
 DB_NAME = "acceptance-test-#{SecureRandom.uuid}"

@@ -245,17 +245,23 @@ module SGH
               view 'rollen/new'
             end
 
+            r.get Integer do |id|
+              @rolle = Rolle.first!(id: id)
+              topic 'Rolle'
+              view 'rollen/show'
+            end
+
+            r.post Integer, 'delete' do |id|
+              @rolle = Rolle.first!(id: id).destroy
+              flash[:success] = "Die Rolle #{@rolle} wurde gelöscht."
+              r.redirect '/rollen'
+            end
+
             r.post do
               rolle = Rolle.new
               rolle.name = r.params['sgh-elternverteiler-rolle']['name']
               rolle.save
               r.redirect "/rollen/#{rolle.id}"
-            end
-
-            r.get Integer do |id|
-              @rolle = Rolle.first!(id: id)
-              topic 'Rolle'
-              view 'rollen/show'
             end
 
             r.on do

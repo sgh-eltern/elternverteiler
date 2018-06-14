@@ -44,7 +44,7 @@ describe 'Schüler', type: :feature do
         end
 
         context 'pressing the delete button' do
-          before { click_button('Löschen') }
+          before { accept_alert { click_button('Löschen') } }
 
           it 'removes the pupil' do
             expect(find('table.sgh-elternverteiler-schüler')).to_not have_content(bart)
