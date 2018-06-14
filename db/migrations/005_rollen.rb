@@ -9,6 +9,7 @@ Sequel.migration do
       DateTime :updated_at
 
       constraint(:name_min_length) { Sequel.char_length(:name) > 0 }
+      unique :name
     end
   end
 end

@@ -22,7 +22,7 @@ describe 'Rollen', type: :feature do
       end
     end
 
-    xit 'refuses to create another role with the same name' do
+    it 'refuses to create another role with the same name' do
       create_role('Klassenkasper')
       expect(page).to have_content('Sorry - eine Rolle mit dem Namen Klassenkasper existiert bereits')
     end

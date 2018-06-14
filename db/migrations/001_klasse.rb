@@ -9,6 +9,7 @@ Sequel.migration do
 
       constraint(:stufe_min_length) { Sequel.char_length(:stufe) > 0 }
       constraint(:zug_min_length) { Sequel.char_length(:zug) > 0 }
+      unique [:stufe, :zug]
     end
   end
 end

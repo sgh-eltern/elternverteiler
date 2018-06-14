@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Rolle do
-  subject(:pab) { Rolle.new(name: 'Member of the Parent Advisory Board').save }
+  subject(:pab) { described_class.new(name: 'Member of the Parent Advisory Board').save }
   let(:klasse) { Klasse.new(stufe: '4', zug: 'a').save }
 
   it 'has a name' do
@@ -10,6 +10,10 @@ describe Rolle do
 
   it 'has an empty set of members' do
     expect(pab.mitglieder).to be_empty
+  end
+
+  it 'cannot create another role with the same name' do
+    expect { described_class.new(name: subject.name).save }.to raise_error(Sequel::UniqueConstraintViolation)
   end
 
   context 'some parents are members' do

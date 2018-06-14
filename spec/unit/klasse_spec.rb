@@ -16,6 +16,24 @@ describe Klasse do
     expect(klasse_4a.forme_namespace).to eq('sgh-elternverteiler-klasse')
   end
 
+  it 'cannot create another role with the same stufe and zug' do
+    expect do
+      described_class.new( stufe: subject.stufe, zug: subject.zug ).save
+    end.to raise_error(Sequel::UniqueConstraintViolation)
+  end
+
+  it 'can create another role with the same stufe, but another zug' do
+    expect do
+      described_class.new( stufe: subject.stufe, zug: subject.zug.next ).save
+    end.not_to raise_error
+  end
+
+  it 'can create another role with another stufe, but the same zug' do
+    expect do
+      described_class.new( stufe: subject.stufe.next, zug: subject.zug ).save
+    end.not_to raise_error
+  end
+
   context 'some kids with parents' do
     let(:sherri) { Schüler.new(vorname: 'Sherri', nachname: 'Mackleberry', klasse: klasse_4a).save }
     let(:terri) { Schüler.new(vorname: 'Terri', nachname: 'Mackleberry', klasse: klasse_4a).save }
