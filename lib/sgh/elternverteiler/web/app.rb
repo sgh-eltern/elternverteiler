@@ -27,9 +27,8 @@ module SGH
         plugin :render_each
         plugin :request_headers
         plugin :static, ['/js', '/css']
-        # TODO: plugin :csrf
-        Sequel::Model.plugin :forme
         plugin :status_handler
+        Sequel::Model.plugin :forme
 
         status_handler(404) do
           topic 'Nicht gefunden'
@@ -58,7 +57,7 @@ module SGH
             '/backups/new': '&nbsp;Neu',
 
             '/verteiler': 'Verteiler',
-            '/verteiler/diff': '&nbsp;Diff',
+            '/verteiler/diff': '&nbsp;Diff'
           }
           @current_path = r.path
           @user = r.headers['Multipass-Handle']
