@@ -136,35 +136,31 @@ module SGH
 
             r.get Integer, 'edit' do |id|
               @erziehungsberechtigter = Erziehungsberechtigter.first!(id: id)
-              topic "#{@erziehungsberechtigter.vorname} #{@erziehungsberechtigter.nachname} bearbeiten"
+              topic 'Eltern bearbeiten'
               view 'erziehungsberechtigter/edit'
             end
 
             r.post Integer do |id|
               @erziehungsberechtigter = Erziehungsberechtigter.first!(id: id)
               @erziehungsberechtigter.set_fields(r.params['sgh-elternverteiler-erziehungsberechtigter'], %w[vorname nachname mail telefon])
-
-              begin
-                @erziehungsberechtigter.save
-                flash[:success] = 'Erziehungsberechtigter wurde aktualisiert'
-                r.redirect
-              rescue SGH::Elternverteiler::Erziehungsberechtigter::ValidationError
-                flash.now[:error] = $ERROR_INFO.message
-                view 'erziehungsberechtigter/new'
-              end
+              @erziehungsberechtigter.save
+              flash[:success] = 'Erziehungsberechtigter wurde aktualisiert'
+              r.redirect
+            rescue SGH::Elternverteiler::Erziehungsberechtigter::ValidationError
+              topic 'Eltern bearbeiten'
+              flash.now[:error] = $ERROR_INFO.message
+              view 'erziehungsberechtigter/edit'
             end
 
             r.post do
               @erziehungsberechtigter = Erziehungsberechtigter.new
               @erziehungsberechtigter.set_fields(r.params['sgh-elternverteiler-erziehungsberechtigter'], %w[vorname nachname mail telefon])
-
-              begin
-                @erziehungsberechtigter.save
-                r.redirect "/eltern/#{@erziehungsberechtigter.id}"
-              rescue SGH::Elternverteiler::Erziehungsberechtigter::ValidationError
-                flash.now[:error] = $ERROR_INFO.message
-                view 'erziehungsberechtigter/new'
-              end
+              @erziehungsberechtigter.save
+              r.redirect "/eltern/#{@erziehungsberechtigter.id}"
+            rescue SGH::Elternverteiler::Erziehungsberechtigter::ValidationError
+              topic 'Erziehungsberechtigten hinzufügen'
+              flash.now[:error] = $ERROR_INFO.message
+              view 'erziehungsberechtigter/new'
             end
 
             r.on do
@@ -279,7 +275,7 @@ module SGH
 
             r.get Integer, 'edit' do |id|
               @schüler = Schüler.first!(id: id)
-              topic "#{@schüler.vorname} #{@schüler.nachname} bearbeiten"
+              topic 'Schüler bearbeiten'
               view 'schüler/edit'
             end
 
@@ -311,10 +307,14 @@ module SGH
             end
 
             r.post do
-              schüler = Schüler.new
-              schüler.set_fields(r.params['sgh-elternverteiler-schüler'], %w[vorname nachname klasse_id])
-              schüler.save
-              r.redirect "/schueler/#{schüler.id}"
+              @schüler = Schüler.new
+              @schüler.set_fields(r.params['sgh-elternverteiler-schüler'], %w[vorname nachname klasse_id])
+              @schüler.save
+              r.redirect "/schueler/#{@schüler.id}"
+            rescue Sequel::ConstraintViolation
+              flash.now[:error] = 'Alle Pflichtfelder müssen ausgefüllt werden.'
+              topic 'Schüler anlegen'
+              view 'schüler/new'
             end
 
             r.on 'nicht-erreichbar' do
