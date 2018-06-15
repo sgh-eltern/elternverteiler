@@ -19,6 +19,21 @@ module FixtureHelpers
     click_button('Anlegen')
   end
 
+  def delete_pupil(last, first, clazz)
+    visit '/'
+    within('#menu') { click_link('Klassen') }
+    within('.content') { click_link(clazz) }
+    within('.sgh-elternverteiler-schüler') do
+      # TODO This ignores the pupil's first name
+      return unless page.has_link?(last)
+      click_link(last)
+    end
+
+    within('.sgh-elternverteiler-schüler-form') do
+      accept_alert { click_button('Löschen') }
+    end
+  end
+
   def create_class(stufe, zug=nil)
     visit '/'
     within('#menu') { click_link('Klassen') }
@@ -32,13 +47,11 @@ module FixtureHelpers
     visit '/'
     within('#menu') { click_link('Klassen') }
     within('.content') do
-      click_link(name)
-      accept_alert { click_button('Löschen') }
+      if page.has_link?(name)
+        click_link(name)
+        accept_alert { click_button('Löschen') }
+      end
     end
-  end
-
-  def delete_class!(name)
-    delete_class(name) if page.has_link?(name)
   end
 
   def create_parent(last, first=nil, email=nil)
@@ -60,6 +73,8 @@ module FixtureHelpers
     select(parent)
     click_button('Speichern')
   end
+
+  def delete_parent(last, first=nil, email=nil);end
 
   def create_role(name)
     visit '/'

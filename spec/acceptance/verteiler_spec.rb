@@ -4,17 +4,15 @@ require_relative 'helper'
 
 describe 'Verteiler', type: :feature do
   before(:all) do
-    @simpson = "Simpson-#{rand(1000)}"
-    @bart = "Bart-#{rand(1000)}"
-    @homer = "Homer-#{rand(1000)}"
-
     create_class('5', 'V')
-    create_pupil(@simpson, @bart, '5V')
-    create_parent(@simpson, @homer, 'homer@simpson.name')
-    assign_parent(@simpson, "#{@simpson}, #{@homer}")
+    create_pupil('Simpson', 'Bart', '5V')
+    create_parent('Simpson', 'Homer', 'homer@simpson.name')
+    assign_parent('Simpson', 'Simpson, Homer')
   end
 
   after(:all) do
+    delete_parent('Simpson', 'Homer', 'homer@simpson.name')
+    delete_pupil('Simpson', 'Bart', '5V')
     delete_class('5V')
   end
 
@@ -55,7 +53,7 @@ describe 'Verteiler', type: :feature do
   context 'Homer is the primary Elternvertreter of 5V' do
     before(:all) do
       create_role('1.EV')
-      assign_role('5V', "#{@simpson}, #{@homer}", '1.EV')
+      assign_role('5V', 'Simpson, Homer', '1.EV')
       within('#menu') { click_link('Verteiler') }
     end
 

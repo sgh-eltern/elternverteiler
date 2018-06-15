@@ -1,4 +1,3 @@
-* Remove the randomness from acceptance specs
 * Export and scp the email list from the UI
 * Rename a class (will be useful for moving up after summer)
 * Delete a class with all pupils (J2 leaves after Abitur)

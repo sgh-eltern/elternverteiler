@@ -3,23 +3,23 @@
 require_relative 'helper'
 
 describe 'Ämter', type: :feature do
-  let(:simpson) { "Simpson-#{rand(1000)}" }
-  let(:homer) { "Homer-#{rand(1000)}" }
-  let(:simpson_homer) { "#{simpson}, #{homer}" }
-  let(:bart) { "Bart-#{rand(1000)}" }
-
   before(:all) do
     create_class('5', 'A')
   end
 
   after(:all) do
-    delete_class!('5A')
+    delete_class('5A')
   end
 
   before do
-    create_pupil(simpson, bart, '5A')
-    create_parent(simpson, homer, 'homer@simpson.name')
-    assign_parent(simpson, simpson_homer)
+    create_pupil('Simpson', 'Bart', '5A')
+    create_parent('Simpson', 'Homer', 'homer@simpson.name')
+    assign_parent('Simpson', 'Simpson, Homer')
+  end
+
+  after do
+    delete_parent('Simpson', 'Homer', 'homer@simpson.name')
+    delete_pupil('Simpson', 'Bart', '5A')
   end
 
   context 'no roles assigned' do
@@ -39,7 +39,7 @@ describe 'Ämter', type: :feature do
   context 'Homer is the designated clown of 5A' do
     before do
       create_role('1.EV')
-      assign_role('5A', simpson_homer, '1.EV')
+      assign_role('5A', 'Simpson, Homer', '1.EV')
     end
 
     after do
