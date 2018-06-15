@@ -34,14 +34,12 @@ describe 'Schüler', type: :feature do
       end
 
       context "and is registered as Homer's son" do
-        let(:homer) { "Homer-#{rand(1000)}" }
-
         before do
-          create_parent('Simpson', homer)
-          assign_parent('Simpson', "#{'Simpson'}, #{homer}")
+          create_parent('Simpson', 'Homer')
+          assign_parent('Simpson', 'Simpson, Homer')
         end
 
-        after { delete_parent('Simpson', homer) }
+        after { delete_parent('Simpson', 'Homer') }
 
         it "lists Bart as Homer's son" do
           click_link('Simpson')

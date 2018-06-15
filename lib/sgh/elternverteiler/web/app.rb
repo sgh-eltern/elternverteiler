@@ -220,13 +220,13 @@ module SGH
               @klasse.destroy
               flash[:success] = "#{@klasse} wurde gelöscht."
               r.redirect '/klassen'
-            rescue
+            rescue StandardError
               flash[:error] = "Die Klasse #{@klasse} hat Schüler und kann deshalb nicht gelöscht werden."
               r.redirect(r.referrer)
             end
 
             r.post Integer do |id|
-              raise "Missing implementation for editing Klasse"
+              raise 'Missing implementation for editing Klasse'
             end
 
             r.post do
@@ -266,7 +266,7 @@ module SGH
             end
 
             r.post Integer do |id|
-              raise "Missing implementation for editing Rolle"
+              raise 'Missing implementation for editing Rolle'
             end
 
             r.post do

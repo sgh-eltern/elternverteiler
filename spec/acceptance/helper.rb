@@ -176,7 +176,8 @@ RSpec.configure do |config|
   end
 
   config.before do
-    page.switch_to_window(page.current_window) # bring browser window to foreground
+    # page.switch_to_window(page.current_window) # bring browser window to foreground
+    page.driver.browser.manage.window.resize_to(800, 600)
   end
 
   config.after(:suite) do
