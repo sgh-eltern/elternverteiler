@@ -64,8 +64,7 @@
 <table class="pure-table pure-table-horizontal pure-table-striped sgh-elternverteiler-schüler">
   <thead>
     <tr>
-      <th>Nachname</th>
-      <th>Vorname</th>
+      <th>Name</th>
       <th>Klasse</th>
     </tr>
   </thead>
@@ -76,17 +75,18 @@
     <tr>
       <td>
         <a name="<%= sch.nachname&.chars&.first %>"/>
-        <a href="/schueler/<%= sch.id %>"><%= sch.nachname %></a>
-      </td>
-      <td>
-        <a href="/schueler/<%= sch.id %>"><%= sch.vorname %></a>
+        <a href="/schueler/<%= sch.id %>"><%= sch.name %></a>
       </td>
       <td>
         <a href="/klassen/<%= sch.klasse.id %>"><%= sch.klasse %></a>
       </td>
     </tr>
     <% end %>
-  </tbody>
+
+    <% if @klasse %>
+      <%== partial('meta', locals: { item: @klasse }) %>
+    <% end %>
+</tbody>
 </table>
 
 <% if @klasse %>

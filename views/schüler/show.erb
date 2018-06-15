@@ -1,5 +1,9 @@
 <table class="pure-table pure-table-horizontal sgh-elternverteiler-schüler">
   <tr>
+    <th style="border-left-style: hidden; border-right-style: hidden; border-top-style: hidden; text-align: left;" colspan=2><h2>Stammdaten</h2></th>
+  </tr>
+
+  <tr>
     <th style="background-color: #f2f2f2; text-align: right;">Nachname</th>
     <td><%= @schüler.nachname %></td>
   </tr>
@@ -25,6 +29,8 @@
       </p>
     </td>
   </tr>
+
+  <%== partial('meta', locals: {item: @schüler}) %>
 </table>
 
 <form action="/schueler/<%= @schüler.id %>/delete" class="pure-form pure-form-aligned sgh-elternverteiler-schüler-form" method="post">

@@ -1,0 +1,13 @@
+<tr>
+  <th style="border-left-style: hidden; border-right-style: hidden; text-align: left;" colspan=2><h2>Meta</h2></th>
+</tr>
+
+<tr>
+  <th style="background-color: #f2f2f2; text-align: right;">angelegt</th>
+  <td><%= item.created_at&.strftime('%d.%m.%Y %H:%M:%S Uhr') %></td>
+</tr>
+
+<tr>
+  <th style="background-color: #f2f2f2; text-align: right;">geändert</th>
+  <td><%= item.updated_at&.strftime('%d.%m.%Y %H:%M:%S Uhr') %></td>
+</tr>

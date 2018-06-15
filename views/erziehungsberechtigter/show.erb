@@ -1,5 +1,9 @@
 <table class="pure-table pure-table-horizontal sgh-elternverteiler-erziehungsberechtigter">
   <tr>
+    <th style="border-left-style: hidden; border-right-style: hidden; border-top-style: hidden; text-align: left;" colspan=2><h2>Stammdaten</h2></th>
+  </tr>
+
+  <tr>
     <th style="background-color: #f2f2f2; text-align: right;">Nachname</th>
     <td><%= @erziehungsberechtigter.nachname %></td>
   </tr>
@@ -29,7 +33,9 @@
       <th style="background-color: #f2f2f2; text-align: right;">Ämter</th>
       <td>
         <% @erziehungsberechtigter.ämter.each do |amt| %>
-        <%= amt %><br/>
+        <a href="/rollen/<%= amt.rolle.id %>"><%= amt.rolle %></a>
+        <a href="/klassen/<%= amt.klasse.id %>"><%= amt.klasse %></a>
+        <br/>
         <% end %>
       </td>
     </tr>
@@ -38,10 +44,14 @@
       <th style="background-color: #f2f2f2; text-align: right;">Kinder</th>
       <td>
         <% @erziehungsberechtigter.kinder.each do |kind| %>
-          <a href="/schueler/<%= kind.id %>"><%= kind %></a><br/>
+          <a href="/schueler/<%= kind.id %>"><%= kind.name %></a>
+          <a href="/klassen/<%= kind.klasse.id %>"><%= kind.klasse %></a>
+          <br/>
         <% end %>
       </td>
     </tr>
+
+    <%== partial('meta', locals: { item: @erziehungsberechtigter }) %>
 </table>
 
 <form action="/eltern/<%= @erziehungsberechtigter.id %>/delete" class="pure-form pure-form-aligned" method="post">
