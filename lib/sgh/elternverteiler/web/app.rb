@@ -216,9 +216,13 @@ module SGH
             end
 
             r.post Integer, 'delete' do |id|
-              @klasse = Klasse.first!(id: id).destroy
+              @klasse = Klasse.first!(id: id)
+              @klasse.destroy
               flash[:success] = "#{@klasse} wurde gelöscht."
               r.redirect '/klassen'
+            rescue
+              flash[:error] = "Die Klasse #{@klasse} hat Schüler und kann deshalb nicht gelöscht werden."
+              r.redirect(r.referrer)
             end
 
             r.post Integer do |id|
