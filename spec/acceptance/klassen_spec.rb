@@ -4,21 +4,16 @@ require_relative 'helper'
 
 describe 'Klassen', type: :feature do
   context '5K exists' do
-    before(:all) do
-      create_class('5', 'K')
-    end
-
-    after(:all) do
-      delete_class!('5K')
-    end
-
     before do
+      create_class('5', 'K')
       visit '/'
       within('#menu') { click_link('Klassen') }
       within('.content') { click_link('5K') }
     end
 
-    it 'Lists Elternvertreter' do
+    after { delete_class!('5K') }
+
+    it 'lists Elternvertreter' do
       expect(page).to have_content 'Elternvertreter'
     end
 
@@ -26,19 +21,26 @@ describe 'Klassen', type: :feature do
       expect(page).to have_content 'eMail: elternvertreter-5k@schickhardt-gymnasium-herrenberg.de'
     end
 
-    context 'J1 exists' do
-      before(:all) do
-        create_class('J', '1')
-      end
-
-      after(:all) do
-        delete_class!('J1')
-      end
-
+    context 'attempting to create another role with the same name' do
       before do
+        create_class('5', 'K')
+      end
+
+      it 'provides details on the error' do
+        within('aside.error') do
+          expect(page).to have_content('Die Klasse 5K existiert bereits')
+        end
+      end
+    end
+
+    context 'J1 exists' do
+      before do
+        create_class('J', '1')
         visit '/'
         within('#menu') { click_link('Klassen') }
       end
+
+      after { delete_class!('J1') }
 
       it 'lists both 5K and J1' do
         within('.content') do
@@ -48,11 +50,6 @@ describe 'Klassen', type: :feature do
       end
 
       context '5K is deleted' do
-        before do
-          visit '/'
-          within('#menu') { click_link('Klassen') }
-        end
-
         it '5K is not listed anymore, but J1 still is' do
           delete_class!('5K')
           within('.sgh-elternverteiler-klassen') do

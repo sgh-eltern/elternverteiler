@@ -221,11 +221,19 @@ module SGH
               r.redirect '/klassen'
             end
 
+            r.post Integer do |id|
+              raise "Missing implementation for editing Klasse"
+            end
+
             r.post do
-              klasse = Klasse.new
-              klasse.set_fields(r.params['sgh-elternverteiler-klasse'], %w[stufe zug])
-              klasse.save
-              r.redirect "/klassen/#{klasse.id}"
+              @klasse = Klasse.new
+              @klasse.set_fields(r.params['sgh-elternverteiler-klasse'], %w[stufe zug])
+              @klasse.save
+              r.redirect "/klassen/#{@klasse.id}"
+            rescue Sequel::UniqueConstraintViolation
+              topic 'Neue Klasse anlegen'
+              flash.now[:error] = "Die Klasse #{@klasse.name} existiert bereits"
+              view 'rollen/new'
             end
 
             r.on do
@@ -253,14 +261,18 @@ module SGH
               r.redirect '/rollen'
             end
 
+            r.post Integer do |id|
+              raise "Missing implementation for editing Rolle"
+            end
+
             r.post do
               @rolle = Rolle.new
               @rolle.name = r.params['sgh-elternverteiler-rolle']['name']
               @rolle.save
               r.redirect "/rollen/#{@rolle.id}"
-            rescue Sequel::UniqueConstraintViolation => e
-              flash.now[:error] = "Die Rolle #{@rolle.name} existiert bereits"
+            rescue Sequel::UniqueConstraintViolation
               topic 'Neue Rolle anlegen'
+              flash.now[:error] = "Die Rolle #{@rolle.name} existiert bereits"
               view 'rollen/new'
             end
 
@@ -317,8 +329,8 @@ module SGH
               flash[:success] = 'Schüler wurde aktualisiert'
               r.redirect
             rescue Sequel::ConstraintViolation
-              flash.now[:error] = 'Alle Pflichtfelder müssen ausgefüllt werden.'
               topic 'Schüler bearbeiten'
+              flash.now[:error] = 'Alle Pflichtfelder müssen ausgefüllt werden.'
               view 'schüler/edit'
             end
 
@@ -328,8 +340,8 @@ module SGH
               @schüler.save
               r.redirect "/schueler/#{@schüler.id}"
             rescue Sequel::ConstraintViolation
-              flash.now[:error] = 'Alle Pflichtfelder müssen ausgefüllt werden.'
               topic 'Schüler anlegen'
+              flash.now[:error] = 'Alle Pflichtfelder müssen ausgefüllt werden.'
               view 'schüler/new'
             end
 
@@ -376,12 +388,12 @@ module SGH
             end
 
             r.post do
-              topic 'Neues Backup'
               @backup = Recovery::Backup.new(r.params['name'])
               @backup_manager.backup(@backup)
               flash[:success] = "Backup #{@backup.name} wurde angelegt."
               r.redirect
             rescue StandardError
+              topic 'Neues Backup'
               flash.now[:error] = $ERROR_INFO.message
               view 'backups/new'
             end

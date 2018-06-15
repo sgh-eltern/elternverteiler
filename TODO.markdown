@@ -1,9 +1,12 @@
+* Remove the randomness from acceptance specs
 * Export and scp the email list from the UI
 * Rename a class (will be useful for moving up after summer)
 * Delete a class with all pupils (J2 leaves after Abitur)
   => Make sure parents with other kids in school are kept
 * Pressing "Add a pupil" (within a class list) selects the right class in the dropdown of the "New Pupil" form
 * Rename roles
+* navbar must not be printed
+* navbar should be extracted into shared snippet
 * More validations:
   - There can only be one EBV1 / EBV2
   - Only EV can become EBV
