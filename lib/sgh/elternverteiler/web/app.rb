@@ -124,7 +124,7 @@ module SGH
 
             r.get Integer do |id|
               @erziehungsberechtigter = Erziehungsberechtigter.first!(id: id)
-              topic "#{@erziehungsberechtigter.vorname} #{@erziehungsberechtigter.nachname}"
+              topic 'Erziehungsberechtigte/r'
               view 'erziehungsberechtigter/show'
             end
 
@@ -289,7 +289,7 @@ module SGH
           r.on 'schueler' do
             r.get Integer do |id|
               @schüler = Schüler.first!(id: id)
-              topic "#{@schüler.vorname} #{@schüler.nachname}"
+              topic 'Schüler/in'
               view 'schüler/show'
             end
 

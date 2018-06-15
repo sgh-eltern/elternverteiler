@@ -24,7 +24,7 @@ module FixtureHelpers
     within('#menu') { click_link('Klassen') }
     within('.content') { click_link(clazz) }
     within('.sgh-elternverteiler-schüler') do
-      # TODO This ignores the pupil's first name
+      # TODO: This ignores the pupil's first name
       return unless page.has_link?(last)
       click_link(last)
     end

@@ -90,16 +90,13 @@
 </table>
 
 <% if @klasse %>
-<h3>Meta</h3>
-
 <form action="/klassen/<%= @klasse.id %>/delete" class="pure-form pure-form-aligned" method="post">
 <p>
   <input class="pure-button"
          type="submit"
          value="Löschen"
          style="color: white; background: rgb(202, 60, 60)"
-         onclick="return confirm('Sind Sie sicher, daß Sie die Klasse <%= @klasse %> löschen möchten?')"
-  />
+         onclick="return confirm('Sind Sie sicher, daß Sie die Klasse <%= @klasse %> löschen möchten?')"/>
 </p>
 </form>
 <% end %>
