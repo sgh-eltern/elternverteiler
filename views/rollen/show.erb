@@ -5,13 +5,15 @@
 
   <tr>
     <th style="background-color: #f2f2f2; text-align: right;">Name</th>
-    <td><%= @rolle %></td>
+    <td><%= @rolle.name %></td>
   </tr>
 
   <tr>
-    <th style="background-color: #f2f2f2; text-align: right;">Inhaber</th>
+    <th valign=top style="background-color: #f2f2f2; text-align: right;">Inhaber</th>
     <td>
-      TODO
+      <% @rolle.mitglieder.sort_by(&:nachname).each do |paren| %>
+      <a href="/eltern/<%= paren.id %>"><%= paren.nachname %>, <%= paren.vorname %></a><br/>
+      <% end %>
     </td>
   </tr>
 
