@@ -12,7 +12,7 @@ describe 'Schüler', type: :feature do
       it 'can create a new pupil' do
         create_pupil('Simpson', 'Bart', '9S')
 
-        within(find('.sgh-elternverteiler-schüler')) do
+        within('.sgh-elternverteiler-schüler') do
           expect(page).to have_content('Bart')
           expect(page).to have_content('Simpson')
         end

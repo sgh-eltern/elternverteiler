@@ -14,7 +14,7 @@ describe 'Helper', type: :feature do
         create_pupil('Simpson', 'Bart', '5H')
 
         within('#menu') { click_link('Schüler') }
-        within(find('.sgh-elternverteiler-schüler')) do
+        within('.sgh-elternverteiler-schüler') do
           expect(page).to have_content('Bart')
         end
       end
@@ -29,7 +29,7 @@ describe 'Helper', type: :feature do
 
         it 'removes Bart from the list' do
           within('#menu') { click_link('Schüler') }
-          within(find('.sgh-elternverteiler-schüler')) do
+          within('.sgh-elternverteiler-schüler') do
             expect(page).to_not have_content('Bart')
           end
         end
@@ -40,6 +40,35 @@ describe 'Helper', type: :feature do
             expect(page).to have_content '5H'
           end
         end
+      end
+
+    end
+  end
+
+  context 'Homer does not exist yet' do
+    after do
+      delete_parent('Simpson', 'Homer', 'homer@simpson.name')
+    end
+
+    it 'creates Homer' do
+      create_parent('Simpson', 'Homer', 'homer@simpson.name')
+
+      within('#menu') { click_link('Eltern') }
+      within('.sgh-elternverteiler-erziehungsberechtigter') do
+        expect(page).to have_content('Homer')
+      end
+    end
+  end
+
+  context 'Homer exists' do
+    before { create_parent('Simpson', 'Homer', 'homer@simpson.name') }
+    after { delete_parent('Simpson', 'Homer', 'homer@simpson.name') }
+
+    it 'removes Homer' do
+      delete_parent('Simpson', 'Homer', 'homer@simpson.name')
+      within('#menu') { click_link('Eltern') }
+      within('.sgh-elternverteiler-erziehungsberechtigter') do
+        expect(page).to_not have_content('Homer')
       end
     end
   end

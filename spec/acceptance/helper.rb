@@ -74,7 +74,16 @@ module FixtureHelpers
     click_button('Speichern')
   end
 
-  def delete_parent(last, first=nil, email=nil);end
+  def delete_parent(last, first=nil, email=nil)
+    visit '/'
+    within('#menu') { click_link('Eltern') }
+    within('.content') do
+      if page.has_link?(last)
+        click_link(last)
+        accept_alert { click_button('Löschen') }
+      end
+    end
+  end
 
   def create_role(name)
     visit '/'
