@@ -21,7 +21,14 @@ namespace :spec do
   end
 end
 
-RuboCop::RakeTask.new
+namespace 'parallel:rspec' do
+  %i[unit system acceptance].each do |type|
+    desc "Run #{type} tests"
+    task type do
+      abort unless system("parallel_rspec spec/#{type}")
+    end
+  end
+end
 
 namespace :db do
   require 'sequel'

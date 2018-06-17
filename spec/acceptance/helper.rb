@@ -72,6 +72,7 @@ RSpec.configure do |config|
 
     Capybara.app = SGH::Elternverteiler::Web::App
     Capybara.default_driver = :selenium_chrome
+    Capybara.server_port = 9887 + ENV['TEST_ENV_NUMBER'].to_i
   end
 
   config.before do

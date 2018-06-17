@@ -20,6 +20,7 @@ group 'development' do
   gem 'chromedriver-helper'
   gem 'guard-bundler', require: false
   gem 'guard-rspec', require: false
+  gem 'parallel_tests'
   gem 'pry'
   gem 'pry-byebug'
   gem 'rack-test'
