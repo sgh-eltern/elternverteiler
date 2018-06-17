@@ -1,12 +1,14 @@
+# General
+
 * Rename a class (will be useful for moving up after summer)
 * Delete a class with all pupils (J2 leaves after Abitur)
   => Make sure parents with other kids in school are kept
 * Export and scp the email list from the UI
 * Rolle needs a slug besides the current name, which should actually be longer and more descriptive
+  => This will become edit for a role, and thus we will get updated_at etc. as well
 * Pressing "Add a pupil" (within a class list) selects the right class in the dropdown of the "New Pupil" form
-* Rename roles
 * navbar must not be printed
-* navbar should be extracted into shared snippet
+* navbar should be extracted into partial
 * More validations:
   - There can only be one EBV1 / EBV2
   - Only EV can become EBV
@@ -19,6 +21,10 @@
 * Save backups to object storage instead of the local filesystem
   => Encrypt using gpg: `backup-encryption.markdown`
 * Double-check web security
+* Some roles are being delegated from the Elternbeirat, and not from the class (e.g. Schulkonferenz). For those, do not record the class where the parent is having this role for, or at least do not show it (in `to_s` etc)
+
+# Authorization
+
 * Do not show anything without login
 * Show the list of all EV (without details) to unauthenticated users (read-only, not even buttons)
 * Show the list of all EBR (without details) to unauthenticated users (read-only, not even buttons)
@@ -29,6 +35,8 @@
   => Needs login via magic link
 * Parents (incl. EV) can see the classes of their children (read-only, not even buttons)
   => Needs login via magic link
+
+# Misc
+
 * Can we build an audit trail, or at least add a note of what happened?
-* Some roles are being delegated from the Elternbeirat, and not from the class (e.g. Schulkonferenz). For those, do not record the class where the parent is having this role for, or at least do not show it (in `to_s` etc)
 * Full-text search
