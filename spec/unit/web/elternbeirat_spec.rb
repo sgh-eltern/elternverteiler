@@ -17,4 +17,21 @@ describe SGH::Elternverteiler::Web::App do
     get '/'
     expect(last_response).to be_ok
   end
+
+  it 'shows the current distribution list' do
+    get '/verteiler'
+    expect(last_response).to be_ok
+    expect(last_response.body).to include('Klassen')
+  end
+
+  it "downloads the server's distribution list" do
+    expect_any_instance_of(SGH::Elternverteiler::MailServer).to receive(:download)
+    get '/verteiler/diff'
+    expect(last_response).to be_ok
+  end
+
+  it 'uploads the new distribution list' do
+    put '/verteiler/diff'
+    expect(last_response).to be_ok
+  end
 end
