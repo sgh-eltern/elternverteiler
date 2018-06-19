@@ -10,50 +10,30 @@
 
   <h2>Eltern</h2>
   <table class="pure-table pure-table-bordered">
-    <thead>
-      <tr>
-        <th>Liste</th>
-        <th>eMail-Adresse</th>
-        <th>Mitglieder</th>
-      </tr>
-    </thead>
+    <%== partial('verteiler/thead') %>
     <tbody>
       <% @klassen.each do |klasse| %>
-        <% liste = SGH::Elternverteiler::MailingList.new(
-             title: "Alle Eltern der Klasse #{klasse}",
-             address: "eltern-#{klasse.to_s.downcase}",
-             members: klasse.eltern)
-        %>
-        <tr valign=top>
-          <td><%= liste.title %></td>
-          <td><%= liste.address.split('@').first %></td>
-          <td><%= liste.members.count %></td>
-        </tr>
+        <%== partial('verteiler/tr', locals: {
+          liste: SGH::Elternverteiler::MailingList.new(
+               title: "Alle Eltern der Klasse #{klasse}",
+               address: "eltern-#{klasse.to_s.downcase}",
+               members: klasse.eltern)
+        }) %>
       <% end %>
     </tbody>
   </table>
 
   <h2>Elternvertreter</h2>
   <table class="pure-table pure-table-bordered">
-    <thead>
-      <tr>
-        <th>Liste</th>
-        <th>eMail-Adresse</th>
-        <th>Mitglieder</th>
-      </tr>
-    </thead>
+    <%== partial('verteiler/thead') %>
     <tbody>
       <% @klassen.each do |klasse| %>
-        <% liste = SGH::Elternverteiler::MailingList.new(
-             title: "Elternvertreter der Klasse #{klasse}",
-             address: "elternvertreter-#{klasse.to_s.downcase}",
-             members: klasse.elternvertreter)
-        %>
-        <tr valign=top>
-          <td><%= liste.title %></td>
-          <td><%= liste.address.split('@').first %></td>
-          <td><%= liste.members.count %></td>
-        </tr>
+        <%== partial('verteiler/tr', locals: {
+          liste: SGH::Elternverteiler::MailingList.new(
+               title: "Elternvertreter der Klasse #{klasse}",
+               address: "elternvertreter-#{klasse.to_s.downcase}",
+               members: klasse.elternvertreter)
+        }) %>
       <% end %>
     </tbody>
   </table>
@@ -62,112 +42,65 @@
 
   <h2>Elternvertreter</h2>
   <table class="pure-table pure-table-bordered">
-    <thead>
-      <tr>
-        <th>Liste</th>
-        <th>eMail-Adresse</th>
-        <th>Mitglieder</th>
-      </tr>
-    </thead>
+    <%== partial('verteiler/thead') %>
     <tbody>
       <% @klassen.group_by(&:stufe).each do |klassenstufe, klassen| %>
-        <%
-          klassenstufe_elternvertreter = klassen.flat_map(&:elternvertreter)
-          liste = SGH::Elternverteiler::MailingList.new(
-             title: "Elternvertreter der Klassenstufe #{klassenstufe}",
-             address: "elternvertreter-#{klassenstufe.to_s.downcase}",
-             members: klassenstufe_elternvertreter)
-        %>
-        <tr valign=top>
-          <td><%= liste.title %></td>
-          <td><%= liste.address.split('@').first %></td>
-          <td><%= liste.members.count %></td>
-        </tr>
+        <% klassenstufe_elternvertreter = klassen.flat_map(&:elternvertreter) %>
+        <%== partial('verteiler/tr', locals: { liste: SGH::Elternverteiler::MailingList.new(
+           title: "Elternvertreter der Klassenstufe #{klassenstufe}",
+           address: "elternvertreter-#{klassenstufe.to_s.downcase}",
+           members: klassenstufe_elternvertreter) }) %>
       <% end %>
     </tbody>
   </table>
 
   <h2>Eltern</h2>
   <table class="pure-table pure-table-bordered">
-    <thead>
-      <tr>
-        <th>Liste</th>
-        <th>eMail-Adresse</th>
-        <th>Mitglieder</th>
-      </tr>
-    </thead>
+    <%== partial('verteiler/thead') %>
     <tbody>
       <% @klassen.group_by(&:stufe).each do |klassenstufe, klassen| %>
-      <%
-        klassenstufe_eltern = klassen.flat_map(&:eltern)
-        liste = SGH::Elternverteiler::MailingList.new(
-             title: "Alle Eltern der Klassenstufe #{klassenstufe}",
-             address: "eltern-#{klassenstufe.to_s.downcase}",
-             members: klassenstufe_eltern)
-        %>
-        <tr valign=top>
-          <td><%= liste.title %></td>
-          <td><%= liste.address.split('@').first %></td>
-          <td><%= liste.members.count %></td>
-        </tr>
+      <% klassenstufe_eltern = klassen.flat_map(&:eltern) %>
+        <%== partial('verteiler/tr', locals: {
+          liste: SGH::Elternverteiler::MailingList.new(
+               title: "Alle Eltern der Klassenstufe #{klassenstufe}",
+               address: "eltern-#{klassenstufe.to_s.downcase}",
+               members: klassenstufe_eltern)
+         }) %>
       <% end %>
     </tbody>
   </table>
 
   <h1>Sonstige</h1>
   <table class="pure-table pure-table-bordered">
-    <thead>
-      <tr>
-        <th>Liste</th>
-        <th>eMail-Adresse</th>
-        <th>Mitglieder</th>
-      </tr>
-    </thead>
+    <%== partial('verteiler/thead') %>
     <tbody>
-      <% liste = SGH::Elternverteiler::MailingList.new(
-           title: 'Alle Eltern',
-           address: "eltern",
-           members: @eltern)
-      %>
-      <tr valign=top>
-        <td><%= liste.title %></td>
-        <td><%= liste.address.split('@').first %></td>
-        <td><%= liste.members.count %></td>
-      </tr>
+      <%== partial('verteiler/tr', locals: {
+        liste: SGH::Elternverteiler::MailingList.new(
+             title: 'Alle Eltern',
+             address: "eltern",
+             members: @eltern)
+        }) %>
 
-      <% liste = SGH::Elternverteiler::MailingList.new(
-           title: 'Elternbeirat',
-           address: 'elternbeirat',
-           members: @elternbeirat)
-      %>
-      <tr valign=top>
-        <td><%= liste.title %></td>
-        <td><%= liste.address.split('@').first %></td>
-        <td><%= liste.members.count %></td>
-      </tr>
+      <%== partial('verteiler/tr', locals: {
+        liste: SGH::Elternverteiler::MailingList.new(
+             title: 'Elternbeirat',
+             address: 'elternbeirat',
+             members: @elternbeirat)
+      }) %>
 
-      <% liste = SGH::Elternverteiler::MailingList.new(
-           title: 'Elternvertreter in der Schulkonferenz',
-           address: 'elternvertreter-schulkonferenz',
-           members: @evsk)
-      %>
-      <tr valign=top>
-        <td><%= liste.title %></td>
-        <td><%= liste.address.split('@').first %></td>
-        <td><%= liste.members.count %></td>
-      </tr>
+      <%== partial('verteiler/tr', locals: {
+        liste: SGH::Elternverteiler::MailingList.new(
+             title: 'Elternvertreter in der Schulkonferenz',
+             address: 'elternvertreter-schulkonferenz',
+             members: @evsk)
+      }) %>
 
-      <% liste = SGH::Elternverteiler::MailingList.new(
-           title: 'Elternbeiratsvorsitzende',
-           address: 'elternbeiratsvorsitzende',
-           members: @ebv)
-      %>
-      <tr valign=top>
-        <td><%= liste.title %></td>
-        <td><%= liste.address.split('@').first %></td>
-        <td><%= liste.members.count %></td>
-      </tr>
-
+      <%== partial('verteiler/tr', locals: {
+        liste: SGH::Elternverteiler::MailingList.new(
+             title: 'Elternbeiratsvorsitzende',
+             address: 'elternbeiratsvorsitzende',
+             members: @ebv)
+      }) %>
     </tbody>
   </table>
 
