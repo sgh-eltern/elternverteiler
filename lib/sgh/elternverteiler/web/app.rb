@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'roda'
-require 'tilt'
 require 'forme'
 require 'English'
 require 'hashdiff'
@@ -11,6 +10,7 @@ require 'sgh/elternverteiler/postmap_presenter'
 require 'sgh/elternverteiler/postmap_parser'
 require 'sgh/elternverteiler/recovery'
 require 'sgh/elternverteiler/mail_server'
+require 'sgh/elternverteiler/mailing_list'
 
 module SGH
   module Elternverteiler
@@ -57,7 +57,10 @@ module SGH
             '/backups/new': '&nbsp;Neu',
 
             '/verteiler': 'Verteiler',
-            '/verteiler/diff': '&nbsp;Diff'
+            # '/verteiler/klassen': '&nbsp;Eltern',
+            # '/verteiler/klassenstufen': '&nbsp;Klassenstufen',
+            # '/verteiler/eltern': '&nbsp;Alle Eltern',
+            # '/verteiler/elternbeirat': '&nbsp;Elternbeirat',
           }
           @current_path = r.path
           @user = r.headers['Multipass-Handle']
@@ -409,20 +412,27 @@ module SGH
           end
 
           r.on 'verteiler' do
-            topic 'eMail-Verteiler'
-
-            r.get 'diff' do
+            r.post 'diff' do
+              @distribution_list = r.params['distribution_list']
               parser = SGH::Elternverteiler::PostmapParser.new
-              server = parser.parse(SGH::Elternverteiler::MailServer.new.download)
-              local = parser.parse(Tilt::ERBTemplate.new('views/verteiler/all.erb').render(self))
+              updated_distribution_list = parser.parse(@distribution_list)
+              current = parser.parse(SGH::Elternverteiler::MailServer.new.download)
+              @diff = HashDiff.diff(current, updated_distribution_list)
 
-              @diff = HashDiff.diff(server, local)
+              topic 'Änderungen überprüfen'
               view 'verteiler/diff'
             end
 
+            r.post 'upload' do
+              distribution_list = r.params['distribution_list']
+              SGH::Elternverteiler::MailServer.new.upload(distribution_list, 'elternverteiler-from-app.txt')
+              flash[:success] = 'Verteiler wurde erfolgreich aktualisiert.'
+              r.redirect '/verteiler'
+            end
+
             r.on do
-              response['Content-Type'] = 'text/plain; charset=utf-8'
-              view 'verteiler/all', layout: nil
+              topic 'eMail-Verteiler'
+              view 'verteiler/show'
             end
           end
         end

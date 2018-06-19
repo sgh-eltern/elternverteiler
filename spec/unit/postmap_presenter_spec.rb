@@ -58,5 +58,17 @@ describe PostmapPresenter do
         expect(subject.to_s).to_not include(',,')
       end
     end
+
+    context 'parents with empty email addresses' do
+      before do
+        Erziehungsberechtigter.new(vorname: 'Luann', nachname: 'Van Houten', mail: '').save
+        Erziehungsberechtigter.new(vorname: 'Homer', nachname: 'Simpson', mail: 'homer@simpson.org').save
+        Erziehungsberechtigter.new(vorname: 'Marge', nachname: 'Simpson', mail: 'marge@simpson.org').save
+      end
+
+      it 'does not include empty email addresses in the output' do
+        expect(subject).to eq('eltern@springfield-elementary.edu homer@simpson.org,marge@simpson.org')
+      end
+    end
   end
 end

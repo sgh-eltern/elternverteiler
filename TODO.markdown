@@ -1,9 +1,11 @@
 # General
 
+* Export and scp the email list (with the real file name) from the UI
+* Implement `views/verteiler/_distribution_list.erb` using the MailingList class, like `views/verteiler/show.erb`
+* Implement MailingList#address(short) etc. instead of splitting in views
 * Rename a class (will be useful for moving up after summer)
 * Delete a class with all pupils (J2 leaves after Abitur)
   => Make sure parents with other kids in school are kept
-* Export and scp the email list from the UI
 * Rolle needs a slug besides the current name, which should actually be longer and more descriptive
   => This will become edit for a role, and thus we will get updated_at etc. as well
 * Pressing "Add a pupil" (within a class list) selects the right class in the dropdown of the "New Pupil" form

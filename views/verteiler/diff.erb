@@ -1,7 +1,53 @@
-- => removed here<br/>
-+ => added here<br/>
-~ => changed<br/>
+<form action="/verteiler/upload" class="pure-form" method="post">
+  <input name="distribution_list" type="hidden" value="<%= @distribution_list %>"/>
+  <p>
+    <input class="pure-button pure-button-primary"
+           type="submit"
+           value="Aktualisieren" />
+  </p>
 
-<% @diff.each do |change| %>
-  <p><%= change %></p>
-<% end %>
+  <table class="pure-table pure-table-bordered">
+    <thead>
+      <tr>
+        <th>Verteiler</th>
+        <th>Änderung</th>
+        <th>Adressen</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @diff.each do |change| %>
+    <tr valign=top>
+      <td><%= change[1].split('@').first %></td>
+      <td>
+        <%=
+        case change[0]
+        when '+'
+          'hinzugefügt'
+        when '-'
+          'entfernt'
+        when '~'
+          'geändert'
+        else
+          'unbekannt'
+        end
+         %>
+         wird
+      </td>
+      <td>
+        <% if change[2].is_a?(Array) %>
+          <%== change[2].join('<br/>') %>
+        <% else %>
+          <%= change[2] %>
+        <% end %>
+      </td>
+    <% end %>
+    </tr>
+    </tbody>
+  </table>
+
+  <p>
+    <input class="pure-button pure-button-primary"
+           type="submit"
+           value="Aktualisieren" />
+  </p>
+</form>

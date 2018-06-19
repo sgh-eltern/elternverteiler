@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ClassHelpers
   def create_class(stufe, zug=nil)
     visit '/'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RoleHelpers
   def create_role(name)
     visit '/'

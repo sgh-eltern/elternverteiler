@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PupilHelpers
   def create_pupil(last, first, clazz)
     visit '/'

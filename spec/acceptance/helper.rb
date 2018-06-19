@@ -12,11 +12,11 @@ require_relative 'helpers/parent_helpers'
 require_relative 'helpers/pupil_helpers'
 require_relative 'helpers/role_helpers'
 
-DB_NAME = "acceptance-test-#{SecureRandom.uuid}".freeze
+DB_NAME = "acceptance-test-#{SecureRandom.uuid}"
 DB_DIR = Pathname(Dir.mktmpdir('acceptance-test-db_')).freeze
 
 def db_name
-  "#{DB_NAME}-#{ENV['TEST_ENV_NUMBER'].to_i}".freeze
+  "#{DB_NAME}-#{ENV['TEST_ENV_NUMBER'].to_i}"
 end
 
 RSpec.configure do |config|

@@ -9,7 +9,7 @@ module SGH
 
       def present(exhibit)
         return '' if exhibit.empty?
-        "#{@address} #{exhibit.map(&:mail).uniq.compact.join(',')}"
+        "#{@address} #{exhibit.map(&:mail).uniq.reject { |a| a.to_s.empty? }.compact.join(',')}"
       end
     end
   end

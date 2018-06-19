@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ParentHelpers
   def create_parent(last, first=nil, email=nil)
     visit '/'

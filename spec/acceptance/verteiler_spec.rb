@@ -22,32 +22,32 @@ describe 'Verteiler', type: :feature do
   end
 
   it 'has Klassen' do
-    expect(page).to have_content('# Klassen')
-    expect(page).to have_content('# Klasse 5V')
-    expect(page).to have_content('eltern-5v@schickhardt-gymnasium-herrenberg.de homer@simpson.name')
+    expect(page).to have_content('Klassen')
+    expect(page).to have_content('Klasse 5V')
+    expect(page).to have_content('eltern-5v')
   end
 
   it 'has Klassenstufen' do
-    expect(page).to have_content('# Klassenstufen')
-    expect(page).to have_content('# Klasse 5')
-    expect(page).to have_content('eltern-5@schickhardt-gymnasium-herrenberg.de homer@simpson.name')
+    expect(page).to have_content('Klassenstufen')
+    expect(page).to have_content('Klasse 5')
+    expect(page).to have_content('eltern-5')
   end
 
   it 'has all Eltern' do
-    expect(page).to have_content('# Alle Eltern')
-    expect(page).to have_content('eltern@schickhardt-gymnasium-herrenberg.de homer@simpson.name')
+    expect(page).to have_content('Alle Eltern')
+    expect(page).to have_content('eltern')
   end
 
   it 'has the Elternbeirat' do
-    expect(page).to have_content('# Elternbeirat')
+    expect(page).to have_content('Elternbeirat')
   end
 
   it 'has the Elternvertreter in der Schulkonferenz' do
-    expect(page).to have_content('# Elternvertreter in der Schulkonferenz')
+    expect(page).to have_content('Elternvertreter in der Schulkonferenz')
   end
 
   it 'has the Elternbeiratsvorsitzende' do
-    expect(page).to have_content('# Elternbeiratsvorsitzende')
+    expect(page).to have_content('Elternbeiratsvorsitzende')
   end
 
   context 'Homer is the primary Elternvertreter of 5V' do
@@ -58,11 +58,11 @@ describe 'Verteiler', type: :feature do
     end
 
     it 'has the address of the Elternvertreter of 5V' do
-      expect(page).to have_content('elternvertreter-5v@schickhardt-gymnasium-herrenberg.de homer@simpson.name')
+      expect(page).to have_content('elternvertreter-5v')
     end
 
     it 'has the address of the Elternvertreter of 5' do
-      expect(page).to have_content('elternvertreter-5@schickhardt-gymnasium-herrenberg.de homer@simpson.name')
+      expect(page).to have_content('elternvertreter-5')
     end
   end
 end
