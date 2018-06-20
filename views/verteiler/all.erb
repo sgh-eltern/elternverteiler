@@ -8,8 +8,23 @@
 
   <h1>Klassen</h1>
 
+  <h2>Elternvertreter</h2>
+  <table class="pure-table pure-table-bordered sgh-elternverteiler-klasse-elternvertreter">
+    <%== partial('verteiler/thead') %>
+    <tbody>
+      <% klassen.each do |klasse| %>
+      <%== partial('verteiler/tr', locals: {
+        liste: SGH::Elternverteiler::MailingList.new(
+          title: "Elternvertreter der Klasse #{klasse}",
+          address: "elternvertreter-#{klasse.to_s.downcase}",
+          members: klasse.elternvertreter)
+          }) %>
+          <% end %>
+        </tbody>
+      </table>
+
   <h2>Eltern</h2>
-  <table class="pure-table pure-table-bordered">
+  <table class="pure-table pure-table-bordered sgh-elternverteiler-klasse-eltern">
     <%== partial('verteiler/thead') %>
     <tbody>
       <% klassen.each do |klasse| %>
@@ -23,25 +38,10 @@
     </tbody>
   </table>
 
-  <h2>Elternvertreter</h2>
-  <table class="pure-table pure-table-bordered">
-    <%== partial('verteiler/thead') %>
-    <tbody>
-      <% klassen.each do |klasse| %>
-        <%== partial('verteiler/tr', locals: {
-          liste: SGH::Elternverteiler::MailingList.new(
-               title: "Elternvertreter der Klasse #{klasse}",
-               address: "elternvertreter-#{klasse.to_s.downcase}",
-               members: klasse.elternvertreter)
-        }) %>
-      <% end %>
-    </tbody>
-  </table>
-
   <h1>Klassenstufen</h1>
 
   <h2>Elternvertreter</h2>
-  <table class="pure-table pure-table-bordered">
+  <table class="pure-table pure-table-bordered sgh-elternverteiler-klassenstufe-elternvertreter">
     <%== partial('verteiler/thead') %>
     <tbody>
       <% klassen.group_by(&:stufe).each do |klassenstufe, ks_klassen| %>
@@ -55,7 +55,7 @@
   </table>
 
   <h2>Eltern</h2>
-  <table class="pure-table pure-table-bordered">
+  <table class="pure-table pure-table-bordered sgh-elternverteiler-klassenstufe-eltern">
     <%== partial('verteiler/thead') %>
     <tbody>
       <% klassen.group_by(&:stufe).each do |klassenstufe, ks_klassen| %>
@@ -71,7 +71,7 @@
   </table>
 
   <h1>Sonstige</h1>
-  <table class="pure-table pure-table-bordered">
+  <table class="pure-table pure-table-bordered sgh-elternverteiler-sonstige">
     <%== partial('verteiler/thead') %>
     <tbody>
       <%== partial('verteiler/tr', locals: {

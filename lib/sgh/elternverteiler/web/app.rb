@@ -429,7 +429,7 @@ module SGH
 
             r.on do
               topic 'eMail-Verteiler'
-              view 'verteiler/show'
+              view 'verteiler/all'
             end
           end
         end
