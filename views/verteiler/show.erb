@@ -12,7 +12,7 @@
   <table class="pure-table pure-table-bordered">
     <%== partial('verteiler/thead') %>
     <tbody>
-      <% @klassen.each do |klasse| %>
+      <% klassen.each do |klasse| %>
         <%== partial('verteiler/tr', locals: {
           liste: SGH::Elternverteiler::MailingList.new(
                title: "Alle Eltern der Klasse #{klasse}",
@@ -27,7 +27,7 @@
   <table class="pure-table pure-table-bordered">
     <%== partial('verteiler/thead') %>
     <tbody>
-      <% @klassen.each do |klasse| %>
+      <% klassen.each do |klasse| %>
         <%== partial('verteiler/tr', locals: {
           liste: SGH::Elternverteiler::MailingList.new(
                title: "Elternvertreter der Klasse #{klasse}",
@@ -44,8 +44,8 @@
   <table class="pure-table pure-table-bordered">
     <%== partial('verteiler/thead') %>
     <tbody>
-      <% @klassen.group_by(&:stufe).each do |klassenstufe, klassen| %>
-        <% klassenstufe_elternvertreter = klassen.flat_map(&:elternvertreter) %>
+      <% klassen.group_by(&:stufe).each do |klassenstufe, ks_klassen| %>
+        <% klassenstufe_elternvertreter = ks_klassen.flat_map(&:elternvertreter) %>
         <%== partial('verteiler/tr', locals: { liste: SGH::Elternverteiler::MailingList.new(
            title: "Elternvertreter der Klassenstufe #{klassenstufe}",
            address: "elternvertreter-#{klassenstufe.to_s.downcase}",
@@ -58,8 +58,8 @@
   <table class="pure-table pure-table-bordered">
     <%== partial('verteiler/thead') %>
     <tbody>
-      <% @klassen.group_by(&:stufe).each do |klassenstufe, klassen| %>
-      <% klassenstufe_eltern = klassen.flat_map(&:eltern) %>
+      <% klassen.group_by(&:stufe).each do |klassenstufe, ks_klassen| %>
+      <% klassenstufe_eltern = ks_klassen.flat_map(&:eltern) %>
         <%== partial('verteiler/tr', locals: {
           liste: SGH::Elternverteiler::MailingList.new(
                title: "Alle Eltern der Klassenstufe #{klassenstufe}",
@@ -78,28 +78,28 @@
         liste: SGH::Elternverteiler::MailingList.new(
              title: 'Alle Eltern',
              address: "eltern",
-             members: @eltern)
+             members: eltern)
         }) %>
 
       <%== partial('verteiler/tr', locals: {
         liste: SGH::Elternverteiler::MailingList.new(
              title: 'Elternbeirat',
              address: 'elternbeirat',
-             members: @elternbeirat)
+             members: elternbeirat)
       }) %>
 
       <%== partial('verteiler/tr', locals: {
         liste: SGH::Elternverteiler::MailingList.new(
              title: 'Elternvertreter in der Schulkonferenz',
              address: 'elternvertreter-schulkonferenz',
-             members: @evsk)
+             members: evsk)
       }) %>
 
       <%== partial('verteiler/tr', locals: {
         liste: SGH::Elternverteiler::MailingList.new(
              title: 'Elternbeiratsvorsitzende',
              address: 'elternbeiratsvorsitzende',
-             members: @ebv)
+             members: ebv)
       }) %>
     </tbody>
   </table>
