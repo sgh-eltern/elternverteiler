@@ -1,5 +1,7 @@
 # General
 
+* `Klasse` belongs to `Stufe`; will allow us to get all Klassen 7 with `Stufe.where(name: 7).klassen`
+  - This is also the place where `elternvertreter` is implemented so we can get `Stufe.where(name: 7).elternvertreter`. It will allow us to replace `klassenstufe_elternvertreter` in the views.
 * Export and scp the email list (with the real file name) from the UI
 * Implement `views/verteiler/_distribution_list.erb` using the MailingList class, like `views/verteiler/show.erb`
 * Implement MailingList#address(short) etc. instead of splitting in views

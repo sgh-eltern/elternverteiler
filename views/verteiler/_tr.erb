@@ -1,5 +1,7 @@
 <tr valign=top>
   <td><%= liste.title %></td>
-  <td><%= liste.address.split('@').first %></td>
+  <td>
+    <a href="mailto:<%= liste.address %>"><%= liste.address.split('@').first %></a>
+  </td>
   <td><%= liste.members.count %></td>
 </tr>
