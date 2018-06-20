@@ -39,12 +39,11 @@ module SGH
         route do |r|
           title 'Elternbeirat am SGH'
           @menu = {
-            '/elternvertreter': 'Elternvertreter',
-            '/elternvertreter/klassen': '&nbsp;nach Klasse',
-
             '/elternbeirat': 'Elternbeirat',
-            '/elternbeirat/vorsitzende': '&nbsp;Vorsitzende',
+            '/elternbeirat/anwesenheit': '&nbsp;Anwesenheit',
+            '/elternbeirat/klassen': '&nbsp;nach Klassen',
             '/elternbeirat/schulkonferenz': '&nbsp;Schulkonferenz',
+            '/elternbeirat/vorsitzende': '&nbsp;Vorsitzende',
 
             '/eltern': 'Eltern',
 
@@ -70,9 +69,17 @@ module SGH
             view :home
           end
 
-          r.on 'elternvertreter' do
+          r.on 'elternbeirat' do
+            r.on 'anwesenheit' do
+              topic 'Anwesenheit'
+              @email = 'elternbeirat@schickhardt-gymnasium-herrenberg.de'
+              @eltern = elternbeirat
+
+              view :anwesenheit
+            end
+
             r.on 'klassen' do
-              topic 'Elternvertreter nach Klasse'
+              topic 'Elternvertreter der Klassen'
               @klassen_ämter = Klasse.sort.map do |klasse|
                 [
                   klasse,
@@ -84,22 +91,6 @@ module SGH
               view 'elternvertreter/klassen'
             end
 
-            r.on do
-              topic 'Alle Elternvertreter'
-              @email = 'elternbeirat@schickhardt-gymnasium-herrenberg.de'
-              @eltern = elternbeirat
-              view 'erziehungsberechtigter/list'
-            end
-          end
-
-          r.on 'elternbeirat' do
-            r.on 'vorsitzende' do
-              topic 'Vorsitzende'
-              @email = 'elternbeiratsvorsitzende@schickhardt-gymnasium-herrenberg.de'
-              @eltern = ebv
-              view 'erziehungsberechtigter/list'
-            end
-
             r.on 'schulkonferenz' do
               topic 'Elternvertreter in der Schulkonferenz'
               @email = 'elternvertreter-schulkonferenz@schickhardt-gymnasium-herrenberg.de'
@@ -109,12 +100,18 @@ module SGH
               view 'erziehungsberechtigter/list'
             end
 
+            r.on 'vorsitzende' do
+              topic 'Vorsitzende'
+              @email = 'elternbeiratsvorsitzende@schickhardt-gymnasium-herrenberg.de'
+              @eltern = ebv
+              view 'erziehungsberechtigter/list'
+            end
+
             r.on do
-              topic 'Mitglieder'
+              topic 'Alle Elternvertreter'
               @email = 'elternbeirat@schickhardt-gymnasium-herrenberg.de'
               @eltern = elternbeirat
-
-              view :anwesenheit
+              view 'erziehungsberechtigter/list'
             end
           end
 
