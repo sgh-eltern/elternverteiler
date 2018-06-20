@@ -1,7 +1,9 @@
 <tr valign=top>
   <td><%= liste.title %></td>
   <td>
-    <a href="mailto:<%= liste.address %>"><%= liste.address.split('@').first %></a>
+    <a href="mailto:<%= liste.address(:long) %>"><%= liste.address(:short) %></a>
   </td>
-  <td><%= liste.members.count %></td>
+  <td>
+    <a href="<%= liste.url %>"><%= liste.members.count %></a>
+  </td>
 </tr>

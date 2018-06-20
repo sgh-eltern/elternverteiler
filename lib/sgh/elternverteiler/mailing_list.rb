@@ -3,8 +3,25 @@
 module SGH
   module Elternverteiler
     MailingList = Struct.new(:title, :address, :members, keyword_init: true) do
-      def address
-        "#{self[:address]}@schickhardt-gymnasium-herrenberg.de"
+      class << self
+        def first!(address:)
+          raise "MailingList '#{address}' is to be implemented"
+        end
+      end
+
+      def address(format=:short)
+        case format
+        when :short
+          self[:address]
+        when :long
+          "#{self[:address]}@schickhardt-gymnasium-herrenberg.de"
+        else
+          raise "Unknown format #{format}"
+        end
+      end
+
+      def url
+        "/verteiler/#{self[:address]}"
       end
     end
   end

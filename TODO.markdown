@@ -2,11 +2,13 @@
 
 * `Klasse` belongs to `Stufe`; will allow us to get all Klassen 7 with `Stufe.where(name: 7).klassen`
   - This is also the place where `elternvertreter` is implemented so we can get `Stufe.where(name: 7).elternvertreter`. It will allow us to replace `klassenstufe_elternvertreter` in the views.
+* `mailing_list` should be a virtual property of some of the models, so that we can say things like `Klasse.where(stufe: '7', zug: 'C').mailing_list`, Stufe.where(name: '8'), klasse9b.elternvertreter.mailing_list
+  - This also allows us to enforce uniqueness of the mailing list's name (e.g. eltern-5c)
+  - Members come from the instance where the new MailingList is created
 * Export and scp the email list (with the real file name) from the UI
-* Implement `views/verteiler/_distribution_list.erb` using the MailingList class, like `views/verteiler/show.erb`
-* Implement MailingList#address(short) etc. instead of splitting in views
-* Rename a class (will be useful for moving up after summer)
-* Delete a class with all pupils (J2 leaves after Abitur)
+* If still relevant, implement `views/verteiler/_distribution_list.erb` using the MailingList class, like `views/verteiler/show.erb`
+* Add ability to rename a class (will be useful for moving up after summer)
+* Add ability to delete a class with all pupils (J2 leaves after Abitur)
   => Make sure parents with other kids in school are kept
 * Rolle needs a slug besides the current name, which should actually be longer and more descriptive
   => This will become edit for a role, and thus we will get updated_at etc. as well
