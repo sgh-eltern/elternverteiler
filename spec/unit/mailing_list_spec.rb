@@ -4,7 +4,7 @@ require 'sgh/elternverteiler/mailing_list'
 
 describe MailingList do
   subject { described_class.new(
-    title: 'Namenspatron',
+    name: 'Namenspatron',
     address: 'wilhelm',
     members: [
         'rektor@example.com',
@@ -27,5 +27,17 @@ describe MailingList do
 
   it 'rejects unknown address formats' do
     expect { subject.address(:something) }.to raise_error(StandardError)
+  end
+
+  context 'has members' do
+    before do
+      subject.members = [
+        'director@example.org', 'hausmeister@example.net'
+      ]
+    end
+
+    it 'returns the list of members' do
+      expect(subject.members).to include('hausmeister@example.net')
+    end
   end
 end

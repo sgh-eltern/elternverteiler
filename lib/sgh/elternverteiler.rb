@@ -3,6 +3,8 @@
 require 'sequel'
 Sequel::Model.plugin :timestamps
 
+require 'sgh/elternverteiler/mailing_list'
+
 module SGH
   module Elternverteiler
     class Klasse < Sequel::Model(:klasse); end

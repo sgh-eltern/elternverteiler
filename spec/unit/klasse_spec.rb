@@ -56,6 +56,20 @@ describe Klasse do
       expect(klasse_4a.eltern).to include(barry)
     end
 
+    it 'has a mailing list for parents' do
+      expect(klasse_4a.mailing_list).to be
+      expect(klasse_4a.mailing_list.name).to eq('Eltern der 4a')
+      expect(klasse_4a.mailing_list.address(:long)).to eq('eltern-4a@schickhardt-gymnasium-herrenberg.de')
+      expect(klasse_4a.mailing_list.url).to eq('/verteiler/eltern-4a')
+    end
+
+    it 'the parents mailing list has all parents as members' do
+      expect(klasse_4a.mailing_list.members).to be
+      expect(klasse_4a.mailing_list.members.size).to eq(2)
+      expect(klasse_4a.mailing_list.members).to include(barry)
+      expect(klasse_4a.mailing_list.members).to include(jerri)
+    end
+
     context 'some 5th graders with their parents' do
       let(:k5a) { described_class.new(stufe: '5', zug: 'a').save }
       let(:kyle) { Schüler.new(vorname: 'Kyle', nachname: 'LaBianco', klasse: k5a).save }
@@ -82,7 +96,7 @@ describe Klasse do
 
   context 'Klasse 4A sends Homer to the PAB' do
     let(:homer) { Erziehungsberechtigter.new(vorname: 'Homer', nachname: 'Simpson').save }
-    let(:pab) { Rolle.new(name: 'Member of the Parent Advisory Board').save }
+    let(:pab) { Rolle.new(name: '1.EV').save }
 
     before do
       Amt.new(
@@ -98,6 +112,15 @@ describe Klasse do
 
     it 'lists the PAB as one of the roles' do
       expect(klasse_4a.rollen).to include(pab)
+    end
+
+    it 'has a mailing list for members of the PAB' do
+      expect(klasse_4a.elternvertreter).to respond_to(:mailing_list)
+      expect(klasse_4a.elternvertreter.mailing_list).to be
+      expect(klasse_4a.elternvertreter.mailing_list.name).to eq('Elternvertreter der 4a')
+      expect(klasse_4a.elternvertreter.mailing_list.address(:long)).to eq('elternvertreter-4a@schickhardt-gymnasium-herrenberg.de')
+      expect(klasse_4a.elternvertreter.mailing_list.url).to eq('/verteiler/elternvertreter-4a')
+      expect(klasse_4a.elternvertreter.mailing_list.members).to include(homer)
     end
 
     context 'Jerri is a cash auditor for 4A' do

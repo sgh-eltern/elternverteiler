@@ -1,9 +1,11 @@
 <tr valign=top>
-  <td><%= liste.title %></td>
+  <td>
+    <a href="<%= liste.url %>"><%= liste.name %></a>
+  </td>
   <td>
     <a href="mailto:<%= liste.address(:long) %>"><%= liste.address(:short) %></a>
   </td>
   <td>
-    <a href="<%= liste.url %>"><%= liste.members.count %></a>
+    <%= liste.members.count %>
   </td>
 </tr>

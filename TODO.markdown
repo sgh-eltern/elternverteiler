@@ -1,12 +1,11 @@
-# General
+# Domain
 
+* Export and scp the email list (with the real file name) from the UI
 * `Klasse` belongs to `Stufe`; will allow us to get all Klassen 7 with `Stufe.where(name: 7).klassen`
   - This is also the place where `elternvertreter` is implemented so we can get `Stufe.where(name: 7).elternvertreter`. It will allow us to replace `klassenstufe_elternvertreter` in the views.
 * `mailing_list` should be a virtual property of some of the models, so that we can say things like `Klasse.where(stufe: '7', zug: 'C').mailing_list`, Stufe.where(name: '8'), klasse9b.elternvertreter.mailing_list
   - This also allows us to enforce uniqueness of the mailing list's name (e.g. eltern-5c)
   - Members come from the instance where the new MailingList is created
-* Export and scp the email list (with the real file name) from the UI
-* If still relevant, implement `views/verteiler/_distribution_list.erb` using the MailingList class, like `views/verteiler/show.erb`
 * Add ability to rename a class (will be useful for moving up after summer)
 * Add ability to delete a class with all pupils (J2 leaves after Abitur)
   => Make sure parents with other kids in school are kept
@@ -20,14 +19,20 @@
   - Only EV can become EBV
   - A person can only be EV in a class of their children
   - EBV1 cannot be elected member of the SK
-* `plugin :csrf`
-* Refactor the duplicate queries in app.rb to methods on the app instance
-* Use Ruby's [faker gem](https://github.com/stympy/faker) in tests (maybe there is a Simpsons domain?)
 * Dropdown boxes have the class list in the wrong order
 * Save backups to object storage instead of the local filesystem
   => Encrypt using gpg: `backup-encryption.markdown`
-* Double-check web security
 * Some roles are being delegated from the Elternbeirat, and not from the class (e.g. Schulkonferenz). For those, do not record the class where the parent is having this role for, or at least do not show it (in `to_s` etc)
+
+# Development / Technical Dept
+
+* If still relevant, implement `views/verteiler/_distribution_list.erb` using the MailingList class, like `views/verteiler/show.erb`
+* Refactor the duplicate queries in app.rb to methods on the app instance
+* `plugin :csrf`
+* rubocop-rspec
+* https://github.com/ericqweinstein/ruumba
+* Double-check web security
+* Use Ruby's [faker gem](https://github.com/stympy/faker) in tests (maybe there is a Simpsons domain?)
 
 # Authorization
 
