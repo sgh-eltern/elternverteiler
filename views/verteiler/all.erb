@@ -64,12 +64,7 @@
   <table class="pure-table pure-table-bordered sgh-elternverteiler-sonstige">
     <%== partial('verteiler/thead') %>
     <tbody>
-      <%== partial('verteiler/tr', locals: {
-        liste: SGH::Elternverteiler::MailingList.new(
-             name: 'Alle Eltern',
-             address: "eltern",
-             members: eltern)
-        }) %>
+      <%== partial('verteiler/tr', locals: { liste: SGH::Elternverteiler::Erziehungsberechtigter.all.mailing_list }) %>
 
       <%== partial('verteiler/tr', locals: {
         liste: SGH::Elternverteiler::MailingList.new(

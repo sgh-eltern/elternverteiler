@@ -1,9 +1,30 @@
 # frozen_string_literal: true
 
 describe Erziehungsberechtigter do
-  subject(:homer) { described_class.new }
+  context 'with existing parents' do
+    before do
+      described_class.create(vorname: 'Homer', nachname: 'Simpson', mail: 'homer@simpson.org')
+      described_class.create(vorname: 'Marge', nachname: 'Simpson', mail: 'marge@simpson.org')
+      described_class.create(vorname: 'Luann', nachname: 'Van Houten', mail: 'luann@vanhouten.org')
+      described_class.create(vorname: 'Kirk', nachname: 'Van Houten', mail: 'kirk@vanhouten.org')
+      described_class.create(vorname: 'Eddie', nachname: 'Muntz', mail: 'eddie@muntz.org')
+      described_class.create(nachname: 'Muntz')
+    end
+
+    it 'provides a mailing list for all parents' do
+      expect(described_class.all.mailing_list).to be
+      expect(described_class.all.mailing_list.name).to eq('Alle Eltern')
+      expect(described_class.all.mailing_list.address).to eq('eltern')
+      expect(described_class.all.mailing_list.url).to eq('/verteiler/eltern')
+      expect(described_class.all.mailing_list.members).to be
+      expect(described_class.all.mailing_list.members).to_not be_empty
+      expect(described_class.all.mailing_list.members.count).to eq(6)
+    end
+  end
 
   context 'an ordinary parent' do
+    subject(:homer) { described_class.new }
+
     it 'persists' do
       homer.nachname = 'Simpson'
       homer.save

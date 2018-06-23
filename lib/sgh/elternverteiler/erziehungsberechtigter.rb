@@ -41,6 +41,18 @@ module SGH
         end
       end
 
+      def self.all
+        super.tap do |all|
+          all.define_singleton_method(:mailing_list) do
+            MailingList.new(
+              name: "Alle Eltern",
+              address: 'eltern',
+              members: all
+            )
+          end
+        end
+      end
+
       def to_s
         if vorname.to_s.empty? && nachname.to_s.empty?
           mail

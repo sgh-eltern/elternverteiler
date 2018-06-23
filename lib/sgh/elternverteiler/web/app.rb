@@ -183,7 +183,8 @@ module SGH
               @schüler = @klasse.schüler
               topic "Klasse #{@klasse}"
               @ämter = Amt.where(
-                rolle: Rolle.where(Sequel.like(:name, '%.EV')), klasse: @klasse
+                  rolle: Rolle.where(Sequel.like(:name, '%.EV')),
+                  klasse: @klasse
                 ).sort_by(&:to_s)
               @email = "elternvertreter-#{@klasse.to_s.downcase}@schickhardt-gymnasium-herrenberg.de"
               view 'schüler/list'
