@@ -13,6 +13,21 @@ module SGH
     class Schüler < Sequel::Model(:schüler); end
     class Erziehungsberechtigter < Sequel::Model(:erziehungsberechtigte); end
     class Erziehungsberechtigung < Sequel::Model(:erziehungsberechtigung); end
+
+    def self.elternbeirat
+      Rolle.where(name: ['1.EV', '2.EV'])
+        .map(&:mitglieder)
+        .flatten
+        .sort_by(&:nachname)
+        .tap do |all|
+          all.define_singleton_method(:mailing_list) do
+            MailingList.new(
+                 name: 'Elternbeirat',
+              address: 'elternbeirat',
+              members: all)
+        end
+      end
+    end
   end
 end
 

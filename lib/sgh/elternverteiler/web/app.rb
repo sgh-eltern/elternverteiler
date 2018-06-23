@@ -452,7 +452,7 @@ module SGH
         end
 
         def elternbeirat
-          @elternbeirat ||= Rolle.where(name: ['1.EV', '2.EV']).map(&:mitglieder).flatten.sort_by(&:nachname)
+          @elternbeirat ||= SGH::Elternverteiler.elternbeirat
         end
 
         def eltern
