@@ -25,7 +25,22 @@ module SGH
                  name: 'Elternbeirat',
               address: 'elternbeirat',
               members: all)
-        end
+          end
+      end
+    end
+
+    def self.elternbeiratsvorsitzende
+      Rolle.where(name: ['1.EBV', '2.EBV'])
+        .map(&:mitglieder)
+        .flatten
+        .sort_by(&:nachname)
+        .tap do |all|
+          all.define_singleton_method(:mailing_list) do
+            MailingList.new(
+                 name: 'Elternbeiratsvorsitzende',
+              address: 'elternbeiratsvorsitzende',
+              members: all)
+          end
       end
     end
   end

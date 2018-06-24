@@ -444,7 +444,7 @@ module SGH
         end
 
         def ebv
-          @ebv ||= Rolle.where(name: ['1.EBV', '2.EBV']).map(&:mitglieder).flatten.sort_by(&:nachname)
+          @ebv ||= SGH::Elternverteiler.elternbeiratsvorsitzende
         end
 
         def evsk

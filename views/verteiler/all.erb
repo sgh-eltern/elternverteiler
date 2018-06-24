@@ -76,12 +76,7 @@
              members: evsk)
       }) %>
 
-      <%== partial('verteiler/tr', locals: {
-        liste: SGH::Elternverteiler::MailingList.new(
-             name: 'Elternbeiratsvorsitzende',
-             address: 'elternbeiratsvorsitzende',
-             members: ebv)
-      }) %>
+      <%== partial('verteiler/tr', locals: { liste: ebv.mailing_list }) %>
     </tbody>
   </table>
 
