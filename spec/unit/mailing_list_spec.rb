@@ -7,9 +7,9 @@ describe MailingList do
     name: 'Namenspatron',
     address: 'wilhelm',
     members: [
-        'rektor@example.com',
-        'hausmeister@example.net'
-      ]
+      'rektor@example.com',
+      'hausmeister@example.net'
+    ]
     )
   }
 

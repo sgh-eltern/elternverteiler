@@ -2,14 +2,15 @@
 
 module SGH
   module Elternverteiler
-    # TODO Each arg can either be a symbol (method to send to self) or a proc
+    # TODO: Each arg can either be a symbol (method to send to self) or a proc
     module WithMailingList
       def with_mailing_list(name:, address:, members:)
         define_method :mailing_list do
           MailingList.new(
             name: name.call(self),
             address: address.call(self),
-            members: self.send(members))
+            members: self.send(members)
+)
         end
       end
     end
@@ -28,8 +29,8 @@ module SGH
         right_key: :rolle_id
 
       with_mailing_list(
-        name: lambda { |k| "Eltern der #{k}"},
-        address: lambda { |k| "eltern-#{k.to_s.downcase}"},
+        name: lambda { |k| "Eltern der #{k}" },
+        address: lambda { |k| "eltern-#{k.to_s.downcase}" },
         members: :eltern
       )
 

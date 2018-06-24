@@ -45,7 +45,7 @@ module SGH
         super.tap do |all|
           all.define_singleton_method(:mailing_list) do
             MailingList.new(
-              name: "Alle Eltern",
+              name: 'Alle Eltern',
               address: 'eltern',
               members: all
             )

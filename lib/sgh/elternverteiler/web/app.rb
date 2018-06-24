@@ -183,8 +183,8 @@ module SGH
               @schüler = @klasse.schüler
               topic "Klasse #{@klasse}"
               @ämter = Amt.where(
-                  rolle: Rolle.where(Sequel.like(:name, '%.EV')),
-                  klasse: @klasse
+                rolle: Rolle.where(Sequel.like(:name, '%.EV')),
+                klasse: @klasse
                 ).sort_by(&:to_s)
               @email = "elternvertreter-#{@klasse.to_s.downcase}@schickhardt-gymnasium-herrenberg.de"
               view 'schüler/list'
@@ -448,7 +448,7 @@ module SGH
         end
 
         def evsk
-          @evsk ||= Rolle.where(name: ['SK', 'SKV']).map(&:mitglieder).flatten.sort_by(&:nachname)
+          @evsk ||= SGH::Elternverteiler.elternvertreter_schulkonferenz
         end
 
         def elternbeirat
@@ -456,7 +456,7 @@ module SGH
         end
 
         def eltern
-          @eltern ||= Erziehungsberechtigter.order(:nachname)
+          @eltern ||= SGH::Elternverteiler::Erziehungsberechtigter.all
         end
 
         def klassen
