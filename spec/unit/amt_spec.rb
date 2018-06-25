@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Rolle do
+describe Amt do
   subject(:pab) { described_class.new(name: 'Member of the Parent Advisory Board').save }
   let(:klasse) { Klasse.new(stufe: '4', zug: 'a').save }
 
@@ -24,13 +24,13 @@ describe Rolle do
     before do
       Amtsperiode.new(
         inhaber: homer,
-        rolle: pab,
+        amt: pab,
         klasse: klasse
         ).save
 
       Amtsperiode.new(
         inhaber: chief_wiggum,
-        rolle: pab,
+        amt: pab,
         klasse: klasse
         ).save
       # Marge is not in the PAB
@@ -45,12 +45,12 @@ describe Rolle do
     end
 
     it 'becomes an attribute of the parents' do
-      expect(homer.rollen).to include(pab)
-      expect(chief_wiggum.rollen).to include(pab)
+      expect(homer.ämter).to include(pab)
+      expect(chief_wiggum.ämter).to include(pab)
     end
 
     it 'does not become an attribute of parents who are not members' do
-      expect(marge.rollen).to_not include(pab)
+      expect(marge.ämter).to_not include(pab)
     end
 
     it 'has a string representation' do

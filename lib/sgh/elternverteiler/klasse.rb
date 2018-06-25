@@ -25,11 +25,11 @@ module SGH
 
       one_to_many :schüler, class: Schüler
 
-      many_to_many :rollen,
-        class: Rolle,
+      many_to_many :ämter,
+        class: Amt,
         join_table: :amtsperioden,
         left_key: :klasse_id,
-        right_key: :rolle_id
+        right_key: :amt_id
 
       with_mailing_list(
         name: lambda { |k| "Eltern der #{k}" },
@@ -42,12 +42,12 @@ module SGH
       end
 
       def inhaber(*roles)
-        Amtsperiode.where(rolle: roles, klasse: self).map(&:inhaber)
+        Amtsperiode.where(amt: roles, klasse: self).map(&:inhaber)
       end
 
       def elternvertreter
         Amtsperiode.where(
-          rolle: Rolle.where(Sequel.like(:name, '%.EV')),
+          amt: Amt.where(Sequel.like(:name, '%.EV')),
           klasse: self
         ).map(&:inhaber).tap do |all|
           k = self

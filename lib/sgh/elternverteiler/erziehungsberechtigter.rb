@@ -11,17 +11,17 @@ module SGH
         left_key: :erziehungsberechtigter_id,
         right_key: :schüler_id
 
-      many_to_many :rollen,
-        class: Rolle,
+      many_to_many :ämter,
+        class: Amt,
         join_table: :amtsperioden,
         left_key: :inhaber_id,
-        right_key: :rolle_id
+        right_key: :amt_id
 
       ValidationError = Class.new(StandardError)
 
       # rubocop:disable Naming/MethodName
       def amtsperioden
-        rollen.map { |r| SGH::Elternverteiler::Amtsperiode.where(rolle: r, inhaber: self).all }.flatten.uniq
+        ämter.map { |r| SGH::Elternverteiler::Amtsperiode.where(amt: r, inhaber: self).all }.flatten.uniq
       end
       # rubocop:enable Naming/MethodName
 

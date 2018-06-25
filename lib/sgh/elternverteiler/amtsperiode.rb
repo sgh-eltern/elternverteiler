@@ -8,11 +8,11 @@ module SGH
       include FormeHelper
 
       many_to_one :inhaber, class: Erziehungsberechtigter
-      many_to_one :rolle
+      many_to_one :amt
       many_to_one :klasse
 
       def to_s
-        "#{rolle} Klasse #{klasse}"
+        "#{amt} Klasse #{klasse}"
       end
     end
   end

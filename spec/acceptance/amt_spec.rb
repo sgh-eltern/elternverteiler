@@ -2,14 +2,14 @@
 
 require_relative 'helper'
 
-describe 'Rollen', type: :feature do
+describe 'Ämter', type: :feature do
   before do
     visit '/'
-    within('#menu') { click_link('Rollen') }
+    within('#menu') { click_link('Ämter') }
   end
 
   it 'has a page title' do
-    expect(page).to have_content('Rollen')
+    expect(page).to have_content('Ämter')
   end
 
   context 'the role Klassenkasper exists' do
@@ -17,7 +17,7 @@ describe 'Rollen', type: :feature do
     after { delete_role('Klassenkasper') }
 
     it 'lists the role' do
-      within('.sgh-elternverteiler-rolle') do
+      within('.sgh-elternverteiler-amt') do
         expect(page).to have_content('Klassenkasper')
       end
     end
@@ -29,7 +29,7 @@ describe 'Rollen', type: :feature do
 
       it 'provides details on the error' do
         within('aside.error') do
-          expect(page).to have_content('Die Rolle Klassenkasper existiert bereits')
+          expect(page).to have_content('Das Amt Klassenkasper existiert bereits')
         end
       end
     end
@@ -39,18 +39,18 @@ describe 'Rollen', type: :feature do
 
       it 'shows the list of all roles' do
         within('.header > h1') do
-          expect(page).to have_content('Alle Rollen')
+          expect(page).to have_content('Alle Ämter')
         end
       end
 
       it 'shows a success message' do
         within('aside.success') do
-          expect(page).to have_content('Die Rolle Klassenkasper wurde gelöscht')
+          expect(page).to have_content('Das Amt Klassenkasper wurde gelöscht')
         end
       end
 
       it 'no longer lists the role' do
-        within('.sgh-elternverteiler-rollen') do
+        within('.sgh-elternverteiler-ämter') do
           expect(page).to_not have_content('Klassenkasper')
         end
       end

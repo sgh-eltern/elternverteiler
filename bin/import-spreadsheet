@@ -40,9 +40,9 @@ s.first_row.upto(s.last_row) do |line|
       parent = Erziehungsberechtigter.find_or_create(vorname: s.cell(line, 4), nachname: s.cell(line, 5), mail: s.cell(line, 6)).save
       parent.add_kinder(child) unless parent.kinder.include?(child)
 
-      s.cell(line, 7).to_s.split('/').map(&:strip).each do |rollen_name|
-        rolle = Rolle.find_or_create(name: rollen_name)
-        Amtsperiode.find_or_create(inhaber: parent, rolle: rolle, klasse: klasse)
+      s.cell(line, 7).to_s.split('/').map(&:strip).each do |amt_name|
+        amt = Amt.find_or_create(name: amt_name)
+        Amtsperiode.find_or_create(inhaber: parent, amt: amt, klasse: klasse)
       end
     rescue Erziehungsberechtigter::ValidationError => error
       warn "Not adding parent of #{child}: #{error.message}"

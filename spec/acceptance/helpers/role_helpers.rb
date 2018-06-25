@@ -3,7 +3,7 @@
 module RoleHelpers
   def create_role(name)
     visit '/'
-    within('#menu') { click_link('Rollen') }
+    within('#menu') { click_link('Ämter') }
     click_link('Anlegen')
     fill_in('Name', with: name)
     click_button('Anlegen')
@@ -15,7 +15,7 @@ module RoleHelpers
     within('.content') { click_link(klasse) }
     within('.content') { click_link('Hinzufügen') }
 
-    find('#sgh-elternverteiler-amtsperiode_rolle_id').click
+    find('#sgh-elternverteiler-amtsperiode_amt_id').click
     select(role)
 
     find('#sgh-elternverteiler-amtsperiode_inhaber_id').click
@@ -26,7 +26,7 @@ module RoleHelpers
 
   def delete_role(name)
     visit '/'
-    within('#menu') { click_link('Rollen') }
+    within('#menu') { click_link('Ämter') }
     within('.content') do
       if page.has_link?(name)
         click_link(name)

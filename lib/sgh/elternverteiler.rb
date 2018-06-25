@@ -9,13 +9,13 @@ module SGH
   module Elternverteiler
     class Klasse < Sequel::Model(:klasse); end
     class Amtsperiode < Sequel::Model(:amtsperioden); end
-    class Rolle < Sequel::Model(:rollen); end
+    class Amt < Sequel::Model(:ämter); end
     class Schüler < Sequel::Model(:schüler); end
     class Erziehungsberechtigter < Sequel::Model(:erziehungsberechtigte); end
     class Erziehungsberechtigung < Sequel::Model(:erziehungsberechtigung); end
 
     def self.elternbeirat
-      Rolle.where(name: ['1.EV', '2.EV']).
+      Amt.where(name: ['1.EV', '2.EV']).
         map(&:mitglieder).
         flatten.
         sort_by(&:nachname).
@@ -31,7 +31,7 @@ module SGH
     end
 
     def self.elternbeiratsvorsitzende
-      Rolle.where(name: ['1.EBV', '2.EBV']).
+      Amt.where(name: ['1.EBV', '2.EBV']).
         map(&:mitglieder).
         flatten.
         sort_by(&:nachname).
@@ -47,7 +47,7 @@ module SGH
     end
 
     def self.elternvertreter_schulkonferenz
-      Rolle.where(name: ['SK', 'SKV']).
+      Amt.where(name: ['SK', 'SKV']).
         map(&:mitglieder).
         flatten.
         sort_by(&:nachname).
@@ -66,7 +66,7 @@ end
 
 require 'sgh/elternverteiler/forme_helper'
 require 'sgh/elternverteiler/klasse'
-require 'sgh/elternverteiler/rolle'
+require 'sgh/elternverteiler/amt'
 require 'sgh/elternverteiler/schüler'
 require 'sgh/elternverteiler/erziehungsberechtigung'
 require 'sgh/elternverteiler/erziehungsberechtigter'

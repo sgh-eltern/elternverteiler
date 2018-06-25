@@ -96,22 +96,22 @@ describe Klasse do
 
   context 'Klasse 4A sends Homer to the PAB' do
     let(:homer) { Erziehungsberechtigter.new(vorname: 'Homer', nachname: 'Simpson').save }
-    let(:pab) { Rolle.new(name: '1.EV').save }
+    let(:pab) { Amt.new(name: '1.EV').save }
 
     before do
       Amtsperiode.new(
         inhaber: homer,
-        rolle: pab,
+        amt: pab,
         klasse: klasse_4a
       ).save
     end
 
     it 'lists parents with roles' do
-      expect(klasse_4a.rollen.size).to eq(1)
+      expect(klasse_4a.ämter.size).to eq(1)
     end
 
     it 'lists the PAB as one of the roles' do
-      expect(klasse_4a.rollen).to include(pab)
+      expect(klasse_4a.ämter).to include(pab)
     end
 
     it 'has a mailing list for members of the PAB' do
@@ -124,12 +124,12 @@ describe Klasse do
     end
 
     context 'Jerri is a cash auditor for 4A' do
-      let(:cash_auditor) { Rolle.new(name: 'Cash Auditor').save }
+      let(:cash_auditor) { Amt.new(name: 'Cash Auditor').save }
 
       before do
         Amtsperiode.new(
           inhaber: jerri,
-          rolle: cash_auditor,
+          amt: cash_auditor,
           klasse: klasse_4a
         ).save
       end
@@ -151,13 +151,13 @@ describe Klasse do
       before do
         Amtsperiode.new(
           inhaber: marge,
-          rolle: pab,
+          amt: pab,
           klasse: klasse_2a
         ).save
       end
 
       it 'lists one holder of a role in this class' do
-        expect(klasse_2a.rollen.size).to eq(1)
+        expect(klasse_2a.ämter.size).to eq(1)
       end
 
       it 'has both Marge and Homer as members of the PAB' do

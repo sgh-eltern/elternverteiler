@@ -51,7 +51,7 @@ module SGH
             '/schueler/nicht-erreichbar': '&nbsp;Nicht erreichbar',
 
             '/klassen': 'Klassen',
-            '/rollen': 'Rollen',
+            '/ämter': 'Ämter',
             '/backups': 'Backups',
             '/backups/new': '&nbsp;Neu',
 
@@ -84,7 +84,7 @@ module SGH
                 [
                   klasse,
                   Amtsperiode.where(
-                    rolle: Rolle.where(Sequel.like(:name, '%.EV')), klasse: klasse
+                    amt: Amt.where(Sequel.like(:name, '%.EV')), klasse: klasse
                     ).sort_by(&:to_s)
                 ]
               end
@@ -183,36 +183,36 @@ module SGH
               @schüler = @klasse.schüler
               topic "Klasse #{@klasse}"
               @amtsperioden = Amtsperiode.where(
-                rolle: Rolle.where(Sequel.like(:name, '%.EV')),
+                amt: Amt.where(Sequel.like(:name, '%.EV')),
                 klasse: @klasse
                 ).sort_by(&:to_s)
               @email = "elternvertreter-#{@klasse.to_s.downcase}@schickhardt-gymnasium-herrenberg.de"
               view 'schüler/list'
             end
 
-            r.get Integer, 'rollen', 'add' do |klasse_id|
+            r.get Integer, URI.encode('ämter'), 'add' do |klasse_id|
               topic 'Neue Amtsperiode'
               klasse = Klasse.first!(id: klasse_id)
               @amtsperiode = Amtsperiode.new(klasse: klasse)
               view 'elternvertreter/add'
             end
 
-            r.post Integer, 'rollen', 'add' do |klasse_id|
+            r.post Integer, URI.encode('ämter'), 'add' do |klasse_id|
               klasse = Klasse.first!(id: klasse_id)
-              rolle = Rolle.first!(id: r.params['sgh-elternverteiler-amtsperiode']['rolle_id'])
+              amt = Amt.first!(id: r.params['sgh-elternverteiler-amtsperiode']['amt_id'])
               inhaber = Erziehungsberechtigter.first!(id: r.params['sgh-elternverteiler-amtsperiode']['inhaber_id'])
-              Amtsperiode.new(klasse: klasse, rolle: rolle, inhaber: inhaber).save
-              flash[:success] = "#{inhaber} ist jetzt #{rolle} in der #{klasse}"
+              Amtsperiode.new(klasse: klasse, amt: amt, inhaber: inhaber).save
+              flash[:success] = "#{inhaber} ist jetzt #{amt} in der #{klasse}"
               r.redirect "/klassen/#{klasse.id}"
             end
 
-            r.post Integer, 'rollen', Integer, 'inhaber', Integer do |klasse_id, rolle_id, inhaber_id|
+            r.post Integer, URI.encode('ämter'), Integer, 'inhaber', Integer do |klasse_id, amt_id, inhaber_id|
               topic 'Amtsperiode löschen'
               klasse = Klasse.first!(id: klasse_id)
-              rolle = Rolle.first!(id: rolle_id)
+              amt = Amt.first!(id: amt_id)
               inhaber = Erziehungsberechtigter.first!(id: inhaber_id)
-              Amtsperiode.first!(klasse: klasse, rolle: rolle, inhaber: inhaber).destroy
-              flash[:success] = "#{inhaber} ist nicht mehr #{rolle} in der #{klasse}."
+              Amtsperiode.first!(klasse: klasse, amt: amt, inhaber: inhaber).destroy
+              flash[:success] = "#{inhaber} ist nicht mehr #{amt} in der #{klasse}."
               r.redirect "/klassen/#{klasse.id}"
             end
 
@@ -238,7 +238,7 @@ module SGH
             rescue Sequel::UniqueConstraintViolation
               topic 'Neue Klasse anlegen'
               flash.now[:error] = "Die Klasse #{@klasse.name} existiert bereits"
-              view 'rollen/new'
+              view 'ämter/new'
             end
 
             r.on do
@@ -247,43 +247,43 @@ module SGH
             end
           end
 
-          r.on 'rollen' do
+          r.on URI.encode('ämter') do
             r.get 'neu' do |id|
-              topic 'Neue Rolle anlegen'
-              @rolle = Rolle.new
-              view 'rollen/new'
+              topic 'Neue Amt anlegen'
+              @amt = Amt.new
+              view 'ämter/new'
             end
 
             r.get Integer do |id|
-              @rolle = Rolle.first!(id: id)
-              topic 'Rolle'
-              view 'rollen/show'
+              @amt = Amt.first!(id: id)
+              topic 'Amt'
+              view 'ämter/show'
             end
 
             r.post Integer, 'delete' do |id|
-              @rolle = Rolle.first!(id: id).destroy
-              flash[:success] = "Die Rolle #{@rolle} wurde gelöscht."
-              r.redirect '/rollen'
+              @amt = Amt.first!(id: id).destroy
+              flash[:success] = "Das Amt #{@amt} wurde gelöscht."
+              r.redirect '/ämter'
             end
 
             r.post Integer do |id|
-              raise 'Missing implementation for editing Rolle'
+              raise 'Missing implementation for editing Amt'
             end
 
             r.post do
-              @rolle = Rolle.new
-              @rolle.name = r.params['sgh-elternverteiler-rolle']['name']
-              @rolle.save
-              r.redirect "/rollen/#{@rolle.id}"
+              @amt = Amt.new
+              @amt.name = r.params['sgh-elternverteiler-amt']['name']
+              @amt.save
+              r.redirect "/ämter/#{@amt.id}"
             rescue Sequel::UniqueConstraintViolation
-              topic 'Neue Rolle anlegen'
-              flash.now[:error] = "Die Rolle #{@rolle.name} existiert bereits"
-              view 'rollen/new'
+              topic 'Neue Amt anlegen'
+              flash.now[:error] = "Das Amt #{@amt.name} existiert bereits"
+              view 'ämter/new'
             end
 
             r.on do
-              topic 'Alle Rollen'
-              view 'rollen/list'
+              topic 'Alle Ämter'
+              view 'ämter/list'
             end
           end
 
@@ -463,8 +463,8 @@ module SGH
           @klassen ||= Klasse.sort
         end
 
-        def rollen
-          @rollen ||= Rolle.sort
+        def ämter
+          @ämter ||= Amt.sort
         end
 
         def eltern_total

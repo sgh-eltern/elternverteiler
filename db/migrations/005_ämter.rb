@@ -2,7 +2,7 @@
 
 Sequel.migration do
   change do
-    create_table(:rollen) do
+    create_table(:ämter) do
       primary_key :id
       String :name, null: false
       DateTime :created_at

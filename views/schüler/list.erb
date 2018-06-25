@@ -12,7 +12,7 @@
   </p>
 
   <p>
-    <a href="/klassen/<%= @klasse.id %>/rollen/add" class="pure-button pure-button-primary">Hinzufügen</a>
+    <a href="/klassen/<%= @klasse.id %>/ämter/add" class="pure-button pure-button-primary">Hinzufügen</a>
   </p>
 
   <table class="pure-table pure-table-horizontal sgh-elternverteiler-erziehungsberechtigter">
@@ -29,7 +29,7 @@
     <% @amtsperioden.each do |amtsperiode| %>
       <tr>
         <td style="padding-left: 2em;">
-          <%= amtsperiode.rolle %>
+          <%= amtsperiode.amt %>
         </td>
 
         <td valign="top">
@@ -42,7 +42,7 @@
           <% form(@amtsperiode,
                   :inputs_wrapper => :fieldset,
                   class: 'pure-form pure-form-aligned',
-                  action: "/klassen/#{amtsperiode.klasse.id}/rollen/#{amtsperiode.rolle.id}/inhaber/#{amtsperiode.inhaber.id}",
+                  action: "/klassen/#{amtsperiode.klasse.id}/ämter/#{amtsperiode.amt.id}/inhaber/#{amtsperiode.inhaber.id}",
                   method: 'post',
                   ) do |f| %>
 

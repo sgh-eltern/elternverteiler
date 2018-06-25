@@ -17,7 +17,7 @@
       <td><%= elternteil.nachname %></td>
       <td><%= elternteil.vorname %></td>
       <td>
-        <%= elternteil.amtsperioden.map(&:rolle).uniq.join(', ') %>
+        <%= elternteil.amtsperioden.map(&:amt).uniq.join(', ') %>
         <%= elternteil.amtsperioden.map{|a| "#{a.klasse}" }.uniq.join(', ') %>
       </td>
       <td></td>

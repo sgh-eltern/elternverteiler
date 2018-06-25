@@ -1,0 +1,22 @@
+<p>
+  <a href="/ämter/neu" class="pure-button pure-button-primary">Anlegen</a>
+</p>
+
+<table class="pure-table pure-table-horizontal pure-table-striped sgh-elternverteiler-ämter">
+  <thead>
+    <tr>
+      <th>Amt</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+  <% ämter.each do |amt| %>
+    <tr>
+      <td>
+        <a href="/ämter/<%= amt.id %>"><%= amt %></a>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
