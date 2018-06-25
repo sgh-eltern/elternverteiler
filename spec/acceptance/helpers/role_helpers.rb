@@ -15,10 +15,10 @@ module RoleHelpers
     within('.content') { click_link(klasse) }
     within('.content') { click_link('Hinzufügen') }
 
-    find('#sgh-elternverteiler-amt_rolle_id').click
+    find('#sgh-elternverteiler-amtsperiode_rolle_id').click
     select(role)
 
-    find('#sgh-elternverteiler-amt_inhaber_id').click
+    find('#sgh-elternverteiler-amtsperiode_inhaber_id').click
     select(name)
 
     click_button('Speichern')

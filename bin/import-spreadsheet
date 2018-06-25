@@ -42,7 +42,7 @@ s.first_row.upto(s.last_row) do |line|
 
       s.cell(line, 7).to_s.split('/').map(&:strip).each do |rollen_name|
         rolle = Rolle.find_or_create(name: rollen_name)
-        Amt.find_or_create(inhaber: parent, rolle: rolle, klasse: klasse)
+        Amtsperiode.find_or_create(inhaber: parent, rolle: rolle, klasse: klasse)
       end
     rescue Erziehungsberechtigter::ValidationError => error
       warn "Not adding parent of #{child}: #{error.message}"

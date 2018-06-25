@@ -8,7 +8,7 @@ module SGH
 
       many_to_many :mitglieder,
         class: Erziehungsberechtigter,
-        join_table: :ämter,
+        join_table: :amtsperioden,
         left_key: :rolle_id,
         right_key: :inhaber_id
 

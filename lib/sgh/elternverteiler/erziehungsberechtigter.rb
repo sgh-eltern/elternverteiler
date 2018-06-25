@@ -13,15 +13,15 @@ module SGH
 
       many_to_many :rollen,
         class: Rolle,
-        join_table: :ämter,
+        join_table: :amtsperioden,
         left_key: :inhaber_id,
         right_key: :rolle_id
 
       ValidationError = Class.new(StandardError)
 
       # rubocop:disable Naming/MethodName
-      def ämter
-        rollen.map { |r| SGH::Elternverteiler::Amt.where(rolle: r, inhaber: self).all }.flatten.uniq
+      def amtsperioden
+        rollen.map { |r| SGH::Elternverteiler::Amtsperiode.where(rolle: r, inhaber: self).all }.flatten.uniq
       end
       # rubocop:enable Naming/MethodName
 

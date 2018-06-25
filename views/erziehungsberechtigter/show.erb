@@ -32,9 +32,9 @@
     <tr>
       <th style="background-color: #f2f2f2; text-align: right;">Ämter</th>
       <td>
-        <% @erziehungsberechtigter.ämter.each do |amt| %>
-        <a href="/rollen/<%= amt.rolle.id %>"><%= amt.rolle %></a>
-        <a href="/klassen/<%= amt.klasse.id %>"><%= amt.klasse %></a>
+        <% @erziehungsberechtigter.amtsperioden.each do |amtsperiode| %>
+        <a href="/rollen/<%= amtsperiode.rolle.id %>"><%= amtsperiode.rolle %></a>
+        <a href="/klassen/<%= amtsperiode.klasse.id %>"><%= amtsperiode.klasse %></a>
         <br/>
         <% end %>
       </td>

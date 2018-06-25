@@ -7,21 +7,21 @@
 
   <tbody>
 
-  <% @klassen_ämter.each do |klasse, ämter| %>
+  <% @klassen_amtsperioden.each do |klasse, amtsperioden| %>
     <tr>
       <th colspan="2" style="text-align: left;">
         <a href="/klassen/<%= klasse.id %>"><%= klasse %></a>
       </th>
     </tr>
 
-    <% ämter.each do |amt| %>
+    <% amtsperioden.each do |amtsperiode| %>
       <tr>
         <td style="padding-left: 2em;">
-          <%= amt.rolle %>
+          <%= amtsperiode.rolle %>
         </td>
 
         <td valign="top">
-          <a href="/eltern/<%= amt.inhaber.id %>"><%= amt.inhaber.nachname %>, <%= amt.inhaber.vorname %></a>
+          <a href="/eltern/<%= amtsperiode.inhaber.id %>"><%= amtsperiode.inhaber.nachname %>, <%= amtsperiode.inhaber.vorname %></a>
         </td>
       </tr>
     <% end %>

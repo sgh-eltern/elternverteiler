@@ -27,7 +27,7 @@ module SGH
 
       many_to_many :rollen,
         class: Rolle,
-        join_table: :ämter,
+        join_table: :amtsperioden,
         left_key: :klasse_id,
         right_key: :rolle_id
 
@@ -42,11 +42,11 @@ module SGH
       end
 
       def inhaber(*roles)
-        Amt.where(rolle: roles, klasse: self).map(&:inhaber)
+        Amtsperiode.where(rolle: roles, klasse: self).map(&:inhaber)
       end
 
       def elternvertreter
-        Amt.where(
+        Amtsperiode.where(
           rolle: Rolle.where(Sequel.like(:name, '%.EV')),
           klasse: self
         ).map(&:inhaber).tap do |all|

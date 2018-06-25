@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-describe Amt do
+describe Amtsperiode do
   let(:homer) { Erziehungsberechtigter.new(vorname: 'Homer', nachname: 'Simpson').save }
   let(:klasse_4a) { Klasse.new(stufe: '4', zug: 'a').save }
   let(:pab) { Rolle.new(name: 'Member of the Parent Advisory Board').save }
 
   context 'Homer is member of the PAB' do
     before do
-      Amt.new(
+      Amtsperiode.new(
         inhaber: homer,
         rolle: pab,
         klasse: klasse_4a
@@ -15,7 +15,7 @@ describe Amt do
     end
 
     it 'has a forme namespace' do
-      expect(homer.ämter.first.forme_namespace).to eq('sgh-elternverteiler-amt')
+      expect(homer.amtsperioden.first.forme_namespace).to eq('sgh-elternverteiler-amtsperiode')
     end
 
     it 'has a member of the PAB' do
@@ -30,18 +30,18 @@ describe Amt do
       expect(homer.rollen).to include(pab)
     end
 
-    it 'shows the Amt on Homer' do
-      expect(homer.ämter).not_to be_empty
-      expect(homer.ämter.size).to eq(1)
-      expect(homer.ämter.first.rolle).to eq(pab)
-      expect(homer.ämter.first.to_s).to eq('Member of the Parent Advisory Board Klasse 4a')
+    it 'shows the Amtsperiode on Homer' do
+      expect(homer.amtsperioden).not_to be_empty
+      expect(homer.amtsperioden.size).to eq(1)
+      expect(homer.amtsperioden.first.rolle).to eq(pab)
+      expect(homer.amtsperioden.first.to_s).to eq('Member of the Parent Advisory Board Klasse 4a')
     end
 
     context 'Chief Wiggum was also elected into the PAB' do
       let(:chief_wiggum) { Erziehungsberechtigter.new(vorname: 'Clancy', nachname: 'Wiggum').save }
 
       before do
-        Amt.new(
+        Amtsperiode.new(
           inhaber: chief_wiggum,
           rolle: pab,
           klasse: klasse_4a
@@ -74,7 +74,7 @@ describe Amt do
       let(:kyles_dad) { Erziehungsberechtigter.new(nachname: 'LaBianco', mail: 'kyle@labianco.com').save }
 
       before do
-        Amt.new(
+        Amtsperiode.new(
           inhaber: kyles_dad,
           rolle: pab,
           klasse: klasse_5a
@@ -82,7 +82,7 @@ describe Amt do
       end
 
       context '4th grade' do
-        let(:pab_members) { Amt.where(klasse: klasse_4a, rolle: pab).map(&:inhaber) }
+        let(:pab_members) { Amtsperiode.where(klasse: klasse_4a, rolle: pab).map(&:inhaber) }
 
         it 'still lists Homer as member of the PAB' do
           expect(pab_members).to include(homer)
@@ -94,7 +94,7 @@ describe Amt do
       end
 
       context '5th grade' do
-        let(:pab_members) { Amt.where(klasse: klasse_5a, rolle: pab).map(&:inhaber) }
+        let(:pab_members) { Amtsperiode.where(klasse: klasse_5a, rolle: pab).map(&:inhaber) }
 
         it 'has a member of the PAB' do
           expect(pab_members).to include(kyles_dad)
@@ -108,7 +108,7 @@ describe Amt do
 
     it 'it refuses to add Homer twice as member of the PAB' do
       expect {
-        Amt.new(
+        Amtsperiode.new(
           inhaber: homer,
           rolle: pab,
           klasse: klasse_4a
@@ -120,17 +120,17 @@ describe Amt do
       let(:klasse_2c) { Klasse.new(stufe: '2', zug: 'c').save }
 
       before do
-        Amt.new(
+        Amtsperiode.new(
           inhaber: homer,
           rolle: pab,
           klasse: klasse_2c
         ).save
       end
 
-      it 'shows the Amt on Homer' do
-        expect(homer.ämter.size).to eq(2)
-        expect(homer.ämter.last.rolle).to eq(pab)
-        expect(homer.ämter.last.to_s).to eq('Member of the Parent Advisory Board Klasse 2c')
+      it 'shows the Amtsperiode on Homer' do
+        expect(homer.amtsperioden.size).to eq(2)
+        expect(homer.amtsperioden.last.rolle).to eq(pab)
+        expect(homer.amtsperioden.last.to_s).to eq('Member of the Parent Advisory Board Klasse 2c')
       end
     end
   end

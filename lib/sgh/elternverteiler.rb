@@ -8,7 +8,7 @@ require 'sgh/elternverteiler/mailing_list'
 module SGH
   module Elternverteiler
     class Klasse < Sequel::Model(:klasse); end
-    class Amt < Sequel::Model(:ämter); end
+    class Amtsperiode < Sequel::Model(:amtsperioden); end
     class Rolle < Sequel::Model(:rollen); end
     class Schüler < Sequel::Model(:schüler); end
     class Erziehungsberechtigter < Sequel::Model(:erziehungsberechtigte); end
@@ -70,4 +70,4 @@ require 'sgh/elternverteiler/rolle'
 require 'sgh/elternverteiler/schüler'
 require 'sgh/elternverteiler/erziehungsberechtigung'
 require 'sgh/elternverteiler/erziehungsberechtigter'
-require 'sgh/elternverteiler/amt'
+require 'sgh/elternverteiler/amtsperiode'

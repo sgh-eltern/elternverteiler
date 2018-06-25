@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-describe 'Ämter', type: :feature do
+describe 'Amtsperiode', type: :feature do
   before(:all) do
     create_class('5', 'A')
   end

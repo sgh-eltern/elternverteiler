@@ -120,7 +120,7 @@ describe Erziehungsberechtigter do
     end
 
     it 'has no Ämter' do
-      expect(homer.ämter).to be_empty
+      expect(homer.amtsperioden).to be_empty
     end
   end
 end

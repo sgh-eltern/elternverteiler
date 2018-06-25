@@ -4,7 +4,7 @@
   <% end %>
 </div>
 
-<% if @ämter %>
+<% if @amtsperioden %>
   <h3>Elternvertreter</h3>
 
   <p>
@@ -18,7 +18,7 @@
   <table class="pure-table pure-table-horizontal sgh-elternverteiler-erziehungsberechtigter">
     <thead>
       <tr>
-        <th>Amt</th>
+        <th>Amtsperiode</th>
         <th>Inhaber</th>
         <th></th>
       </tr>
@@ -26,23 +26,23 @@
 
     <tbody>
 
-    <% @ämter.each do |amt| %>
+    <% @amtsperioden.each do |amtsperiode| %>
       <tr>
         <td style="padding-left: 2em;">
-          <%= amt.rolle %>
+          <%= amtsperiode.rolle %>
         </td>
 
         <td valign="top">
-          <a href="/eltern/<%= amt.inhaber.id %>">
-            <%= amt.inhaber.nachname %>, <%= amt.inhaber.vorname %>
+          <a href="/eltern/<%= amtsperiode.inhaber.id %>">
+            <%= amtsperiode.inhaber.nachname %>, <%= amtsperiode.inhaber.vorname %>
           </a>
         </td>
 
         <td class="no-print">
-          <% form(@amt,
+          <% form(@amtsperiode,
                   :inputs_wrapper => :fieldset,
                   class: 'pure-form pure-form-aligned',
-                  action: "/klassen/#{amt.klasse.id}/rollen/#{amt.rolle.id}/inhaber/#{amt.inhaber.id}",
+                  action: "/klassen/#{amtsperiode.klasse.id}/rollen/#{amtsperiode.rolle.id}/inhaber/#{amtsperiode.inhaber.id}",
                   method: 'post',
                   ) do |f| %>
 

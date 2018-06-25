@@ -99,7 +99,7 @@ describe Klasse do
     let(:pab) { Rolle.new(name: '1.EV').save }
 
     before do
-      Amt.new(
+      Amtsperiode.new(
         inhaber: homer,
         rolle: pab,
         klasse: klasse_4a
@@ -127,7 +127,7 @@ describe Klasse do
       let(:cash_auditor) { Rolle.new(name: 'Cash Auditor').save }
 
       before do
-        Amt.new(
+        Amtsperiode.new(
           inhaber: jerri,
           rolle: cash_auditor,
           klasse: klasse_4a
@@ -149,7 +149,7 @@ describe Klasse do
       let(:marge) { Erziehungsberechtigter.new(vorname: 'Marge', nachname: 'Simpson').save }
 
       before do
-        Amt.new(
+        Amtsperiode.new(
           inhaber: marge,
           rolle: pab,
           klasse: klasse_2a

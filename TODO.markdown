@@ -4,13 +4,13 @@
 * `Klasse` belongs to `Stufe`; will allow us to get all Klassen 7 with `Stufe.where(name: 7).klassen`
   - This is also the place where `elternvertreter` is implemented so we can get `Stufe.where(name: 7).elternvertreter`. It will allow us to replace `klassenstufe_elternvertreter` in the views.
 * Konzept von Rolle / Besetzung einbauen
-  - alternativ: Amt / Inhaber
+  - alternativ: Amt / Amtsperiode
   - war bisher Rolle + Amt
-  - Rolle ist besetzt mit einer Person
-  - Besetzung beginnt an einem Datum und endet optional
-  - kann auch unbesetzt sein
-  - Besetzung hat Historie (wer hat die Rolle wann besetzt)
-  - Für jede Person kann man abfragen (anzeigen), zu welchem Zeitpunkt sie eine Rolle inne hatte
+  - Amt ist innerhalb einer Amtsperiode besetzt mit (genau einem) einem Inhaber
+  - Periode beginnt an einem Datum und endet optional
+  - Amt kann auch unbesetzt sein (keine Periode definiert)
+  - Amtsperiode hat Historie (wer hat das Amt wann besetzt)
+  - Für jede Person kann man abfragen (anzeigen), zu welchem Zeitpunkt sie ein Amt inne hatte (welche Amtsperioden)
 * neue Rollen einführen, die bisher nicht im Spreadsheet sind:
   - Kassenführung
   - Kassenprüfung 1 und 2

@@ -22,13 +22,13 @@ describe Rolle do
     let(:marge) { Erziehungsberechtigter.new(vorname: 'Marge', nachname: 'Simpson').save }
 
     before do
-      Amt.new(
+      Amtsperiode.new(
         inhaber: homer,
         rolle: pab,
         klasse: klasse
         ).save
 
-      Amt.new(
+      Amtsperiode.new(
         inhaber: chief_wiggum,
         rolle: pab,
         klasse: klasse

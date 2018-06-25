@@ -2,8 +2,9 @@
 
 module SGH
   module Elternverteiler
-    # Rolle eines Erziehungsberechtigten als Vertreter einer Klasse
-    class Amt < Sequel::Model(:ämter)
+    # Zeitraum, in der eine Erziehungsberechtigter ein Amt inne hat, z.B. als
+    # Elternvertreter einer Klasse
+    class Amtsperiode < Sequel::Model(:amtsperioden)
       include FormeHelper
 
       many_to_one :inhaber, class: Erziehungsberechtigter

@@ -80,10 +80,10 @@ module SGH
 
             r.on 'klassen' do
               topic 'Elternvertreter der Klassen'
-              @klassen_ämter = Klasse.sort.map do |klasse|
+              @klassen_amtsperioden = Klasse.sort.map do |klasse|
                 [
                   klasse,
-                  Amt.where(
+                  Amtsperiode.where(
                     rolle: Rolle.where(Sequel.like(:name, '%.EV')), klasse: klasse
                     ).sort_by(&:to_s)
                 ]
@@ -182,7 +182,7 @@ module SGH
               @klasse = Klasse.first!(id: id)
               @schüler = @klasse.schüler
               topic "Klasse #{@klasse}"
-              @ämter = Amt.where(
+              @amtsperioden = Amtsperiode.where(
                 rolle: Rolle.where(Sequel.like(:name, '%.EV')),
                 klasse: @klasse
                 ).sort_by(&:to_s)
@@ -191,27 +191,27 @@ module SGH
             end
 
             r.get Integer, 'rollen', 'add' do |klasse_id|
-              topic 'Neuer Amtsinhaber'
+              topic 'Neue Amtsperiode'
               klasse = Klasse.first!(id: klasse_id)
-              @amt = Amt.new(klasse: klasse)
+              @amtsperiode = Amtsperiode.new(klasse: klasse)
               view 'elternvertreter/add'
             end
 
             r.post Integer, 'rollen', 'add' do |klasse_id|
               klasse = Klasse.first!(id: klasse_id)
-              rolle = Rolle.first!(id: r.params['sgh-elternverteiler-amt']['rolle_id'])
-              inhaber = Erziehungsberechtigter.first!(id: r.params['sgh-elternverteiler-amt']['inhaber_id'])
-              Amt.new(klasse: klasse, rolle: rolle, inhaber: inhaber).save
+              rolle = Rolle.first!(id: r.params['sgh-elternverteiler-amtsperiode']['rolle_id'])
+              inhaber = Erziehungsberechtigter.first!(id: r.params['sgh-elternverteiler-amtsperiode']['inhaber_id'])
+              Amtsperiode.new(klasse: klasse, rolle: rolle, inhaber: inhaber).save
               flash[:success] = "#{inhaber} ist jetzt #{rolle} in der #{klasse}"
               r.redirect "/klassen/#{klasse.id}"
             end
 
             r.post Integer, 'rollen', Integer, 'inhaber', Integer do |klasse_id, rolle_id, inhaber_id|
-              topic 'Amtsinhaber löschen'
+              topic 'Amtsperiode löschen'
               klasse = Klasse.first!(id: klasse_id)
               rolle = Rolle.first!(id: rolle_id)
               inhaber = Erziehungsberechtigter.first!(id: inhaber_id)
-              Amt.first!(klasse: klasse, rolle: rolle, inhaber: inhaber).destroy
+              Amtsperiode.first!(klasse: klasse, rolle: rolle, inhaber: inhaber).destroy
               flash[:success] = "#{inhaber} ist nicht mehr #{rolle} in der #{klasse}."
               r.redirect "/klassen/#{klasse.id}"
             end
