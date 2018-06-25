@@ -25,7 +25,7 @@ module SGH
             name: 'Elternbeirat',
             address: 'elternbeirat',
             members: all
-)
+          )
         end
       end
     end
@@ -41,7 +41,7 @@ module SGH
             name: 'Elternbeiratsvorsitzende',
             address: 'elternbeiratsvorsitzende',
             members: all
-)
+          )
         end
       end
     end
@@ -57,7 +57,7 @@ module SGH
             name: 'Elternvertreter in der Schulkonferenz',
             address: 'elternvertreter-schulkonferenz',
             members: all
-)
+          )
         end
       end
     end

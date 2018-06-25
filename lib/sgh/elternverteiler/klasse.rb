@@ -2,7 +2,10 @@
 
 module SGH
   module Elternverteiler
-    # TODO: Each arg can either be a symbol (method to send to self) or a proc
+    # TODO: Each arg can either be
+    # - a symbol => name of the method to send to self in order to get the value,
+    # - a string => the value itself
+    # - or a proc => call it with self as argument in order to get the value
     module WithMailingList
       def with_mailing_list(name:, address:, members:)
         define_method :mailing_list do
@@ -10,7 +13,7 @@ module SGH
             name: name.call(self),
             address: address.call(self),
             members: self.send(members)
-)
+          )
         end
       end
     end
@@ -46,10 +49,10 @@ module SGH
         Amt.where(
           rolle: Rolle.where(Sequel.like(:name, '%.EV')),
           klasse: self
-        ).map(&:inhaber).tap do |ev|
+        ).map(&:inhaber).tap do |all|
           k = self
 
-          ev.define_singleton_method(:mailing_list) do
+          all.define_singleton_method(:mailing_list) do
             MailingList.new(
               name: "Elternvertreter der #{k}",
               address: "elternvertreter-#{k.to_s.downcase}",

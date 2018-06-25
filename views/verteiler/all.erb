@@ -34,6 +34,7 @@
   <table class="pure-table pure-table-bordered sgh-elternverteiler-klassenstufe-elternvertreter">
     <%== partial('verteiler/thead') %>
     <tbody>
+      <%# TODO Refactor this once we have a proper Klassenstufe model %>
       <% klassen.group_by(&:stufe).each do |klassenstufe, ks_klassen| %>
         <% klassenstufe_elternvertreter = ks_klassen.flat_map(&:elternvertreter) %>
         <%== partial('verteiler/tr', locals: {
@@ -50,6 +51,7 @@
   <table class="pure-table pure-table-bordered sgh-elternverteiler-klassenstufe-eltern">
     <%== partial('verteiler/thead') %>
     <tbody>
+      <%# TODO Refactor this once we have a proper Klassenstufe model %>
       <% klassen.group_by(&:stufe).each do |klassenstufe, ks_klassen| %>
       <% klassenstufe_eltern = ks_klassen.flat_map(&:eltern) %>
         <%== partial('verteiler/tr', locals: {
