@@ -5,7 +5,7 @@
 </div>
 
 <p>
-  <%== partial('email') %>
+  <%== partial('email', locals: { address: eltern.mailing_list.address(:long) }) %>
 </p>
 
 <p>

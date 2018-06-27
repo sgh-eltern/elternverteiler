@@ -73,9 +73,6 @@ module SGH
           r.on 'elternbeirat' do
             r.on 'anwesenheit' do
               topic 'Anwesenheit'
-              @email = 'elternbeirat@schickhardt-gymnasium-herrenberg.de'
-              @eltern = elternbeirat
-
               view :anwesenheit
             end
 
@@ -94,7 +91,6 @@ module SGH
 
             r.on do
               topic 'Alle Elternvertreter'
-              @email = 'elternbeirat@schickhardt-gymnasium-herrenberg.de'
               @eltern = elternbeirat
               view 'erziehungsberechtigter/list'
             end
@@ -150,7 +146,6 @@ module SGH
 
             r.on do
               topic 'Alle Eltern'
-              @email = 'eltern@schickhardt-gymnasium-herrenberg.de'
               @eltern = eltern
               view 'erziehungsberechtigter/list'
             end
@@ -211,7 +206,6 @@ module SGH
                 amt: Amt.where(Sequel.like(:name, '%.EV')),
                 klasse: @klasse
                 ).sort_by(&:to_s)
-              @email = "elternvertreter-#{@klasse.to_s.downcase}@schickhardt-gymnasium-herrenberg.de"
               view 'schüler/list'
             end
 

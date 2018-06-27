@@ -18,6 +18,7 @@ module SGH
         right_key: :amt_id
 
       ValidationError = Class.new(StandardError)
+
       def amtsperioden
         ämter.map { |r| SGH::Elternverteiler::Amtsperiode.where(amt: r, inhaber: self).all }.flatten.uniq
       end

@@ -1,24 +1,24 @@
-<%== partial('email') %>
-
 <table class="pure-table pure-table-horizontal pure-table-striped">
   <thead>
     <tr>
       <th>Nachname</th>
       <th>Vorname</th>
-      <th>Klasse</th>
+      <th>Ämter</th>
       <th>Unterschrift</th>
     </tr>
   </thead>
 
   <tbody>
 
-  <% eltern.each do |elternteil| %>
+  <% elternbeirat.each do |ev| %>
     <tr>
-      <td><%= elternteil.nachname %></td>
-      <td><%= elternteil.vorname %></td>
+      <td><%= ev.nachname %></td>
+      <td><%= ev.vorname %></td>
       <td>
-        <%= elternteil.amtsperioden.map(&:amt).uniq.join(', ') %>
-        <%= elternteil.amtsperioden.map{|a| "#{a.klasse}" }.uniq.join(', ') %>
+        <% ev.amtsperioden.group_by{|ap| ap.klasse }.each do |klasse, amtsperioden|  %>
+          <%= amtsperioden.map{ |ap| ap.amt.name }.join(', ') %>
+          <%= klasse %><br>
+        <% end %>
       </td>
       <td></td>
     </tr>

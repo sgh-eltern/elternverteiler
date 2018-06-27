@@ -8,7 +8,7 @@
   <h3>Elternvertreter</h3>
 
   <p>
-    <%== partial('email') %>
+    <%== partial('email', locals: { address: @klasse.mailing_list.address(:long) }) %>
   </p>
 
   <p>
