@@ -40,22 +40,23 @@ module SGH
           title 'Elternbeirat am SGH'
           @menu = {
             '/elternbeirat': 'Elternbeirat',
-            '/elternbeirat/anwesenheit': '&nbsp;Anwesenheit',
-            '/elternbeirat/klassen': '&nbsp;nach Klassen',
-            '/elternbeirat/schulkonferenz': '&nbsp;Schulkonferenz',
-            '/elternbeirat/vorsitzende': '&nbsp;Vorsitzende',
+            '/elternbeirat/anwesenheit': '&nbsp;&nbsp;Anwesenheit',
+            '/elternbeirat/klassen': '&nbsp;&nbsp;nach Klassen',
 
+            # TODO: Should be /elternbeirat/ämter
+            '/ämter': '&nbsp;&nbsp;Ämter',
+
+            '/klassenstufen': 'Klassenstufen',
+            '/klassen': 'Klassen',
+            '/schueler': 'Schüler',
+            '/schueler/nicht-erreichbar': '&nbsp;&nbsp;Nicht erreichbar',
             '/eltern': 'Eltern',
 
-            '/schueler': 'Schüler',
-            '/schueler/nicht-erreichbar': '&nbsp;Nicht erreichbar',
-
-            '/klassen': 'Klassen',
-            '/ämter': 'Ämter',
             '/backups': 'Backups',
-            '/backups/new': '&nbsp;Neu',
+            '/backups/new': '&nbsp;&nbsp;Neu',
 
             '/verteiler': 'Verteiler',
+            # TODO: New views
             # '/verteiler/klassen': '&nbsp;Eltern',
             # '/verteiler/klassenstufen': '&nbsp;Klassenstufen',
             # '/verteiler/eltern': '&nbsp;Alle Eltern',
@@ -89,22 +90,6 @@ module SGH
                 ]
               end
               view 'elternvertreter/klassen'
-            end
-
-            r.on 'schulkonferenz' do
-              topic 'Elternvertreter in der Schulkonferenz'
-              @email = 'elternvertreter-schulkonferenz@schickhardt-gymnasium-herrenberg.de'
-
-              # BUG: The spreadsheet requires the 1.EBV to be marked as SK, too, so we get a duplicate.
-              @eltern = evsk
-              view 'erziehungsberechtigter/list'
-            end
-
-            r.on 'vorsitzende' do
-              topic 'Vorsitzende'
-              @email = 'elternbeiratsvorsitzende@schickhardt-gymnasium-herrenberg.de'
-              @eltern = ebv
-              view 'erziehungsberechtigter/list'
             end
 
             r.on do
@@ -171,6 +156,46 @@ module SGH
             end
           end
 
+          r.on 'klassenstufen' do
+            r.get 'neu' do |id|
+              topic 'Neue Klassenstufe anlegen'
+              @klassenstufe = Klassenstufe.new
+              view 'klassenstufen/new'
+            end
+
+            r.get Integer do |id|
+              @klassenstufe = Klassenstufe.first!(id: id)
+              topic @klassenstufe
+              view 'klassenstufen/show'
+            end
+
+            r.post Integer, 'delete' do |id|
+              @klassenstufe = Klassenstufe.first!(id: id)
+              @klassenstufe.destroy
+              flash[:success] = "#{@klassenstufe} wurde gelöscht."
+              r.redirect '/klassenstufen'
+            rescue StandardError
+              flash[:error] = "Die #{@klassenstufe} hat Klassen und kann deshalb nicht gelöscht werden."
+              r.redirect(r.referrer)
+            end
+
+            r.post do
+              @klassenstufe = Klassenstufe.new
+              @klassenstufe.set_fields(r.params['sgh-elternverteiler-klassenstufe'], %w[name])
+              @klassenstufe.save
+              r.redirect "/klassenstufen/#{@klassenstufe.id}"
+            rescue Sequel::UniqueConstraintViolation
+              topic 'Neue Klassenstufe anlegen'
+              flash.now[:error] = "Die Klassenstufe #{@klassenstufe.name} existiert bereits"
+              view 'klassenstufen/new'
+            end
+
+            r.on do
+              topic 'Alle Klassenstufen'
+              view 'klassenstufen/list'
+            end
+          end
+
           r.on 'klassen' do
             r.get 'neu' do |id|
               topic 'Neue Klasse anlegen'
@@ -179,9 +204,9 @@ module SGH
             end
 
             r.get Integer do |id|
-              @klasse = Klasse.first!(id: id)
-              @schüler = @klasse.schüler
               topic "Klasse #{@klasse}"
+              @klasse = Klasse.first!(id: id)
+              @schüler = @klasse.schüler.sort_by(&:nachname)
               @amtsperioden = Amtsperiode.where(
                 amt: Amt.where(Sequel.like(:name, '%.EV')),
                 klasse: @klasse
@@ -190,14 +215,14 @@ module SGH
               view 'schüler/list'
             end
 
-            r.get Integer, URI.encode('ämter'), 'add' do |klasse_id|
+            r.get Integer, CGI.escape('ämter'), 'add' do |klasse_id|
               topic 'Neue Amtsperiode'
               klasse = Klasse.first!(id: klasse_id)
               @amtsperiode = Amtsperiode.new(klasse: klasse)
               view 'elternvertreter/add'
             end
 
-            r.post Integer, URI.encode('ämter'), 'add' do |klasse_id|
+            r.post Integer, CGI.escape('ämter'), 'add' do |klasse_id|
               klasse = Klasse.first!(id: klasse_id)
               amt = Amt.first!(id: r.params['sgh-elternverteiler-amtsperiode']['amt_id'])
               inhaber = Erziehungsberechtigter.first!(id: r.params['sgh-elternverteiler-amtsperiode']['inhaber_id'])
@@ -206,7 +231,7 @@ module SGH
               r.redirect "/klassen/#{klasse.id}"
             end
 
-            r.post Integer, URI.encode('ämter'), Integer, 'inhaber', Integer do |klasse_id, amt_id, inhaber_id|
+            r.post Integer, CGI.escape('ämter'), Integer, 'inhaber', Integer do |klasse_id, amt_id, inhaber_id|
               topic 'Amtsperiode löschen'
               klasse = Klasse.first!(id: klasse_id)
               amt = Amt.first!(id: amt_id)
@@ -232,13 +257,13 @@ module SGH
 
             r.post do
               @klasse = Klasse.new
-              @klasse.set_fields(r.params['sgh-elternverteiler-klasse'], %w[stufe zug])
+              @klasse.set_fields(r.params['sgh-elternverteiler-klasse'], %w[stufe_id zug])
               @klasse.save
               r.redirect "/klassen/#{@klasse.id}"
             rescue Sequel::UniqueConstraintViolation
               topic 'Neue Klasse anlegen'
               flash.now[:error] = "Die Klasse #{@klasse.name} existiert bereits"
-              view 'ämter/new'
+              view 'klassen/new'
             end
 
             r.on do
@@ -247,7 +272,7 @@ module SGH
             end
           end
 
-          r.on URI.encode('ämter') do
+          r.on CGI.escape('ämter') do
             r.get 'neu' do |id|
               topic 'Neue Amt anlegen'
               @amt = Amt.new
@@ -459,12 +484,12 @@ module SGH
           @eltern ||= SGH::Elternverteiler::Erziehungsberechtigter.all
         end
 
-        def klassen
-          @klassen ||= Klasse.sort
+        def klassenstufen
+          @klassenstufen ||= SGH::Elternverteiler::Klassenstufe.sort
         end
 
-        def ämter
-          @ämter ||= Amt.sort
+        def klassen
+          @klassen ||= Klasse.sort
         end
 
         def eltern_total
@@ -472,6 +497,10 @@ module SGH
         end
 
         # rubocop:disable Naming/MethodName
+        def ämter
+          @ämter ||= Amt.sort
+        end
+
         def schüler_unreachable
           @schüler_unreachable ||= Schüler.all.select { |sch| sch.eltern.collect(&:mail).compact.empty? }.sort_by(&:nachname)
         end

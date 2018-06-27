@@ -34,15 +34,8 @@
   <table class="pure-table pure-table-bordered sgh-elternverteiler-klassenstufe-elternvertreter">
     <%== partial('verteiler/thead') %>
     <tbody>
-      <%# TODO Refactor this once we have a proper Klassenstufe model %>
-      <% klassen.group_by(&:stufe).each do |klassenstufe, ks_klassen| %>
-        <% klassenstufe_elternvertreter = ks_klassen.flat_map(&:elternvertreter) %>
-        <%== partial('verteiler/tr', locals: {
-          liste: SGH::Elternverteiler::MailingList.new(
-            name: "Elternvertreter der Klassenstufe #{klassenstufe}",
-            address: "elternvertreter-#{klassenstufe.to_s.downcase}",
-            members: klassenstufe_elternvertreter)
-          }) %>
+      <% klassenstufen.each do |klassenstufe| %>
+        <%== partial('verteiler/tr', locals: { liste: klassenstufe.elternvertreter.mailing_list }) %>
       <% end %>
     </tbody>
   </table>
@@ -51,15 +44,8 @@
   <table class="pure-table pure-table-bordered sgh-elternverteiler-klassenstufe-eltern">
     <%== partial('verteiler/thead') %>
     <tbody>
-      <%# TODO Refactor this once we have a proper Klassenstufe model %>
-      <% klassen.group_by(&:stufe).each do |klassenstufe, ks_klassen| %>
-      <% klassenstufe_eltern = ks_klassen.flat_map(&:eltern) %>
-        <%== partial('verteiler/tr', locals: {
-          liste: SGH::Elternverteiler::MailingList.new(
-            name: "Alle Eltern der Klassenstufe #{klassenstufe}",
-            address: "eltern-#{klassenstufe.to_s.downcase}",
-            members: klassenstufe_eltern)
-         }) %>
+      <% klassenstufen.each do |klassenstufe| %>
+        <%== partial('verteiler/tr', locals: { liste: klassenstufe.mailing_list }) %>
       <% end %>
     </tbody>
   </table>

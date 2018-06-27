@@ -2,7 +2,8 @@
 
 describe Amtsperiode do
   let(:homer) { Erziehungsberechtigter.new(vorname: 'Homer', nachname: 'Simpson').save }
-  let(:klasse_4a) { Klasse.new(stufe: '4', zug: 'a').save }
+  let(:klassenstufe_4) { Klassenstufe.new(name: '4').save }
+  let(:klasse_4a) { Klasse.new(stufe: klassenstufe_4, zug: 'a').save }
   let(:pab) { Amt.new(name: 'Member of the Parent Advisory Board').save }
 
   context 'Homer is member of the PAB' do
@@ -70,7 +71,8 @@ describe Amtsperiode do
     end
 
     context '5th grade has a PAB member' do
-      let(:klasse_5a) { Klasse.new(stufe: '5', zug: 'a').save }
+      let(:klassenstufe_5) { Klassenstufe.new(name: '5').save }
+      let(:klasse_5a) { Klasse.new(stufe: klassenstufe_5, zug: 'a').save }
       let(:kyles_dad) { Erziehungsberechtigter.new(nachname: 'LaBianco', mail: 'kyle@labianco.com').save }
 
       before do
@@ -117,7 +119,8 @@ describe Amtsperiode do
     end
 
     context '2th grade has a PAB member' do
-      let(:klasse_2c) { Klasse.new(stufe: '2', zug: 'c').save }
+      let(:klassenstufe_2) { Klassenstufe.new(name: '2').save }
+      let(:klasse_2c) { Klasse.new(stufe: klassenstufe_2, zug: 'c').save }
 
       before do
         Amtsperiode.new(

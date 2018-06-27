@@ -4,11 +4,13 @@ require_relative 'helper'
 
 describe 'Amtsperiode', type: :feature do
   before(:all) do
+    create_klassenstufe('5')
     create_class('5', 'A')
   end
 
   after(:all) do
     delete_class('5A')
+    delete_klassenstufe('5')
   end
 
   before do

@@ -24,6 +24,7 @@ module SGH
       extend WithMailingList
 
       one_to_many :schüler, class: Schüler
+      many_to_one :stufe, class: Klassenstufe
 
       many_to_many :ämter,
         class: Amt,
@@ -63,23 +64,13 @@ module SGH
       end
 
       def to_s
-        "#{stufe}#{zug}"
+        "#{stufe.name}#{zug}"
       end
 
       alias_method :name, :to_s
 
       def <=>(other)
-        if numeric?(stufe) && numeric?(other.stufe)
-          [stufe.to_i, zug] <=> [other.stufe.to_i, other.zug]
-        elsif !numeric?(stufe) && !numeric?(other.stufe)
-          [stufe, zug] <=> [other.stufe, other.zug]
-        elsif numeric?(stufe) && !numeric?(other.stufe)
-          -1
-        elsif !numeric?(stufe) && numeric?(other.stufe)
-          1
-        else
-          raise "Unable to compare #{self} with #{other}"
-        end
+        [stufe, zug] <=> [other.stufe, other.zug]
       end
 
       def numeric?(value)

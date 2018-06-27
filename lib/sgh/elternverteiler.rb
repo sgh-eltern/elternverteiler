@@ -8,6 +8,7 @@ require 'sgh/elternverteiler/mailing_list'
 module SGH
   module Elternverteiler
     class Klasse < Sequel::Model(:klasse); end
+    class Klassenstufe < Sequel::Model(:klassenstufe); end
     class Amtsperiode < Sequel::Model(:amtsperioden); end
     class Amt < Sequel::Model(:ämter); end
     class Schüler < Sequel::Model(:schüler); end
@@ -66,6 +67,7 @@ end
 
 require 'sgh/elternverteiler/forme_helper'
 require 'sgh/elternverteiler/klasse'
+require 'sgh/elternverteiler/klassenstufe'
 require 'sgh/elternverteiler/amt'
 require 'sgh/elternverteiler/schüler'
 require 'sgh/elternverteiler/erziehungsberechtigung'

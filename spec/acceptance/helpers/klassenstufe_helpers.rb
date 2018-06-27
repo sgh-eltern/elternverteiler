@@ -1,19 +1,17 @@
 # frozen_string_literal: true
 
-module ClassHelpers
-  def create_class(stufe, zug=nil)
+module KlassenstufeHelpers
+  def create_klassenstufe(name)
     visit '/'
-    within('#menu') { click_link('Klassen') }
+    within('#menu') { click_link('Klassenstufen') }
     click_link('Anlegen')
-    find('#sgh-elternverteiler-klasse_stufe_id').click
-    select(stufe)
-    fill_in('Zug', with: zug)
+    fill_in('Name', with: name)
     click_button('Anlegen')
   end
 
-  def delete_class(name)
+  def delete_klassenstufe(name)
     visit '/'
-    within('#menu') { click_link('Klassen') }
+    within('#menu') { click_link('Klassenstufen') }
     within('.content') do
       if page.has_link?(name)
         click_link(name)

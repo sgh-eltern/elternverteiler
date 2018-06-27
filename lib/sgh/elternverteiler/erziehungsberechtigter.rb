@@ -18,12 +18,9 @@ module SGH
         right_key: :amt_id
 
       ValidationError = Class.new(StandardError)
-
-      # rubocop:disable Naming/MethodName
       def amtsperioden
         ämter.map { |r| SGH::Elternverteiler::Amtsperiode.where(amt: r, inhaber: self).all }.flatten.uniq
       end
-      # rubocop:enable Naming/MethodName
 
       def before_save
         if vorname.to_s.empty? && nachname.to_s.empty? && mail.to_s.empty?

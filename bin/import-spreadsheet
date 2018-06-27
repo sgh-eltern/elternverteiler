@@ -27,9 +27,11 @@ s.first_row.upto(s.last_row) do |line|
     klassenname = s.cell(line, 3).upcase
     klasse = case klassenname
              when /(1?\d)([A-Z])/
-               Klasse.find_or_create(stufe: Regexp.last_match(1), zug: Regexp.last_match(2))
+               ks = Klassenstufe.find_or_create(name: Regexp.last_match(1))
+               Klasse.find_or_create(stufe: ks, zug: Regexp.last_match(2))
              when /J(1|2)/
-               Klasse.find_or_create(stufe: 'J' + Regexp.last_match(1))
+               ks = Klassenstufe.find_or_create(name: klassenname)
+               Klasse.find_or_create(stufe: ks)
              else
                raise "Konnte Klasse #{klassenname} nicht in Stufe und Zug zerlegen."
              end

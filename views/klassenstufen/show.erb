@@ -1,0 +1,33 @@
+<table class="pure-table pure-table-horizontal sgh-klassenstufenverteiler-klassenstufe">
+  <tr>
+    <th style="border-left-style: hidden; border-right-style: hidden; border-top-style: hidden; text-align: left;" colspan=2><h2>Stammdaten</h2></th>
+  </tr>
+
+  <tr>
+    <th style="background-color: #f2f2f2; text-align: right;">Name</th>
+    <td><%= @klassenstufe.name %></td>
+  </tr>
+
+  <tr>
+    <th style="background-color: #f2f2f2; text-align: right;">Klassen</th>
+    <td>
+      <% @klassenstufe.klassen.each do |klasse| %>
+        <a href="/klassen/<%= klasse.id %>"><%= klasse %></a><br/>
+      <% end %>
+    </td>
+  </tr>
+
+  <%== partial('meta', locals: { item: @klassenstufe }) %>
+</table>
+
+<form action="/klassenstufen/<%= @klassenstufe.id %>/delete" class="pure-form pure-form-aligned" method="post">
+<p>
+  <a href="/klassenstufen/<%= @klassenstufe.id %>/edit" class="pure-button pure-button-primary">Bearbeiten</a>
+  <input class="pure-button"
+         type="submit"
+         value="Löschen"
+         style="color: white; background: rgb(202, 60, 60)"
+         onclick="return confirm('Sind Sie sicher, daß Sie die <%= @klassenstufe %> löschen möchten?')"
+  />
+</p>
+</form>

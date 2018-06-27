@@ -1,0 +1,22 @@
+<p>
+  <a href="/klassenstufen/neu" class="pure-button pure-button-primary">Anlegen</a>
+</p>
+
+<table class="pure-table pure-table-horizontal pure-table-striped sgh-elternverteiler-klassenstufen">
+  <thead>
+    <tr>
+      <th>Klassenstufe</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+  <% klassenstufen.each do |stufe| %>
+    <tr>
+      <td>
+        <a href="/klassenstufen/<%= stufe.id %>"><%= stufe %></a>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

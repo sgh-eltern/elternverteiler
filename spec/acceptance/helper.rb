@@ -7,6 +7,7 @@ require 'securerandom'
 require 'sequel'
 require 'tmpdir'
 
+require_relative 'helpers/klassenstufe_helpers'
 require_relative 'helpers/class_helpers'
 require_relative 'helpers/parent_helpers'
 require_relative 'helpers/pupil_helpers'
@@ -20,6 +21,7 @@ def db_name
 end
 
 RSpec.configure do |config|
+  config.include KlassenstufeHelpers
   config.include PupilHelpers
   config.include ClassHelpers
   config.include ParentHelpers

@@ -5,13 +5,17 @@ require_relative 'helper'
 describe 'Klassen', type: :feature do
   context '5K exists' do
     before do
+      create_klassenstufe('5')
       create_class('5', 'K')
       visit '/'
       within('#menu') { click_link('Klassen') }
       within('.content') { click_link('5K') }
     end
 
-    after { delete_class('5K') }
+    after do
+      delete_class('5K')
+      delete_klassenstufe('5')
+    end
 
     it 'lists Elternvertreter' do
       expect(page).to have_content 'Elternvertreter'
@@ -49,9 +53,16 @@ describe 'Klassen', type: :feature do
       end
     end
 
-    context 'J1 exists' do
-      before { create_class('J', '1') }
-      after { delete_class('J1') }
+    fcontext 'J1 exists' do
+      before do
+        create_klassenstufe('J')
+        create_class('J', '1')
+      end
+
+      after do
+        delete_class('J1')
+        delete_klassenstufe('J')
+      end
 
       it 'lists both 5K and J1' do
         within('#menu') { click_link('Klassen') }

@@ -2,7 +2,8 @@
 
 describe Amt do
   subject(:pab) { described_class.new(name: 'Member of the Parent Advisory Board').save }
-  let(:klasse) { Klasse.new(stufe: '4', zug: 'a').save }
+  let(:klassenstufe_4) { Klassenstufe.new(name: '4').save }
+  let(:klasse) { Klasse.new(stufe: klassenstufe_4, zug: 'a').save }
 
   it 'has a name' do
     expect(pab.name).to eq('Member of the Parent Advisory Board')

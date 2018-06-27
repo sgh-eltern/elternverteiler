@@ -11,6 +11,7 @@ AllCops:
     - vendor/**/*
     - db/migrations/**/*
     - spec/failure-state
+    - bin/import-spreadsheet
 
   DisplayCopNames:
     Enabled: true
@@ -22,6 +23,9 @@ Naming/FileName:
   Enabled: false
 
 Naming/AsciiIdentifiers:
+  Enabled: false
+
+Style/AsciiComments:
   Enabled: false
 
 Metrics/BlockLength:

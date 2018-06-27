@@ -4,7 +4,8 @@ require 'timecop'
 
 describe Schüler do
   subject(:bart) { described_class.new }
-  let(:k4a) { Klasse.new(stufe: '4', zug: 'a').save }
+  let(:klassenstufe_4) { Klassenstufe.new(name: '4').save }
+  let(:k4a) { Klasse.new(stufe: klassenstufe_4, zug: 'a').save }
 
   context 'a valid pupil' do
     before do

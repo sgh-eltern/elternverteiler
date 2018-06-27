@@ -21,10 +21,10 @@ Klasse.each do |klasse|
   puts PostmapPresenter.new("eltern-#{klasse.to_s.downcase}@schickhardt-gymnasium-herrenberg.de").present(klasse.eltern)
 end
 
-Klasse.all.group_by(&:stufe).each do |klassenstufe, klassen|
+Klasse.all.group_by(&:stufe).each do |stufe, klassen|
   eltern = klassen.flat_map(&:eltern)
-  warn "Klassenstufe #{klassenstufe}: #{klassen.flat_map(&:schüler).count} Schüler, #{eltern.count} Eltern"
-  puts PostmapPresenter.new("eltern-#{klassenstufe.to_s.downcase}@schickhardt-gymnasium-herrenberg.de").present(eltern)
+  warn "Klassenstufe #{stufe}: #{klassen.flat_map(&:schüler).count} Schüler, #{eltern.count} Eltern"
+  puts PostmapPresenter.new("eltern-#{stufe.to_s.downcase}@schickhardt-gymnasium-herrenberg.de").present(eltern)
 end
 
 warn "Alle Eltern: #{Erziehungsberechtigter.count} Adressen"

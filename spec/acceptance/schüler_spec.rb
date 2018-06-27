@@ -4,7 +4,15 @@ require_relative 'helper'
 
 describe 'Schüler', type: :feature do
   context 'Klasse 5S' do
-    before(:all) { create_class('9', 'S') }
+    before(:all) do
+      create_klassenstufe('9')
+      create_class('9', 'S')
+    end
+
+    after(:all) do
+      delete_class('9S')
+      delete_klassenstufe('9')
+    end
 
     context 'there are no pupils' do
       after { delete_pupil('Simpson', 'Bart', '9S') }

@@ -3,41 +3,66 @@
 require_relative 'helper'
 
 describe 'Helper', type: :feature do
-  context 'Klasse 5H exists' do
-    before(:all) { create_class('5', 'H') }
-    after(:all) { delete_class('5H') }
+  context 'Klassenstufe 5 does not exist yet' do
+    it 'creates it' do
+      create_klassenstufe('5')
 
-    context 'Bart does not exist' do
-      after { delete_pupil('Simpson', 'Bart', '5H') }
+      within('#menu') { click_link('Klassenstufen') }
+      within('.sgh-elternverteiler-klassenstufen') do
+        expect(page).to have_content('5')
+      end
+    end
+  end
 
-      it 'creates Bart as pupil in 5H' do
-        create_pupil('Simpson', 'Bart', '5H')
+  context 'Klassenstufe 5 exists' do
+    before { create_klassenstufe('5') }
+    after { delete_klassenstufe('5') }
 
-        within('#menu') { click_link('Schüler') }
-        within('.sgh-elternverteiler-schüler') do
-          expect(page).to have_content('Bart')
-        end
+    it 'deletes it' do
+      delete_klassenstufe('5')
+
+      within('#menu') { click_link('Klassenstufen') }
+      within('.sgh-elternverteiler-klassenstufen') do
+        expect(page).to_not have_content('5')
       end
     end
 
-    context 'Bart is a pupil in 5H' do
-      before { create_pupil('Simpson', 'Bart', '5H') }
-      after { delete_pupil('Simpson', 'Bart', '5H') }
+    context 'Klasse 5H exists' do
+      before { create_class('5', 'H') }
+      after { delete_class('5H') }
 
-      describe 'deleting Bart' do
-        before { delete_pupil('Simpson', 'Bart', '5H') }
+      context 'Bart does not exist' do
+        after { delete_pupil('Simpson', 'Bart', '5H') }
 
-        it 'removes Bart from the list' do
+        it 'creates Bart as pupil in 5H' do
+          create_pupil('Simpson', 'Bart', '5H')
+
           within('#menu') { click_link('Schüler') }
           within('.sgh-elternverteiler-schüler') do
-            expect(page).to_not have_content('Bart')
+            expect(page).to have_content('Bart')
           end
         end
+      end
 
-        it 'does not touch Klasse 5H' do
-          within('#menu') { click_link('Klassen') }
-          within('.sgh-elternverteiler-klassen') do
-            expect(page).to have_content '5H'
+      context 'Bart is a pupil in 5H' do
+        before { create_pupil('Simpson', 'Bart', '5H') }
+        after { delete_pupil('Simpson', 'Bart', '5H') }
+
+        describe 'deleting Bart' do
+          before { delete_pupil('Simpson', 'Bart', '5H') }
+
+          it 'removes Bart from the list' do
+            within('#menu') { click_link('Schüler') }
+            within('.sgh-elternverteiler-schüler') do
+              expect(page).to_not have_content('Bart')
+            end
+          end
+
+          it 'does not touch Klasse 5H' do
+            within('#menu') { click_link('Klassen') }
+            within('.sgh-elternverteiler-klassen') do
+              expect(page).to have_content '5H'
+            end
           end
         end
       end

@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 describe Erziehungsberechtigung do
-  let(:k4a) { Klasse.new(stufe: '4', zug: 'a').save }
+  let(:klassenstufe_4) { Klassenstufe.new(name: '4').save }
+  let(:k4a) { Klasse.new(stufe: klassenstufe_4, zug: 'a').save }
 
   it 'has a forme namespace' do
     expect(subject.forme_namespace).to eq('sgh-elternverteiler-erziehungsberechtigung')
@@ -40,7 +41,8 @@ describe Erziehungsberechtigung do
     end
 
     context 'Bart is thrown off the school' do
-      let(:k2a) { Klasse.new(stufe: '2', zug: 'a').save }
+      let(:klassenstufe_2) { Klassenstufe.new(name: '2').save }
+      let(:k2a) { Klasse.new(stufe: klassenstufe_2, zug: 'a').save }
       let(:lisa) { Schüler.new(vorname: 'Lisa', nachname: 'Simpson', klasse: k2a).save }
       let(:marge) { Erziehungsberechtigter.new(vorname: 'Marge', nachname: 'Simpson').save }
 
@@ -100,8 +102,10 @@ describe Erziehungsberechtigung do
   end
 
   context 'a patchwork family' do
-    let(:k7b) { Klasse.new(stufe: '7', zug: 'b').save }
-    let(:k10c) { Klasse.new(stufe: '10', zug: 'c').save }
+    let(:klassenstufe_7) { Klassenstufe.new(name: '7').save }
+    let(:klassenstufe_10) { Klassenstufe.new(name: '10').save }
+    let(:k7b) { Klasse.new(stufe: klassenstufe_7, zug: 'b').save }
+    let(:k10c) { Klasse.new(stufe: klassenstufe_10, zug: 'c').save }
 
     let(:martina) { Erziehungsberechtigter.new(vorname: '***REMOVED***a', nachname: 'Bock').save }
     let(:thomas) { Erziehungsberechtigter.new(vorname: 'Thomas', nachname: 'Mustermann').save }

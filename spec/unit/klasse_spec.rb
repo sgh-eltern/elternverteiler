@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 describe Klasse do
-  subject(:klasse_4a) { described_class.new(stufe: '4', zug: 'a').save }
+  let(:klassenstufe_4) { Klassenstufe.new(name: '4').save }
   let(:jerri) { Erziehungsberechtigter.new(vorname: 'Jerri', nachname: 'Mackleberry', mail: 'jerri@mackleberry.org').save }
+  subject(:klasse_4a) { described_class.new(stufe: klassenstufe_4, zug: 'a').save }
 
   it 'has a string representation' do
     expect(klasse_4a.to_s).to eq('4a')
@@ -29,8 +30,10 @@ describe Klasse do
   end
 
   it 'can create another role with another stufe, but the same zug' do
+    klassenstufe_next = Klassenstufe.new(name: subject.stufe.ordinal.next).save
+
     expect do
-      described_class.new(stufe: subject.stufe.next, zug: subject.zug).save
+      described_class.new(stufe: klassenstufe_next, zug: subject.zug).save
     end.not_to raise_error
   end
 
@@ -71,7 +74,8 @@ describe Klasse do
     end
 
     context 'some 5th graders with their parents' do
-      let(:k5a) { described_class.new(stufe: '5', zug: 'a').save }
+      let(:klassenstufe_5) { Klassenstufe.new(name: '5').save }
+      let(:k5a) { described_class.new(stufe: klassenstufe_5, zug: 'a').save }
       let(:kyle) { Schüler.new(vorname: 'Kyle', nachname: 'LaBianco', klasse: k5a).save }
       let(:kyles_dad) { Erziehungsberechtigter.new(nachname: 'LaBianco', mail: 'kyle@labianco.com').save }
 
@@ -145,8 +149,9 @@ describe Klasse do
     end
 
     context 'Klasse 2A sends Marge to the PAB' do
-      subject(:klasse_2a) { described_class.new(stufe: '2', zug: 'a').save }
+      subject(:klasse_2a) { described_class.new(stufe: klassenstufe_2, zug: 'a').save }
       let(:marge) { Erziehungsberechtigter.new(vorname: 'Marge', nachname: 'Simpson').save }
+      let(:klassenstufe_2) { Klassenstufe.new(name: '2').save }
 
       before do
         Amtsperiode.new(
@@ -173,15 +178,21 @@ describe Klasse do
   end
 
   context 'comparing instances' do
-    subject(:klasse_8a) { described_class.new(stufe: '8', zug: 'a').save }
-    subject(:klasse_9b) { described_class.new(stufe: '9', zug: 'b').save }
-    subject(:klasse_9c) { described_class.new(stufe: '9', zug: 'c').save }
-    subject(:klasse_10d) { described_class.new(stufe: '10', zug: 'd').save }
-    subject(:klasse_j1) { described_class.new(stufe: 'j', zug: '1').save }
-    subject(:klasse_j2) { described_class.new(stufe: 'j', zug: '2').save }
+    let(:klassenstufe_8)  {  Klassenstufe.new(name: '8').save }
+    let(:klassenstufe_9)  {  Klassenstufe.new(name: '9').save }
+    let(:klassenstufe_10) {  Klassenstufe.new(name: '10').save }
+    let(:klassenstufe_j1)  {  Klassenstufe.new(name: 'J1').save }
+    let(:klassenstufe_j2)  {  Klassenstufe.new(name: 'J2').save }
+
+    subject(:klasse_8a)  { described_class.new(stufe: klassenstufe_8,  zug: 'a').save }
+    subject(:klasse_9b)  { described_class.new(stufe: klassenstufe_9,  zug: 'b').save }
+    subject(:klasse_9c)  { described_class.new(stufe: klassenstufe_9,  zug: 'c').save }
+    subject(:klasse_10d) { described_class.new(stufe: klassenstufe_10, zug: 'd').save }
+    subject(:klasse_j1)  { described_class.new(stufe: klassenstufe_j1).save }
+    subject(:klasse_j2)  { described_class.new(stufe: klassenstufe_j2).save }
 
     it 'sorts by Stufe, then Zug' do
-      klassen = [klasse_10d, klasse_j1, klasse_8a, klasse_9b, klasse_9c, klasse_j2].shuffle.sort
+      klassen = [klasse_10d, klasse_j1, klasse_8a, klasse_9b, klasse_9c, klasse_j2].shuffle
       expect(klassen.sort).to eq([klasse_8a, klasse_9b, klasse_9c, klasse_10d, klasse_j1, klasse_j2])
     end
   end

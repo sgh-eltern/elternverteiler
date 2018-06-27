@@ -4,6 +4,7 @@ require_relative 'helper'
 
 describe 'Verteiler', type: :feature do
   before(:all) do
+    create_klassenstufe('5')
     create_class('5', 'V')
     create_pupil('Simpson', 'Bart', '5V')
     create_parent('Simpson', 'Homer', 'homer@simpson.name')
@@ -14,6 +15,7 @@ describe 'Verteiler', type: :feature do
     delete_parent('Simpson', 'Homer', 'homer@simpson.name')
     delete_pupil('Simpson', 'Bart', '5V')
     delete_class('5V')
+    delete_klassenstufe('5')
   end
 
   before do

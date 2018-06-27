@@ -4,7 +4,9 @@ require 'tempfile'
 require 'sgh/elternverteiler/postmap_presenter'
 
 describe 'A file with all parents presented with PostmapPresenter', type: 'system' do
-  let(:k4a) { Klasse.new(stufe: '4', zug: 'a').save }
+  let(:klassenstufe_4) { Klassenstufe.new(name: '4').save }
+  let(:k4a) { Klasse.new(stufe: klassenstufe_4, zug: 'a').save }
+
   subject {
     File.write(@db_file.path, PostmapPresenter.new('eltern@springfield-elementary.edu').present(Erziehungsberechtigter.all))
     @db_file
