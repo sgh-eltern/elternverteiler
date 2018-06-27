@@ -30,15 +30,15 @@ end
 warn "Alle Eltern: #{Erziehungsberechtigter.count} Adressen"
 puts PostmapPresenter.new('eltern@schickhardt-gymnasium-herrenberg.de').present(Erziehungsberechtigter.all)
 
-elternbeirat = Amt.where(name: '1.EV').or(name: '2.EV').map(&:mitglieder).flatten
+elternbeirat = Amt.where(name: '1.EV').or(name: '2.EV').map(&:inhaber).flatten
 warn "Elternbeirat: #{elternbeirat.count} Adressen"
 puts PostmapPresenter.new('elternbeirat@schickhardt-gymnasium-herrenberg.de').present(elternbeirat)
 
-evsk = Amt.where(name: 'SK').map(&:mitglieder).flatten
+evsk = Amt.where(name: 'SK').map(&:inhaber).flatten
 warn "Elternvertreter in der Schulkonferenz: #{evsk.count} Adressen"
 puts PostmapPresenter.new('elternvertreter-schulkonferenz@schickhardt-gymnasium-herrenberg.de').present(evsk)
 
-ebv = Amt.where(name: '1.EBV').or(name: '2.EBV').map(&:mitglieder).flatten
+ebv = Amt.where(name: '1.EBV').or(name: '2.EBV').map(&:inhaber).flatten
 warn "Elternbeiratsvorsitzende: #{ebv.count} Adressen"
 puts PostmapPresenter.new('elternbeiratsvorsitzende@schickhardt-gymnasium-herrenberg.de').present(ebv)
 

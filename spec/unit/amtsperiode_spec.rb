@@ -24,7 +24,7 @@ describe Amtsperiode do
     end
 
     it 'the PAB includes Homer' do
-      expect(pab.mitglieder).to include(homer)
+      expect(pab.inhaber).to include(homer)
     end
 
     it 'lists the PAB as one of Homers roles' do
@@ -54,11 +54,11 @@ describe Amtsperiode do
       end
 
       it 'the PAB includes Chief Wiggum' do
-        expect(pab.mitglieder).to include(chief_wiggum)
+        expect(pab.inhaber).to include(chief_wiggum)
       end
 
       it 'the PAB still includes Homer' do
-        expect(pab.mitglieder).to include(homer)
+        expect(pab.inhaber).to include(homer)
       end
 
       it "lists the PAB as one of Chief Wiggum's roles" do

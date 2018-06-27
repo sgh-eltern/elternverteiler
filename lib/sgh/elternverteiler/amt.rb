@@ -6,7 +6,7 @@ module SGH
       include FormeHelper
       include Comparable
 
-      many_to_many :mitglieder,
+      many_to_many :inhaber,
         class: Erziehungsberechtigter,
         join_table: :amtsperioden,
         left_key: :amt_id,

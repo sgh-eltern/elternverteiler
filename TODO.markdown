@@ -1,6 +1,5 @@
 # Domain
 
-* Rename Amt#mitglieder to Amt#inhaber
 * Export and scp the email list (with the real file name) from the UI and verify with Hr. ***REMOVED***
 * Amtsperiode beginnt an einem Datum und endet optional
   - Amt kann auch unbesetzt sein (keine Periode definiert)

@@ -11,7 +11,7 @@
   <tr>
     <th valign=top style="background-color: #f2f2f2; text-align: right;">Inhaber</th>
     <td>
-      <% @amt.mitglieder.sort_by(&:nachname).each do |paren| %>
+      <% @amt.inhaber.sort_by(&:nachname).each do |paren| %>
       <a href="/eltern/<%= paren.id %>"><%= paren.nachname %>, <%= paren.vorname %></a><br/>
       <% end %>
     </td>

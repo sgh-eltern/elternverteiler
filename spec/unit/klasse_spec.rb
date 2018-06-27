@@ -166,9 +166,9 @@ describe Klasse do
       end
 
       it 'has both Marge and Homer as members of the PAB' do
-        expect(pab.mitglieder.size).to eq(2)
-        expect(pab.mitglieder).to include(marge)
-        expect(pab.mitglieder).to include(homer)
+        expect(pab.inhaber.size).to eq(2)
+        expect(pab.inhaber).to include(marge)
+        expect(pab.inhaber).to include(homer)
       end
 
       it 'lists Marge as PAB member' do
