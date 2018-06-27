@@ -23,10 +23,9 @@
 <form action="/klassenstufen/<%= @klassenstufe.id %>/delete" class="pure-form pure-form-aligned" method="post">
 <p>
   <a href="/klassenstufen/<%= @klassenstufe.id %>/edit" class="pure-button pure-button-primary">Bearbeiten</a>
-  <input class="pure-button"
+  <input class="pure-button button-destructive"
          type="submit"
          value="Löschen"
-         style="color: white; background: rgb(202, 60, 60)"
          onclick="return confirm('Sind Sie sicher, daß Sie die <%= @klassenstufe %> löschen möchten?')"
   />
 </p>

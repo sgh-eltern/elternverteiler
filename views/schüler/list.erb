@@ -92,10 +92,9 @@
 <% if @klasse %>
 <form action="/klassen/<%= @klasse.id %>/delete" class="pure-form pure-form-aligned" method="post">
 <p>
-  <input class="pure-button"
+  <input class="pure-button button-destructive"
          type="submit"
          value="Löschen"
-         style="color: white; background: rgb(202, 60, 60)"
          onclick="return confirm('Sind Sie sicher, daß Sie die Klasse <%= @klasse %> löschen möchten?')"/>
 </p>
 </form>

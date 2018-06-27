@@ -26,3 +26,8 @@ aside a, aside a:visited {
   margin-left: 1em;
   font-size: small;
 }
+
+.button-destructive {
+  color: white;
+  background: rgb(202, 60, 60)
+}

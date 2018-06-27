@@ -1,6 +1,8 @@
 <table class="pure-table pure-table-horizontal sgh-elternverteiler-amt">
   <tr>
-    <th style="border-left-style: hidden; border-right-style: hidden; border-top-style: hidden; text-align: left;" colspan=2><h2>Stammdaten</h2></th>
+    <th style="border-left-style: hidden; border-right-style: hidden; border-top-style: hidden; text-align: left;" colspan=2>
+      <h2>Stammdaten</h2>
+    </th>
   </tr>
 
   <tr>
@@ -9,23 +11,24 @@
   </tr>
 
   <tr>
-    <th valign=top style="background-color: #f2f2f2; text-align: right;">Inhaber</th>
+    <th valign=top style="background-color: #f2f2f2; text-align: right;">
+      Inhaber
+    </th>
     <td>
       <% @amt.inhaber.sort_by(&:nachname).each do |paren| %>
-      <a href="/eltern/<%= paren.id %>"><%= paren.nachname %>, <%= paren.vorname %></a><br/>
+        <a href="/eltern/<%= paren.id %>"><%= paren.nachname %>, <%= paren.vorname %></a><br/>
       <% end %>
     </td>
   </tr>
 
-  <%== partial('meta', locals: {item: @amt}) %>
+  <%== partial('meta', locals: { item: @amt }) %>
 </table>
 
 <form action="/ämter/<%= @amt.id %>/delete" class="pure-form pure-form-aligned" method="post">
 <p>
-  <input class="pure-button"
+  <input class="pure-button button-destructive"
          type="submit"
          value="Löschen"
-         style="color: white; background: rgb(202, 60, 60)"
          onclick="return confirm('Sind Sie sicher, daß Sie das Amt <%= @amt %> löschen möchten?')"
   />
 </p>
