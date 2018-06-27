@@ -1,7 +1,7 @@
 <% form(@schüler,
         :inputs_wrapper => :fieldset,
         class: 'pure-form pure-form-aligned',
-        action: "/schueler/#{@schüler.id}",
+        action: "/schüler/#{@schüler.id}",
         method: 'post',
         ) do |f| %>
   <% f.inputs(legend: 'Stammdaten') do %>

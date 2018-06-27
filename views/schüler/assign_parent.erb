@@ -2,7 +2,7 @@
         :inputs_wrapper => :fieldset,
         class: 'pure-form pure-form-aligned',
         method: 'post',
-        action: "/schueler/#{@erziehungsberechtigung.schüler.id}/erziehungsberechtigter/add",
+        action: "/schüler/#{@erziehungsberechtigung.schüler.id}/erziehungsberechtigter/add",
         ) do |f| %>
   <%= @erziehungsberechtigung.schüler %>
   <%== f.input(:erziehungsberechtigter, size: 1, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>

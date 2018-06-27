@@ -1,6 +1,5 @@
 # Domain
 
-* Rename /schueler to /schüler
 * Export and scp the email list (with the real file name) from the UI and verify with Hr. ***REMOVED***
 * Various `@email=` in app.rb need to be removed; the view should use `elternbeirat.mailinglist`
 * Amtsperiode beginnt an einem Datum und endet optional

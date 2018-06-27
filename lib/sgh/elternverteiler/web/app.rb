@@ -48,8 +48,8 @@ module SGH
 
             '/klassenstufen': 'Klassenstufen',
             '/klassen': 'Klassen',
-            '/schueler': 'Schüler',
-            '/schueler/nicht-erreichbar': '&nbsp;&nbsp;Nicht erreichbar',
+            '/schüler': 'Schüler',
+            '/schüler/nicht-erreichbar': '&nbsp;&nbsp;Nicht erreichbar',
             '/eltern': 'Eltern',
 
             '/backups': 'Backups',
@@ -312,7 +312,7 @@ module SGH
             end
           end
 
-          r.on 'schueler' do
+          r.on CGI.escape('schüler') do
             r.get Integer do |id|
               @schüler = Schüler.first!(id: id)
               topic 'Schüler/in'
@@ -341,7 +341,7 @@ module SGH
             r.post Integer, 'delete' do |id|
               @schüler = Schüler.first!(id: id).destroy
               flash[:success] = "#{@schüler} wurde gelöscht."
-              r.redirect '/schueler'
+              r.redirect '/schüler'
             end
 
             r.post Integer, 'erziehungsberechtigter', 'add' do |id|
@@ -349,7 +349,7 @@ module SGH
               erziehungsberechtigter = Erziehungsberechtigter.first!(id: r.params['sgh-elternverteiler-erziehungsberechtigung']['erziehungsberechtigter_id'])
               Erziehungsberechtigung.new(schüler: schüler, erziehungsberechtigter: erziehungsberechtigter).save
               flash[:success] = "#{erziehungsberechtigter} ist jetzt als Erziehungsberechtigte(r) von #{schüler} registriert."
-              r.redirect "/schueler/#{schüler.id}"
+              r.redirect "/schüler/#{schüler.id}"
             end
 
             r.post Integer do |id|
@@ -368,7 +368,7 @@ module SGH
               @schüler = Schüler.new
               @schüler.set_fields(r.params['sgh-elternverteiler-schüler'], %w[vorname nachname klasse_id])
               @schüler.save
-              r.redirect "/schueler/#{@schüler.id}"
+              r.redirect "/schüler/#{@schüler.id}"
             rescue Sequel::ConstraintViolation
               topic 'Schüler anlegen'
               flash.now[:error] = 'Alle Pflichtfelder müssen ausgefüllt werden.'

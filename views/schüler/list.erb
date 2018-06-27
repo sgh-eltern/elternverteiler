@@ -58,7 +58,7 @@
 <h3>Schüler</h3>
 
 <p>
-  <a href="/schueler/neu" class="pure-button pure-button-primary">Anlegen</a>
+  <a href="/schüler/neu" class="pure-button pure-button-primary">Anlegen</a>
 </p>
 
 <table class="pure-table pure-table-horizontal pure-table-striped sgh-elternverteiler-schüler">
@@ -75,7 +75,7 @@
     <tr>
       <td>
         <a name="<%= sch.nachname&.chars&.first %>"/>
-        <a href="/schueler/<%= sch.id %>"><%= sch.name %></a>
+        <a href="/schüler/<%= sch.id %>"><%= sch.name %></a>
       </td>
       <td>
         <a href="/klassen/<%= sch.klasse.id %>"><%= sch.klasse %></a>
