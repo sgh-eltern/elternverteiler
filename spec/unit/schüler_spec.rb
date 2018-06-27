@@ -25,7 +25,7 @@ describe Schüler do
     end
 
     it 'has a string representation' do
-      expect(bart.to_s).to eq('Bart Simpson, 4a')
+      expect(bart.to_s).to eq('Bart Simpson, Klasse 4a')
     end
 
     it 'has a forme namespace' do

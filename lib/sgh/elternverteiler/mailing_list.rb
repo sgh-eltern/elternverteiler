@@ -12,16 +12,16 @@ module SGH
       def address(format=:short)
         case format
         when :short
-          self[:address]
+          self[:address].downcase
         when :long
-          "#{self[:address]}@schickhardt-gymnasium-herrenberg.de"
+          "#{self[:address].downcase}@schickhardt-gymnasium-herrenberg.de"
         else
           raise "Unknown format #{format}"
         end
       end
 
       def url
-        "/verteiler/#{self[:address]}"
+        "/verteiler/#{self[:address].downcase}"
       end
     end
   end

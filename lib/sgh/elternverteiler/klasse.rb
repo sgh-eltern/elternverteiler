@@ -34,7 +34,7 @@ module SGH
 
       with_mailing_list(
         name: lambda { |k| "Eltern der #{k}" },
-        address: lambda { |k| "eltern-#{k.to_s.downcase}" },
+        address: lambda { |k| "eltern-#{k.name}" },
         members: :eltern
       )
 
@@ -56,18 +56,20 @@ module SGH
           all.define_singleton_method(:mailing_list) do
             MailingList.new(
               name: "Elternvertreter der #{k}",
-              address: "elternvertreter-#{k.to_s.downcase}",
+              address: "elternvertreter-#{k.name}",
               members: self
             )
           end
         end
       end
 
-      def to_s
-        "#{stufe.name}#{zug}"
+      def name
+        [stufe.name, zug].join
       end
 
-      alias_method :name, :to_s
+      def to_s
+        "Klasse #{stufe.name}#{zug}"
+      end
 
       def <=>(other)
         [stufe, zug] <=> [other.stufe, other.zug]

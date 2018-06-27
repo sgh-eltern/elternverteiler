@@ -29,14 +29,14 @@ describe 'Verteiler', type: :feature do
 
   it 'has the address of the Elternvertreter of 5V' do
     within('.sgh-elternverteiler-klasse-elternvertreter') do
-      expect(page).to have_link('Elternvertreter der 5V')
+      expect(page).to have_link('Elternvertreter der Klasse 5V')
       expect(page).to have_link('elternvertreter-5v')
     end
   end
 
   it 'has the address of the Eltern of 5V' do
     within('.sgh-elternverteiler-klasse-eltern') do
-      expect(page).to have_link('Eltern der 5V')
+      expect(page).to have_link('Eltern der Klasse 5V')
       expect(page).to have_link('eltern-5v')
     end
   end

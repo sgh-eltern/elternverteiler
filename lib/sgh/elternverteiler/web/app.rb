@@ -241,7 +241,7 @@ module SGH
               flash[:success] = "#{@klasse} wurde gelöscht."
               r.redirect '/klassen'
             rescue StandardError
-              flash[:error] = "Die Klasse #{@klasse} hat Schüler und kann deshalb nicht gelöscht werden."
+              flash[:error] = "Die #{@klasse} hat Schüler und kann deshalb nicht gelöscht werden."
               r.redirect(r.referrer)
             end
 

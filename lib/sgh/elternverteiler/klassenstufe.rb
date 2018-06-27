@@ -30,7 +30,7 @@ module SGH
           all.define_singleton_method(:mailing_list) do
             MailingList.new(
               name: "Elternvertreter der #{k}",
-              address: "elternvertreter-#{k.name.downcase}",
+              address: "elternvertreter-#{k.name}",
               members: all
             )
           end
