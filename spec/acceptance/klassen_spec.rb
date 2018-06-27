@@ -25,7 +25,7 @@ describe 'Klassen', type: :feature do
       expect(page).to have_content 'eMail: elternvertreter-5k@schickhardt-gymnasium-herrenberg.de'
     end
 
-    it 'it refuses to create another role with the same name' do
+    it 'it refuses to create another Klasse with the same name' do
       create_class('5', 'K')
       within('aside.error') do
         expect(page).to have_content('Die Klasse 5K existiert bereits')

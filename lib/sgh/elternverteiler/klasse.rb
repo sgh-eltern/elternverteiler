@@ -73,8 +73,22 @@ module SGH
         [stufe, zug] <=> [other.stufe, other.zug]
       end
 
-      def numeric?(value)
-        value.to_i.to_s == value
+      def validate
+        super
+
+        if !zug.to_s.empty?
+          if existing = Klasse[{stufe: stufe, zug: zug.swapcase}]
+            errors.add(:zug, "#{existing.zug} existiert bereits (Groß- und Kleinschreibung wird nicht unterschieden)")
+          end
+        else
+          if stufe.name.start_with?('J')
+            if existing = Klasse[{stufe: stufe}]
+              errors.add(:stufe, "#{existing} existiert bereits")
+            end
+          else
+            errors.add(:zug, 'darf nicht leer sein (außer in der Jahrgangsstufe)')
+          end
+        end
       end
     end
   end

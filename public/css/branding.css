@@ -31,3 +31,8 @@ aside a, aside a:visited {
   color: white;
   background: rgb(202, 60, 60)
 }
+
+.error_message {
+  color: #ff3300;
+  margin-left: 1em;
+}

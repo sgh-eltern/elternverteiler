@@ -181,7 +181,7 @@ module SGH
               r.redirect "/klassenstufen/#{@klassenstufe.id}"
             rescue Sequel::UniqueConstraintViolation
               topic 'Neue Klassenstufe anlegen'
-              flash.now[:error] = "Die Klassenstufe #{@klassenstufe.name} existiert bereits"
+              flash.now[:error] = "Die #{@klassenstufe} existiert bereits"
               view 'klassenstufen/new'
             end
 
@@ -199,7 +199,7 @@ module SGH
             end
 
             r.get Integer do |id|
-              topic "Klasse #{@klasse}"
+              topic @klasse
               @klasse = Klasse.first!(id: id)
               @schüler = @klasse.schüler.sort_by(&:nachname)
               @amtsperioden = Amtsperiode.where(
@@ -256,7 +256,11 @@ module SGH
               r.redirect "/klassen/#{@klasse.id}"
             rescue Sequel::UniqueConstraintViolation
               topic 'Neue Klasse anlegen'
-              flash.now[:error] = "Die Klasse #{@klasse.name} existiert bereits"
+              flash.now[:error] = "Die #{@klasse} existiert bereits"
+              view 'klassen/new'
+            rescue Sequel::ValidationFailed => e
+              topic 'Neue Klasse anlegen'
+              flash.now[:error] = 'Validierung fehlgeschlagen'
               view 'klassen/new'
             end
 

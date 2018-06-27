@@ -7,7 +7,6 @@ Sequel.migration do
       DateTime :created_at
       DateTime :updated_at
 
-      constraint(:zug_min_length) { Sequel.char_length(:zug) > 0 }
       unique [:stufe_id, :zug]
     end
   end

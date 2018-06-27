@@ -1,6 +1,14 @@
 # Domain
 
 * Export and scp the email list (with the real file name) from the UI and verify with Hr. ***REMOVED***
+* Add ability to rename a Klasse (will be useful for moving up after summer)
+* Add ability to rename an Amt (will be useful for moving up after summer)
+* Add ability to delete a class with all pupils (J2 leaves after Abitur)
+  => Make sure parents with other kids in school are kept
+* Change URL generation and object lookup in `app.rb` to use pretty identifiers (slugs). We want `/klassen/7c` instead of `/klassen/423`
+* Amt needs a slug ("ev1") besides the long name (which should actually be longer and more descriptive, like "1. Elternvertreter")
+* navbar must not be printed
+* navbar should be extracted into partial
 * Amtsperiode beginnt an einem Datum und endet optional
   - Amt kann auch unbesetzt sein (keine Periode definiert)
   - Amtsperiode hat Historie (wer hat das Amt wann besetzt)
@@ -12,16 +20,8 @@
   - Vertreter im GEB
 * Liste für alle Lehrer anlegen (nächtlich scrapen von http://www.schickhardt.net/?page_id=90)
 * Mitglied in der SK muß von stellvertretendem Mitglied in der SK getrennt werden
-* Add ability to rename a Klasse (will be useful for moving up after summer)
-* Add ability to rename an Amt (will be useful for moving up after summer)
 * For J1 and J2: `Elternvertreter der J1 == Elternvertreter der Klassenstufe J1`
-* Add ability to delete a class with all pupils (J2 leaves after Abitur)
-  => Make sure parents with other kids in school are kept
-* Change URL generation and object lookup in `app.rb` to use pretty identifiers (slugs). We want `/klassen/7c` instead of `/klassen/423`
-* Amt needs a slug ("ev1") besides the long name (which should actually be longer and more descriptive, like "1. Elternvertreter")
 * Pressing "Add a pupil" (within a class list) selects the right class in the dropdown of the "New Pupil" form
-* navbar must not be printed
-* navbar should be extracted into partial
 * There can only be one EBV1 / EBV2
 * Only EV can become EBV
 * A person can only be EV in a class of their children
