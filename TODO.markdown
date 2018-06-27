@@ -1,6 +1,7 @@
 # Domain
 
-* Export and scp the email list (with the real file name) from the UI
+* Save backups to object storage instead of the local filesystem
+  => Encrypt using gpg: `backup-encryption.markdown`
 * Verify new list with Hr. ***REMOVED***
 * Extract the many `define_singleton_method` calls into a common one
 * Change the `PostmapPresenter` to present a `MailingList`
@@ -30,8 +31,6 @@
 * A person can only be EV in a class of their children
 * EBV1 cannot be elected member of the SK
 * Dropdown boxes have the class list in the wrong order
-* Save backups to object storage instead of the local filesystem
-  => Encrypt using gpg: `backup-encryption.markdown`
 * Some roles are being delegated from the Elternbeirat, and not from the class (e.g. Schulkonferenz). For those, do not record the class where the parent is having this role for, or at least do not show it (in `to_s` etc)
 
 # Development / Technical Dept

@@ -452,7 +452,7 @@ module SGH
 
             r.post 'upload' do
               distribution_list = r.params['distribution_list']
-              SGH::Elternverteiler::MailServer.new.upload(distribution_list, 'elternverteiler-from-app.txt')
+              SGH::Elternverteiler::MailServer.new.upload(distribution_list, 'elternverteiler.txt')
               flash[:success] = 'Verteiler wurde erfolgreich aktualisiert.'
               r.redirect '/verteiler'
             end
