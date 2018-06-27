@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Amt do
-  subject(:pab) { described_class.new(name: 'Member of the Parent Advisory Board').save }
+  subject(:pab) { Amt.new(name: 'Member of the Parent Advisory Board').save }
   let(:klassenstufe_4) { Klassenstufe.new(name: '4').save }
   let(:klasse) { Klasse.new(stufe: klassenstufe_4, zug: 'a').save }
 
@@ -13,8 +13,8 @@ describe Amt do
     expect(pab.inhaber).to be_empty
   end
 
-  it 'cannot create another role with the same name' do
-    expect { described_class.new(name: subject.name).save }.to raise_error(Sequel::UniqueConstraintViolation)
+  it 'cannot create another Amt with the same name' do
+    expect { Amt.new(name: subject.name).save }.to raise_error(Sequel::UniqueConstraintViolation)
   end
 
   context 'some parents are members' do

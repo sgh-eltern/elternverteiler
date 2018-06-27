@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 describe Klassenstufe do
-  subject(:klassenstufe_4) { described_class.new(name: '4').save }
+  subject(:klassenstufe_4) { Klassenstufe.new(name: '4').save }
 
   it 'has a string representation' do
     expect(klassenstufe_4.to_s).to eq('Klassenstufe 4')
@@ -21,7 +21,7 @@ describe Klassenstufe do
 
   it 'cannot create another one with the same name' do
     expect do
-      described_class.new(name: subject.name).save
+      Klassenstufe.new(name: subject.name).save
     end.to raise_error(Sequel::UniqueConstraintViolation)
   end
 
@@ -107,7 +107,7 @@ describe Klassenstufe do
   end
 
   context 'Jahrgangsstufe 1' do
-    subject { described_class.new(name: 'J1').save }
+    subject { Klassenstufe.new(name: 'J1').save }
 
     it 'has an ordinal' do
       expect(subject.ordinal).to eq(11)

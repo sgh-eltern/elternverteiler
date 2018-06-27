@@ -3,7 +3,7 @@
 describe Klasse do
   let(:klassenstufe_4) { Klassenstufe.new(name: '4').save }
   let(:jerri) { Erziehungsberechtigter.new(vorname: 'Jerri', nachname: 'Mackleberry', mail: 'jerri@mackleberry.org').save }
-  subject(:klasse_4a) { described_class.new(stufe: klassenstufe_4, zug: 'a').save }
+  subject(:klasse_4a) { Klasse.new(stufe: klassenstufe_4, zug: 'a').save }
 
   it 'has a string representation' do
     expect(klasse_4a.to_s).to eq('4a')
@@ -17,13 +17,13 @@ describe Klasse do
     expect(klasse_4a.forme_namespace).to eq('sgh-elternverteiler-klasse')
   end
 
-  it 'cannot create another role with the same stufe and zug' do
+  it 'cannot create another Klasse with the same stufe and zug' do
     expect do
-      described_class.new(stufe: subject.stufe, zug: subject.zug).save
+      Klasse.new(stufe: subject.stufe, zug: subject.zug).save
     end.to raise_error(Sequel::UniqueConstraintViolation)
   end
 
-  it 'can create another role with the same stufe, but another zug' do
+  it 'cannot create another Klasse with the same stufe and zug' do
     expect do
       Klasse.new(stufe: subject.stufe, zug: subject.zug).save
     end.to raise_error(Sequel::UniqueConstraintViolation)
@@ -41,11 +41,11 @@ describe Klasse do
     end.not_to raise_error
   end
 
-  it 'can create another role with another stufe, but the same zug' do
+  it 'can create another Klasse with another stufe, but the same zug' do
     klassenstufe_next = Klassenstufe.new(name: subject.stufe.ordinal.next).save
 
     expect do
-      described_class.new(stufe: klassenstufe_next, zug: subject.zug).save
+      Klasse.new(stufe: klassenstufe_next, zug: subject.zug).save
     end.not_to raise_error
   end
 
@@ -87,7 +87,7 @@ describe Klasse do
 
     context 'some 5th graders with their parents' do
       let(:klassenstufe_5) { Klassenstufe.new(name: '5').save }
-      let(:k5a) { described_class.new(stufe: klassenstufe_5, zug: 'a').save }
+      let(:k5a) { Klasse.new(stufe: klassenstufe_5, zug: 'a').save }
       let(:kyle) { Schüler.new(vorname: 'Kyle', nachname: 'LaBianco', klasse: k5a).save }
       let(:kyles_dad) { Erziehungsberechtigter.new(nachname: 'LaBianco', mail: 'kyle@labianco.com').save }
 
@@ -161,7 +161,7 @@ describe Klasse do
     end
 
     context 'Klasse 2A sends Marge to the PAB' do
-      subject(:klasse_2a) { described_class.new(stufe: klassenstufe_2, zug: 'a').save }
+      subject(:klasse_2a) { Klasse.new(stufe: klassenstufe_2, zug: 'a').save }
       let(:marge) { Erziehungsberechtigter.new(vorname: 'Marge', nachname: 'Simpson').save }
       let(:klassenstufe_2) { Klassenstufe.new(name: '2').save }
 
@@ -227,12 +227,12 @@ describe Klasse do
     let(:klassenstufe_j1)  {  Klassenstufe.new(name: 'J1').save }
     let(:klassenstufe_j2)  {  Klassenstufe.new(name: 'J2').save }
 
-    subject(:klasse_8a)  { described_class.new(stufe: klassenstufe_8,  zug: 'a').save }
-    subject(:klasse_9b)  { described_class.new(stufe: klassenstufe_9,  zug: 'b').save }
-    subject(:klasse_9c)  { described_class.new(stufe: klassenstufe_9,  zug: 'c').save }
-    subject(:klasse_10d) { described_class.new(stufe: klassenstufe_10, zug: 'd').save }
-    subject(:klasse_j1)  { described_class.new(stufe: klassenstufe_j1).save }
-    subject(:klasse_j2)  { described_class.new(stufe: klassenstufe_j2).save }
+    subject(:klasse_8a)  { Klasse.new(stufe: klassenstufe_8,  zug: 'a').save }
+    subject(:klasse_9b)  { Klasse.new(stufe: klassenstufe_9,  zug: 'b').save }
+    subject(:klasse_9c)  { Klasse.new(stufe: klassenstufe_9,  zug: 'c').save }
+    subject(:klasse_10d) { Klasse.new(stufe: klassenstufe_10, zug: 'd').save }
+    subject(:klasse_j1)  { Klasse.new(stufe: klassenstufe_j1).save }
+    subject(:klasse_j2)  { Klasse.new(stufe: klassenstufe_j2).save }
 
     it 'sorts by Stufe, then Zug' do
       klassen = [klasse_10d, klasse_j1, klasse_8a, klasse_9b, klasse_9c, klasse_j2].shuffle

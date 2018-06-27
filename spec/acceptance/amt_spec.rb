@@ -22,7 +22,7 @@ describe 'Ämter', type: :feature do
       end
     end
 
-    context 'attempting to create another role with the same name' do
+    context 'attempting to create another Amt with the same name' do
       before do
         create_role('Klassenkasper')
       end
