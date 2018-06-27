@@ -6,7 +6,7 @@ describe Klasse do
   subject(:klasse_4a) { Klasse.new(stufe: klassenstufe_4, zug: 'a').save }
 
   it 'has a string representation' do
-    expect(klasse_4a.to_s).to eq('4a')
+    expect(klasse_4a.to_s).to eq('Klasse 4a')
   end
 
   it 'has a name' do
@@ -73,7 +73,7 @@ describe Klasse do
 
     it 'has a mailing list for parents' do
       expect(klasse_4a.mailing_list).to be
-      expect(klasse_4a.mailing_list.name).to eq('Eltern der 4a')
+      expect(klasse_4a.mailing_list.name).to eq('Eltern der Klasse 4a')
       expect(klasse_4a.mailing_list.address(:long)).to eq('eltern-4a@schickhardt-gymnasium-herrenberg.de')
       expect(klasse_4a.mailing_list.url).to eq('/verteiler/eltern-4a')
     end
@@ -133,31 +133,10 @@ describe Klasse do
     it 'has a mailing list for members of the PAB' do
       expect(klasse_4a.elternvertreter).to respond_to(:mailing_list)
       expect(klasse_4a.elternvertreter.mailing_list).to be
-      expect(klasse_4a.elternvertreter.mailing_list.name).to eq('Elternvertreter der 4a')
+      expect(klasse_4a.elternvertreter.mailing_list.name).to eq('Elternvertreter der Klasse 4a')
       expect(klasse_4a.elternvertreter.mailing_list.address(:long)).to eq('elternvertreter-4a@schickhardt-gymnasium-herrenberg.de')
       expect(klasse_4a.elternvertreter.mailing_list.url).to eq('/verteiler/elternvertreter-4a')
       expect(klasse_4a.elternvertreter.mailing_list.members).to include(homer)
-    end
-
-    context 'Jerri is a cash auditor for 4A' do
-      let(:cash_auditor) { Amt.new(name: 'Cash Auditor').save }
-
-      before do
-        Amtsperiode.new(
-          inhaber: jerri,
-          amt: cash_auditor,
-          klasse: klasse_4a
-        ).save
-      end
-
-      it 'lists Jerri as cash auditor' do
-        expect(klasse_4a.inhaber(cash_auditor)).to include(jerri)
-      end
-
-      it 'lists Jerri and Homer as PAB member or cash auditor' do
-        expect(klasse_4a.inhaber(cash_auditor, pab)).to include(homer)
-        expect(klasse_4a.inhaber(cash_auditor, pab)).to include(jerri)
-      end
     end
 
     context 'Klasse 2A sends Marge to the PAB' do
@@ -184,7 +163,7 @@ describe Klasse do
       end
 
       it 'lists Marge as PAB member' do
-        expect(klasse_2a.inhaber(pab)).to include(marge)
+        expect(pab.inhaber).to include(marge)
       end
     end
   end

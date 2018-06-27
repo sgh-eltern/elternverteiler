@@ -39,11 +39,17 @@ module SGH
       )
 
       def eltern
-        schüler.collect(&:eltern).flatten.uniq
-      end
+        schüler.collect(&:eltern).flatten.uniq.tap do |all|
+          k = self
 
-      def inhaber(*roles)
-        Amtsperiode.where(amt: roles, klasse: self).map(&:inhaber)
+          all.define_singleton_method(:mailing_list) do
+            MailingList.new(
+              name: "Eltern der #{k}",
+              address: "eltern-#{k.name}",
+              members: self
+            )
+          end
+        end
       end
 
       def elternvertreter
@@ -68,7 +74,7 @@ module SGH
       end
 
       def to_s
-        "Klasse #{stufe.name}#{zug}"
+        "Klasse #{name}"
       end
 
       def <=>(other)

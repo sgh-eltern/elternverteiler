@@ -1,6 +1,9 @@
 # Domain
 
-* Export and scp the email list (with the real file name) from the UI and verify with Hr. ***REMOVED***
+* Export and scp the email list (with the real file name) from the UI
+* Verify new list with Hr. ***REMOVED***
+* Extract the many `define_singleton_method` calls into a common one
+* Change the `PostmapPresenter` to present a `MailingList`
 * Add ability to rename a Klasse (will be useful for moving up after summer)
 * Add ability to rename an Amt (will be useful for moving up after summer)
 * Add ability to delete a class with all pupils (J2 leaves after Abitur)

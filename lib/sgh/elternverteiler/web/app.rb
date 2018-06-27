@@ -56,6 +56,7 @@ module SGH
             '/backups/new': '&nbsp;&nbsp;Neu',
 
             '/verteiler': 'Verteiler',
+            '/verteiler/export': '&nbsp;&nbsp;Plain',
             # TODO: New views
             # '/verteiler/klassen': '&nbsp;Eltern',
             # '/verteiler/klassenstufen': '&nbsp;Klassenstufen',
@@ -433,6 +434,11 @@ module SGH
           end
 
           r.on 'verteiler' do
+            r.get 'export' do
+              response['Content-Type'] = 'text/plain; charset=utf-8'
+              render 'verteiler/_distribution_list'
+            end
+
             r.post 'diff' do
               @distribution_list = r.params['distribution_list']
               parser = SGH::Elternverteiler::PostmapParser.new

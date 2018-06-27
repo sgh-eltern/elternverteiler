@@ -1,37 +1,42 @@
 # Klassen
 <% klassen.each do |klasse| %>
 
-## Klasse <%= klasse %>: <%= klasse.elternvertreter.count %> Elternvertreter
-<%= SGH::Elternverteiler::PostmapPresenter.new("elternvertreter-#{klasse.to_s.downcase}@schickhardt-gymnasium-herrenberg.de").present(klasse.elternvertreter) %>
+## Elternvertreter der <%= klasse %>: <%= klasse.elternvertreter.count %> Adressen
+<% mailing_list = klasse.elternvertreter.mailing_list %>
+<%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
 
-## Klasse <%= klasse %>: <%= klasse.schüler.count %> Schüler, <%= klasse.eltern.count %> Adressen der Eltern
-<%= SGH::Elternverteiler::PostmapPresenter.new("eltern-#{klasse.to_s.downcase}@schickhardt-gymnasium-herrenberg.de").present(klasse.eltern) %>
+## Eltern der <%= klasse %>: <%= klasse.schüler.count %> Schüler, <%= klasse.eltern.count %> Adressen
+<% mailing_list = klasse.eltern.mailing_list %>
+<%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
 <% end %>
 
 # Klassenstufen
-<% klassen.group_by(&:stufe).each do |klassenstufe, klassen| %>
-  <%
-    klassenstufe_eltern = klassen.flat_map(&:eltern)
-    klassenstufe_elternvertreter = klassen.flat_map(&:elternvertreter)
-  %>
+<% klassenstufen.each do |klassenstufe| %>
+## <%= klassenstufe %>
 
-## Klassenstufe <%= klassenstufe %>
+### Elternvertreter der <%= klassenstufe %>
+<% mailing_list = klassenstufe.elternvertreter.mailing_list %>
+<%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
 
-### Elternvertreter der Klassenstufe <%= klassenstufe %>
-<%= SGH::Elternverteiler::PostmapPresenter.new("elternvertreter-#{klassenstufe.to_s.downcase}@schickhardt-gymnasium-herrenberg.de").present(klassenstufe_elternvertreter) %>
-
-### Klassenstufe <%= klassenstufe %>: <%= klassen.flat_map(&:schüler).count %> Schüler, <%= klassenstufe_eltern.count %> Adressen
-<%= SGH::Elternverteiler::PostmapPresenter.new("eltern-#{klassenstufe.to_s.downcase}@schickhardt-gymnasium-herrenberg.de").present(klassenstufe_eltern) %>
+### Eltern der <%= klassenstufe %>: <%= klassenstufe.eltern.count %> Adressen
+<% mailing_list = klassenstufe.eltern.mailing_list %>
+<%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
 <% end %>
 
 # Alle Eltern: <%= eltern.count %> Adressen
-<%= SGH::Elternverteiler::PostmapPresenter.new('eltern@schickhardt-gymnasium-herrenberg.de').present(eltern) %>
+<% mailing_list = eltern.mailing_list %>
+<%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
 
 # Elternbeirat: <%= elternbeirat.count %> Adressen
-<%= SGH::Elternverteiler::PostmapPresenter.new('elternbeirat@schickhardt-gymnasium-herrenberg.de').present(elternbeirat) %>
+<% mailing_list = elternbeirat.mailing_list %>
+<%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
 
 # Elternvertreter in der Schulkonferenz: <%= evsk.count %> Adressen
-<%= SGH::Elternverteiler::PostmapPresenter.new('elternvertreter-schulkonferenz@schickhardt-gymnasium-herrenberg.de').present(evsk) %>
+<% mailing_list = evsk.mailing_list %>
+<%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
 
 # Elternbeiratsvorsitzende: <%= ebv.count %> Adressen
-<%= SGH::Elternverteiler::PostmapPresenter.new('elternbeiratsvorsitzende@schickhardt-gymnasium-herrenberg.de').present(ebv) %>
+<% mailing_list = ebv.mailing_list %>
+<%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
+
+# sonstige Rollen: TODO
