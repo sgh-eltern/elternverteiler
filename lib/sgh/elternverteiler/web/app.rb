@@ -200,13 +200,13 @@ module SGH
             end
 
             r.get Integer do |id|
-              topic @klasse
               @klasse = Klasse.first!(id: id)
               @schüler = @klasse.schüler.sort_by(&:nachname)
               @amtsperioden = Amtsperiode.where(
                 amt: Amt.where(Sequel.like(:name, '%.EV')),
                 klasse: @klasse
                 ).sort_by(&:to_s)
+              topic @klasse
               view 'schüler/list'
             end
 

@@ -170,31 +170,31 @@ describe Klasse do
 
   describe 'constraints' do
     context 'Jahrgangsstufe' do
-      let(:stufe)  {  Klassenstufe.new(name: 'J1').save }
+      let(:stufe) { Klassenstufe.new(name: 'J1').save }
 
       it 'Zug may be empty' do
-        expect{ Klasse.new(stufe: stufe, zug: '').save }.not_to raise_error
+        expect { Klasse.new(stufe: stufe, zug: '').save }.not_to raise_error
       end
 
       it 'Zug may be nil' do
-        expect{ Klasse.new(stufe: stufe).save }.not_to raise_error
+        expect { Klasse.new(stufe: stufe).save }.not_to raise_error
       end
 
       it 'must not allow a duplicate class' do
-        expect{ Klasse.new(stufe: stufe).save }.not_to raise_error
-        expect{ Klasse.new(stufe: stufe).save }.to raise_error(Sequel::ValidationFailed)
+        expect { Klasse.new(stufe: stufe).save }.not_to raise_error
+        expect { Klasse.new(stufe: stufe).save }.to raise_error(Sequel::ValidationFailed)
       end
     end
 
     context 'Mittelstufe' do
-      let(:stufe)  {  Klassenstufe.new(name: '9').save }
+      let(:stufe) { Klassenstufe.new(name: '9').save }
 
       it 'Zug may not be empty' do
-        expect{ Klasse.new(stufe: stufe, zug: '').save }.to raise_error(Sequel::ValidationFailed)
+        expect { Klasse.new(stufe: stufe, zug: '').save }.to raise_error(Sequel::ValidationFailed)
       end
 
       it 'Zug may not be nil' do
-        expect{ Klasse.new(stufe: stufe).save }.to raise_error(Sequel::ValidationFailed)
+        expect { Klasse.new(stufe: stufe).save }.to raise_error(Sequel::ValidationFailed)
       end
     end
   end

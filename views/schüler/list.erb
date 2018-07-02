@@ -5,89 +5,93 @@
 </div>
 
 <% if @amtsperioden %>
-  <h3>Elternvertreter</h3>
+  <section class="sgh-elternverteiler-elternvertreter">
+    <h3>Elternvertreter</h3>
+
+    <p>
+      <%== partial('email', locals: { address: @klasse.elternvertreter.mailing_list.address(:long) }) %>
+    </p>
+
+    <p>
+      <a href="/klassen/<%= @klasse.id %>/ämter/add" class="pure-button pure-button-primary">Hinzufügen</a>
+    </p>
+
+    <table class="pure-table pure-table-horizontal sgh-elternverteiler-erziehungsberechtigter">
+      <thead>
+        <tr>
+          <th>Amtsperiode</th>
+          <th>Inhaber</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+      <% @amtsperioden.each do |amtsperiode| %>
+        <tr>
+          <td style="padding-left: 2em;">
+            <%= amtsperiode.amt %>
+          </td>
+
+          <td valign="top">
+            <a href="/eltern/<%= amtsperiode.inhaber.id %>">
+              <%= amtsperiode.inhaber.nachname %>, <%= amtsperiode.inhaber.vorname %>
+            </a>
+          </td>
+
+          <td class="no-print">
+            <% form(@amtsperiode,
+                    :inputs_wrapper => :fieldset,
+                    class: 'pure-form pure-form-aligned',
+                    action: "/klassen/#{amtsperiode.klasse.id}/ämter/#{amtsperiode.amt.id}/inhaber/#{amtsperiode.inhaber.id}",
+                    method: 'post',
+                    ) do |f| %>
+
+              <%== f.button(value: 'Entfernen', class: "pure-button pure-button-primary") %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+    </table>
+  </section>
+<% end %>
+
+<section class="sgh-elternverteiler-schüler">
+  <h3>Schüler</h3>
 
   <p>
-    <%== partial('email', locals: { address: @klasse.mailing_list.address(:long) }) %>
+    <a href="/schüler/neu" class="pure-button pure-button-primary">Anlegen</a>
   </p>
 
-  <p>
-    <a href="/klassen/<%= @klasse.id %>/ämter/add" class="pure-button pure-button-primary">Hinzufügen</a>
-  </p>
-
-  <table class="pure-table pure-table-horizontal sgh-elternverteiler-erziehungsberechtigter">
+  <table class="pure-table pure-table-horizontal pure-table-striped sgh-elternverteiler-schüler">
     <thead>
       <tr>
-        <th>Amtsperiode</th>
-        <th>Inhaber</th>
-        <th></th>
+        <th>Name</th>
+        <th>Klasse</th>
       </tr>
     </thead>
 
     <tbody>
 
-    <% @amtsperioden.each do |amtsperiode| %>
+    <% @schüler.each do |sch| %>
       <tr>
-        <td style="padding-left: 2em;">
-          <%= amtsperiode.amt %>
+        <td>
+          <a name="<%= sch.nachname&.chars&.first %>"/>
+          <a href="/schüler/<%= sch.id %>"><%= sch.name %></a>
         </td>
-
-        <td valign="top">
-          <a href="/eltern/<%= amtsperiode.inhaber.id %>">
-            <%= amtsperiode.inhaber.nachname %>, <%= amtsperiode.inhaber.vorname %>
-          </a>
-        </td>
-
-        <td class="no-print">
-          <% form(@amtsperiode,
-                  :inputs_wrapper => :fieldset,
-                  class: 'pure-form pure-form-aligned',
-                  action: "/klassen/#{amtsperiode.klasse.id}/ämter/#{amtsperiode.amt.id}/inhaber/#{amtsperiode.inhaber.id}",
-                  method: 'post',
-                  ) do |f| %>
-
-            <%== f.button(value: 'Entfernen', class: "pure-button pure-button-primary") %>
-          <% end %>
+        <td>
+          <a href="/klassen/<%= sch.klasse.id %>"><%= sch.klasse %></a>
         </td>
       </tr>
-    <% end %>
+      <% end %>
+
+      <% if @klasse %>
+        <%== partial('meta', locals: { item: @klasse }) %>
+      <% end %>
   </tbody>
   </table>
-<% end %>
-
-<h3>Schüler</h3>
-
-<p>
-  <a href="/schüler/neu" class="pure-button pure-button-primary">Anlegen</a>
-</p>
-
-<table class="pure-table pure-table-horizontal pure-table-striped sgh-elternverteiler-schüler">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Klasse</th>
-    </tr>
-  </thead>
-
-  <tbody>
-
-  <% @schüler.each do |sch| %>
-    <tr>
-      <td>
-        <a name="<%= sch.nachname&.chars&.first %>"/>
-        <a href="/schüler/<%= sch.id %>"><%= sch.name %></a>
-      </td>
-      <td>
-        <a href="/klassen/<%= sch.klasse.id %>"><%= sch.klasse %></a>
-      </td>
-    </tr>
-    <% end %>
-
-    <% if @klasse %>
-      <%== partial('meta', locals: { item: @klasse }) %>
-    <% end %>
-</tbody>
-</table>
+</section>
 
 <% if @klasse %>
 <form action="/klassen/<%= @klasse.id %>/delete" class="pure-form pure-form-aligned" method="post">

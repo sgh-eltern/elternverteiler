@@ -38,7 +38,7 @@ describe 'Helper', type: :feature do
           create_pupil('Simpson', 'Bart', '5H')
 
           within('#menu') { click_link('Schüler') }
-          within('.sgh-elternverteiler-schüler') do
+          within('section.sgh-elternverteiler-schüler') do
             expect(page).to have_content('Bart')
           end
         end
@@ -53,7 +53,7 @@ describe 'Helper', type: :feature do
 
           it 'removes Bart from the list' do
             within('#menu') { click_link('Schüler') }
-            within('.sgh-elternverteiler-schüler') do
+            within('section.sgh-elternverteiler-schüler') do
               expect(page).to_not have_content('Bart')
             end
           end

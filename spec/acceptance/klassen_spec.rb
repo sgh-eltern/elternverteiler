@@ -17,12 +17,32 @@ describe 'Klassen', type: :feature do
       delete_klassenstufe('5')
     end
 
-    it 'lists Elternvertreter' do
-      expect(page).to have_content 'Elternvertreter'
+    it 'has a title' do
+      expect(page).to have_title('Klasse 5K - Elternbeirat am SGH')
     end
 
-    it 'has a generic address to reach the Elternvertreter of this class' do
-      expect(page).to have_content 'eMail: elternvertreter-5k@schickhardt-gymnasium-herrenberg.de'
+    describe 'Elternvertreter' do
+      it 'lists them' do
+        within('section.sgh-elternverteiler-elternvertreter') do
+          expect(page).to have_content 'Elternvertreter'
+        end
+      end
+
+      it 'has a generic address to reach them' do
+        within('section.sgh-elternverteiler-elternvertreter') do
+          expect(page).to have_content 'eMail: elternvertreter-5k@schickhardt-gymnasium-herrenberg.de'
+        end
+      end
+    end
+
+    xdescribe 'Eltern' do
+      it 'lists them' do
+        expect(page).to have_content 'Eltern'
+      end
+
+      it 'has a generic address to reach them' do
+        expect(page).to have_content 'eMail: eltern-5k@schickhardt-gymnasium-herrenberg.de'
+      end
     end
 
     it 'it refuses to create another Klasse with the same name' do
@@ -53,7 +73,7 @@ describe 'Klassen', type: :feature do
       end
     end
 
-    fcontext 'J1 exists' do
+    context 'J1 exists' do
       before do
         create_klassenstufe('J')
         create_class('J', '1')

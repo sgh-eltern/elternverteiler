@@ -1,9 +1,10 @@
 # Domain
 
 * Save backups to object storage instead of the local filesystem
-  => Encrypt using gpg: `backup-encryption.markdown`
-* Verify new list with Hr. ***REMOVED***
-* Extract the many `define_singleton_method` calls into a common one
+  - Encrypt using gpg: `backup-encryption.markdown`
+  - Perhaps we can use the [backblaze gem](https://github.com/R167/backblaze); potentially with [Application Keys](https://www.backblaze.com/b2/docs/application_keys.html)
+* Extract the many `define_singleton_method` calls into a common one, maybe as a method on all Amt#inhaber. With this, concepts like "Elternbeiratsvorsitzende" become a compound of multiple instances of Amt
+* Amtsperioden could be ordered, which would allow us to have a generic EV, and the order determines who is EV1 and who's EV2 in a Klasse. Same for EBV etc. This would even allow more than two EV per Klasse.
 * Change the `PostmapPresenter` to present a `MailingList`
 * Add ability to rename a Klasse (will be useful for moving up after summer)
 * Add ability to rename an Amt (will be useful for moving up after summer)
