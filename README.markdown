@@ -119,3 +119,15 @@ rerun -i 'spec/*' bundle exec rackup
 ```bash
 $ bundle exec sequel $DB
 ```
+
+# Deployment
+
+Backup needs a GCP bucket:
+
+1. Create a [service account](https://console.cloud.google.com/iam-admin/serviceaccounts?project=sgh-elternbeirat&authuser=2) (Account: uhlig-consulting.net, Project: SGH Elternbeirat)
+
+  ![](docs/create-service-account-storage-admin.png)
+
+1. Download the credentials file. Export its contents as environment variable `STORAGE_KEYFILE_JSON`; the Ruby API will read it.
+
+1. Create a bucket `sgh-elternbeirat-app-backup`. No extra ACLs are necessary because the service account is already storage admin from the previous step.

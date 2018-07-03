@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'time'
+require 'pathname'
 
 module SGH
   module Elternverteiler
@@ -13,6 +14,10 @@ module SGH
           raise 'Name is required' if name.to_s.empty?
           @name = name
           @created_at = created_at
+        end
+
+        def file_name
+          Pathname(name).sub_ext('.gz').to_s
         end
       end
     end

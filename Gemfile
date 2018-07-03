@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 gem 'erubi'
 gem 'forme'
+gem 'google-cloud-storage'
 gem 'hashdiff'
 gem 'net-scp'
 gem 'pg'

@@ -1,19 +1,20 @@
 # frozen_string_literal: true
 
 require 'sgh/elternverteiler/recovery'
+require 'sgh/elternverteiler/recovery/directory_manager'
 require 'tmpdir'
 require 'English'
 require 'shellwords'
 require 'zlib'
 
-describe Recovery::Manager do
+describe Recovery::DirectoryManager do
   subject { described_class.new(root, db_url) }
   let(:root) { Pathname(Dir.mktmpdir) }
 
   let(:db_url) { "postgres://localhost/#{@db_name}" }
 
   before(:all) do
-    @db_dir = Pathname(Dir.mktmpdir('recovery-manager-test-'))
+    @db_dir = Pathname(Dir.mktmpdir('directory-manager-test-'))
     @db_name = 'elternverteiler-systemtest'
 
     %x(initdb -D #{Shellwords.escape(@db_dir)})

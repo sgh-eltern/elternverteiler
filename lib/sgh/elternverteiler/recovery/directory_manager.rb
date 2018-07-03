@@ -7,25 +7,10 @@ require 'open3'
 module SGH
   module Elternverteiler
     module Recovery
-      class Manager
-        class DuplicateName < StandardError
-          def initialize(offending_name)
-            super("Ein Backup namens #{offending_name} existiert bereits.")
-          end
-        end
-
-        class ExecutionError < StandardError
-          attr_reader :command, :stdout, :stderr, :status
-
-          def initialize(command, stdout, stderr, status)
-            @command = command
-            @stdout = stdout
-            @stderr = stderr
-            @status = status
-            super(stderr)
-          end
-        end
-
+      #
+      # Manages backups residing in a local directory
+      #
+      class DirectoryManager
         def initialize(root, db_url)
           raise 'Root directory is required' unless root
           @root = Pathname(root)

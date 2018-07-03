@@ -4,6 +4,7 @@ require 'roda'
 require 'forme'
 require 'English'
 require 'hashdiff'
+require 'google/cloud/storage'
 
 require 'sgh/elternverteiler'
 require 'sgh/elternverteiler/postmap_presenter'
@@ -388,7 +389,7 @@ module SGH
           end
 
           r.on 'backups' do
-            @backup_manager = Recovery::Manager.new('backups', ENV.fetch('DB'))
+            @backup_manager = Recovery::BlobstoreManager.new(blobstore, ENV.fetch('DB'))
 
             r.get 'new' do
               topic 'Neues Backup anlegen'
@@ -408,7 +409,7 @@ module SGH
               @backup_manager.restore(Recovery::Backup.new(name))
               flash[:success] = "Backup #{name} wurde eingespielt."
               r.redirect
-            rescue Recovery::Manager::ExecutionError
+            rescue Recovery::ExecutionError
               flash[:error] = "Backup #{name} konnte nicht eingespielt werden."
               warn "Command: #{$ERROR_INFO.command}"
               warn "STDOUT: #{$ERROR_INFO.stdout}"
@@ -541,6 +542,13 @@ module SGH
           else
             @topic
           end
+        end
+
+        def blobstore
+          @blobstore ||= Google::Cloud::Storage.new(
+            # Credentials are read from ENV['STORAGE_KEYFILE_JSON']
+            project_id: 'sgh-elternbeirat'
+          ).bucket('sgh-elternbeirat-app-backup')
         end
       end
     end
