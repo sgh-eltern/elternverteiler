@@ -54,7 +54,12 @@
         </div>
 
         <div class="footer">
-          <p> Stand: <%= Time.now %> </p>
+          <p>
+            Stand: <%= Time.now %>
+            <% if env = ENV['RACK_ENV'] and env != 'production' %>
+              Env: <%= env %>
+            <% end %>
+          </p>
         </div>
       </div>
     </div>
