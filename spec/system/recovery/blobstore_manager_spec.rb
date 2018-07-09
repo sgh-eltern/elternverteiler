@@ -134,10 +134,8 @@ describe Recovery::BlobstoreManager do
     end
 
     context 'with an existing backup' do
-      let(:backup_file_name) { 'some backup.gz' }
-
       before do
-        Zlib::GzipWriter.open(backup_file_name) do |f|
+        Zlib::GzipWriter.open(@backup_file) do |f|
           f.write <<~HEREDOC.chomp
             DROP TABLE items;
             CREATE TABLE items (
@@ -149,7 +147,15 @@ describe Recovery::BlobstoreManager do
           HEREDOC
         end
 
-        bucket.create_file(backup_file_name)
+        bucket.create_file(@backup_file.path)
+      end
+
+      around do |example|
+        Tempfile.create('backup_file.gz') do |tmp_file|
+          @backup_file = tmp_file
+          example.run
+          @backup_file = nil
+        end
       end
 
       it 'restores the backup' do
