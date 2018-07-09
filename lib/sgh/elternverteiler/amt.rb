@@ -8,6 +8,7 @@ module SGH
       include FormeHelper
       include Comparable
       extend WithMailingList
+      one_to_many :amtsperioden, class: Amtsperiode
 
       with_mailing_list(
         name: self,

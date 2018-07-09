@@ -17,7 +17,7 @@ module SGH
 
     def self.elternbeirat
       Amt.where(name: ['1.EV', '2.EV']).
-        map(&:inhaber).
+        map{ |a| a.amtsperioden.map(&:inhaber) }.
         flatten.
         sort_by(&:nachname).
         tap do |all|
@@ -33,7 +33,7 @@ module SGH
 
     def self.elternbeiratsvorsitzende
       Amt.where(name: ['1.EBV', '2.EBV']).
-        map(&:inhaber).
+        map{ |a| a.amtsperioden.map(&:inhaber) }.
         flatten.
         sort_by(&:nachname).
         tap do |all|
@@ -49,7 +49,7 @@ module SGH
 
     def self.elternvertreter_schulkonferenz
       Amt.where(name: ['SK', 'SKV']).
-        map(&:inhaber).
+        map{ |a| a.amtsperioden.map(&:inhaber) }.
         flatten.
         sort_by(&:nachname).
         tap do |all|
