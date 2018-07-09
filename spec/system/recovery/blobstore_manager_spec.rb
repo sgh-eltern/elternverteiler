@@ -96,17 +96,17 @@ describe Recovery::BlobstoreManager do
       end
     end
 
-    after do
-      @db.drop_table :items
-      bucket.files.each(&:delete)
-    end
-
     around do |example|
       Sequel.connect(db_url) do |db|
         @db = db
         example.run
         @db = nil
       end
+    end
+
+    after do
+      @db.drop_table :items
+      bucket.files.each(&:delete)
     end
 
     it 'starts out empty' do
