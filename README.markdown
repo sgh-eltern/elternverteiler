@@ -89,28 +89,31 @@ scp elternverteiler.txt ***REMOVED***.schickhardt-gymnasium-herrenberg.de:
 # Development
 
 ```bash
-# create the database
+# Create the database cluster if it does not exist yet.
+# See brew info postgresql on how to start the database server.
 initdb -D /usr/local/var/postgres-10
 
-# see brew info postgresql on how to start the database server
+# Create the dev database
+createdb elternverteiler_dev
 
-# create the dev database
-createdb elternverteiler
+# Configure the DB URI
+export DB=postgres://localhost/elternverteiler_dev
 
-# configure the DB URI
-export DB=postgres://localhost/elternverteiler
-
-# migrate the database
+# Migrate the database
 bundle exec rake db:migrate
+
+# Run the web app
+rerun -i 'spec/*' bundle exec rackup
 ```
 
 # Test
 
 ```bash
-dropdb elternverteiler_test ; createdb elternverteiler_test ; rake db:migrate
-./bin/import-spreadsheet
-rerun -i 'spec/*' bundle exec rackup
+dropdb elternverteiler_test; createdb elternverteiler_test; rake db:migrate
+bundle exec rake
 ```
+
+If desired, restore a backup from within the app in order to get some real data.
 
 # Troubleshooting
 
@@ -122,12 +125,22 @@ $ bundle exec sequel $DB
 
 # Deployment
 
-Backup needs a GCP bucket:
+* Backup needs a GCP bucket
 
-1. Create a [service account](https://console.cloud.google.com/iam-admin/serviceaccounts?project=sgh-elternbeirat&authuser=2) (Account: uhlig-consulting.net, Project: SGH Elternbeirat)
+  1. Create a [service account](https://console.cloud.google.com/iam-admin/serviceaccounts?project=sgh-elternbeirat&authuser=2) (Account: uhlig-consulting.net, Project: SGH Elternbeirat)
 
-  ![](docs/create-service-account-storage-admin.png)
+    ![](docs/create-service-account-storage-admin.png)
 
-1. Download the credentials file. Export its contents as environment variable `STORAGE_KEYFILE_JSON`; the Ruby API will read it.
+  1. Download the credentials file. Export its contents as environment variable `STORAGE_KEYFILE_JSON`; the Ruby API will read it.
 
-1. Create a bucket `sgh-elternbeirat-app-backup`. No extra ACLs are necessary because the service account is already storage admin from the previous step.
+  1. Create a bucket `sgh-elternbeirat-app-backup`. No extra ACLs are necessary because the service account is already storage admin from the previous step.
+
+* Setup the database
+
+  ```bash
+  $ createdb elternverteiler
+  $ export DB=postgres://localhost/elternverteiler
+  $ bundle exec rake db:migrate
+  $ export RACK_ENV=production
+  $ puma
+  ```

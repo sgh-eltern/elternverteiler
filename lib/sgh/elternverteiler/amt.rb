@@ -1,16 +1,19 @@
 # frozen_string_literal: true
 
+require 'sgh/elternverteiler/with_mailing_list'
+
 module SGH
   module Elternverteiler
     class Amt < Sequel::Model(:ämter)
       include FormeHelper
       include Comparable
+      extend WithMailingList
 
-      many_to_many :inhaber,
-        class: Erziehungsberechtigter,
-        join_table: :amtsperioden,
-        left_key: :amt_id,
-        right_key: :inhaber_id
+      with_mailing_list(
+        name: self,
+        address: lambda { |a| a.name }, # TODO Replace with :name once WithMailingList understands symbols for the address
+        members: :inhaber
+      )
 
       def to_s
         name

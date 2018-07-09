@@ -38,11 +38,3 @@
 # Elternbeiratsvorsitzende: <%= ebv.count %> Adressen
 <% mailing_list = ebv.mailing_list %>
 <%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
-
-# Ämter
-<% SGH::Elternverteiler::Amt.each do |amt| %>
-
-<% mailing_list = amt.mailing_list %>
-## <%= mailing_list.name %>: <%= mailing_list.members.count %> Adressen
-<%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
-<% end %>
