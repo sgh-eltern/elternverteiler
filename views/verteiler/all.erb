@@ -61,6 +61,16 @@
     </tbody>
   </table>
 
+  <h1>Ämter</h1>
+  <table class="pure-table pure-table-bordered sgh-elternverteiler-ämter">
+    <%== partial('verteiler/thead') %>
+    <tbody>
+      <% SGH::Elternverteiler::Amt.each do |amt| %>
+      <%== partial('verteiler/tr', locals: { liste: amt.mailing_list }) %>
+      <% end %>
+    </tbody>
+  </table>
+
   <p>
     <input class="pure-button pure-button-primary"
            type="submit"

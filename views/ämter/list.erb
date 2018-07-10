@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th>Amt</th>
+      <th>Inhaber</th>
     </tr>
   </thead>
 
@@ -15,6 +16,9 @@
     <tr>
       <td>
         <a href="/ämter/<%= amt.id %>"><%= amt %></a>
+      </td>
+      <td>
+        <%= amt.inhaber.count %>
       </td>
     </tr>
     <% end %>
