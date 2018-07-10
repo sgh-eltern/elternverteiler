@@ -10,7 +10,7 @@ describe Amt do
   end
 
   it 'has an empty set of members' do
-    expect(pab.amtsperioden).to be_empty
+    expect(pab.inhaber).to be_empty
   end
 
   it 'cannot create another Amt with the same name' do
@@ -38,11 +38,11 @@ describe Amt do
     end
 
     it 'has a non-empty list of members' do
-      expect(pab.amtsperioden).to_not be_empty
+      expect(pab.inhaber).to_not be_empty
     end
 
     it 'has the expected members' do
-      expect(pab.amtsperioden.count).to eq(2)
+      expect(pab.inhaber.count).to eq(2)
     end
 
     it 'becomes an attribute of the parents' do

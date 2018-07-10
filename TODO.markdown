@@ -1,5 +1,7 @@
 # Domain
 
+* Change URL generation and object lookup in `app.rb` to use pretty identifiers (slugs). We want `/klassen/7c` instead of `/klassen/423`
+* Amt needs a new field `slug` ("ev1") besides the long name (which should actually be longer and more descriptive, like "1. Elternvertreter")
 * Extract the many `define_singleton_method` calls into a common one, maybe as a method on all Amt#inhaber. With this, concepts like "Elternbeiratsvorsitzende" become a compound of multiple instances of Amt
 * Amtsperioden could be ordered, which would allow us to have a generic EV, and the order determines who is EV1 and who's EV2 in a Klasse. Same for EBV etc. This would even allow more than two EV per Klasse.
 * Change the `PostmapPresenter` to present a `MailingList`
@@ -7,8 +9,6 @@
 * Add ability to rename an Amt (will be useful for moving up after summer)
 * Add ability to delete a class with all pupils (J2 leaves after Abitur)
   => Make sure parents with other kids in school are kept
-* Change URL generation and object lookup in `app.rb` to use pretty identifiers (slugs). We want `/klassen/7c` instead of `/klassen/423`
-* Amt needs a new field `slug` ("ev1") besides the long name (which should actually be longer and more descriptive, like "1. Elternvertreter")
 * Amt needs a new field `address` where we can specify the (unique) short address of the mailing list for the Amtsinhaber
 * navbar must not be printed
 * navbar should be extracted into partial

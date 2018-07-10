@@ -15,8 +15,8 @@
       Inhaber
     </th>
     <td>
-      <% @amt.amtsperioden.each do |amtsperiode| %>
-        <a href="/eltern/<%= amtsperiode.inhaber.id %>"><%= amtsperiode.inhaber.nachname %>, <%= amtsperiode.inhaber.vorname %></a><br/>
+      <% @amt.inhaber.each do |inhaber| %>
+        <a href="/eltern/<%= inhaber.id %>"><%= inhaber.nachname %>, <%= inhaber.vorname %></a><br/>
       <% end %>
     </td>
   </tr>

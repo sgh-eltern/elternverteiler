@@ -32,7 +32,7 @@ describe 'Amtsperiode', type: :feature do
     end
 
     it 'lists no roles' do
-      within('.sgh-elternverteiler-erziehungsberechtigter') do
+      within('.sgh-elternverteiler-amtsinhaber') do
         expect(page).to_not have_css('td')
       end
     end
@@ -53,7 +53,7 @@ describe 'Amtsperiode', type: :feature do
       within('#menu') { click_link('Klassen') }
       within('.content') { click_link('5A') }
 
-      within('.sgh-elternverteiler-erziehungsberechtigter') do
+      within('.sgh-elternverteiler-amtsinhaber') do
         expect(page).to have_content('1.EV')
       end
     end

@@ -35,7 +35,7 @@ describe 'Klassen', type: :feature do
       end
     end
 
-    xdescribe 'Eltern' do
+    describe 'Eltern' do
       it 'lists them' do
         expect(page).to have_content 'Eltern'
       end

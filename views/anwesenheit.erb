@@ -10,12 +10,12 @@
 
   <tbody>
 
-  <% elternbeirat.each do |ev| %>
+  <% elternbeirat.each do |elternvertreter| %>
     <tr>
-      <td><%= ev.nachname %></td>
-      <td><%= ev.vorname %></td>
+      <td><%= elternvertreter.nachname %></td>
+      <td><%= elternvertreter.vorname %></td>
       <td>
-        <% ev.amtsperioden.group_by{|ap| ap.klasse }.each do |klasse, amtsperioden|  %>
+        <% elternvertreter.amtsperioden.group_by{|ap| ap.klasse }.each do |klasse, amtsperioden|  %>
           <%= amtsperioden.map{ |ap| ap.amt.name }.join(', ') %>
           <%= klasse %><br>
         <% end %>

@@ -16,6 +16,10 @@ module SGH
         members: :inhaber
       )
 
+      def inhaber
+        amtsperioden.map(&:inhaber)
+      end
+
       def to_s
         name
       end
