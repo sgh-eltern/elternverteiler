@@ -2,7 +2,7 @@
         :inputs_wrapper => :fieldset,
         class: 'pure-form pure-form-aligned',
         method: 'post',
-        action: "/klassen/#{@amtsperiode.klasse.id}/ämter/add",
+        action: "#{klasse_path(@amtsperiode.klasse)}/ämter/add",
         ) do |f| %>
   <%# TODO Do not show all parents, but only parents from @amtsperiode.klasse %>
   <%== f.input(:amt, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>

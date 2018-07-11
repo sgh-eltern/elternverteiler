@@ -30,22 +30,22 @@
   </tr>
 
     <tr>
-      <th style="background-color: #f2f2f2; text-align: right;">Ämter</th>
+      <th valign="top" style="background-color: #f2f2f2; text-align: right;">Ämter</th>
       <td>
         <% @erziehungsberechtigter.amtsperioden.each do |amtsperiode| %>
         <a href="/ämter/<%= amtsperiode.amt.id %>"><%= amtsperiode.amt %></a>
-        <a href="/klassen/<%= amtsperiode.klasse.id %>"><%= amtsperiode.klasse %></a>
+        <%== link_to(amtsperiode.klasse) %>
         <br/>
         <% end %>
       </td>
     </tr>
 
     <tr>
-      <th style="background-color: #f2f2f2; text-align: right;">Kinder</th>
+      <th valign="top" style="background-color: #f2f2f2; text-align: right;">Kinder</th>
       <td>
         <% @erziehungsberechtigter.kinder.each do |kind| %>
           <a href="/schüler/<%= kind.id %>"><%= kind.name %></a>
-          <a href="/klassen/<%= kind.klasse.id %>"><%= kind.klasse %></a>
+          (<%== link_to(kind.klasse) %>)
           <br/>
         <% end %>
       </td>

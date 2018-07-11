@@ -1,0 +1,95 @@
+<section class="sgh-elternverteiler-elternvertreter">
+  <h2>Elternvertreter</h2>
+
+  <p>
+    <%== partial('email', locals: { address: @klasse.elternvertreter.mailing_list.address(:long) }) %>
+  </p>
+
+  <p>
+    <a href="<%= klasse_path(@klasse) %>/ämter/add" class="pure-button pure-button-primary">Hinzufügen</a>
+  </p>
+
+  <table class="pure-table pure-table-horizontal sgh-elternverteiler-amtsinhaber">
+    <thead>
+      <tr>
+        <th>Amt</th>
+        <th>Inhaber</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+    <% @amtsperioden.each do |amtsperiode| %>
+      <tr>
+        <td style="padding-left: 2em;">
+          <%= amtsperiode.amt %>
+        </td>
+
+        <td valign="top">
+          <a href="/eltern/<%= amtsperiode.inhaber.id %>">
+            <%= amtsperiode.inhaber.nachname %>, <%= amtsperiode.inhaber.vorname %>
+          </a>
+        </td>
+
+        <td class="no-print">
+          <% form(amtsperiode,
+                  :inputs_wrapper => :fieldset,
+                  class: 'pure-form pure-form-aligned',
+                  action: "#{klasse_path(amtsperiode.klasse)}/ämter/#{amtsperiode.amt.id}/inhaber/#{amtsperiode.inhaber.id}",
+                  method: 'post',
+                  ) do |f| %>
+            <%== f.button(value: 'Entfernen', class: "pure-button pure-button-primary") %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+  </table>
+</section>
+
+<%== partial('list_schüler', locals: { schueler: @schüler }) %>
+
+<section class="sgh-elternverteiler-eltern">
+  <h2>Eltern</h2>
+
+  <p>
+    <%== partial('email', locals: { address: @klasse.eltern.mailing_list.address(:long) }) %>
+  </p>
+
+  <table class="pure-table pure-table-horizontal sgh-elternverteiler-erziehungsberechtigter">
+    <thead>
+      <tr>
+        <th>Nachname</th>
+        <th>Vorname</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+    <% @klasse.eltern.each do |erziehungsberechtigter| %>
+      <tr>
+        <td>
+          <a href="/eltern/<%= erziehungsberechtigter.id %>"><%= erziehungsberechtigter.nachname %></a>
+        </td>
+        <td>
+          <a href="/eltern/<%= erziehungsberechtigter.id %>"><%= erziehungsberechtigter.vorname %></a>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+  </table>
+</section>
+
+<table class="pure-table pure-table-horizontal sgh-elternverteiler-amt">
+<%== partial('meta', locals: { item: @klasse }) %>
+</table>
+
+<form action="<%= klasse_path(@klasse) %>/delete" class="pure-form pure-form-aligned" method="post">
+  <p>
+    <input class="pure-button button-destructive"
+    type="submit"
+    value="Löschen"
+    onclick="return confirm('Sind Sie sicher, daß Sie die Klasse <%= @klasse %> löschen möchten?')"/>
+  </p>
+</form>

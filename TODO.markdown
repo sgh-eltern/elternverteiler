@@ -1,6 +1,7 @@
 # Domain
 
-* Change URL generation and object lookup in `app.rb` to use pretty identifiers (slugs). We want `/klassen/7c` instead of `/klassen/423`
+* There are duplicate entries, e.g. parents of Aurelio and Matteo Wagner
+* Sorting of all parents is borked, e.g. in `/eltern`
 * Amt needs a new field `slug` ("ev1") besides the long name (which should actually be longer and more descriptive, like "1. Elternvertreter")
 * Extract the many `define_singleton_method` calls into a common one, maybe as a method on all Amt#inhaber. With this, concepts like "Elternbeiratsvorsitzende" become a compound of multiple instances of Amt
 * Amtsperioden could be ordered, which would allow us to have a generic EV, and the order determines who is EV1 and who's EV2 in a Klasse. Same for EBV etc. This would even allow more than two EV per Klasse.

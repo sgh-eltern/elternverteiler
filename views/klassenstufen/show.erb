@@ -9,10 +9,11 @@
   </tr>
 
   <tr>
-    <th style="background-color: #f2f2f2; text-align: right;">Klassen</th>
+    <th valign="top" style="background-color: #f2f2f2; text-align: right;">Klassen</th>
     <td>
       <% @klassenstufe.klassen.each do |klasse| %>
-        <a href="/klassen/<%= klasse.id %>"><%= klasse %></a><br/>
+        <%== link_to(klasse) %>
+        <br/>
       <% end %>
     </td>
   </tr>

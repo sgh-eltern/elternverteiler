@@ -14,7 +14,7 @@
   <% klassen.each do |klasse| %>
     <tr>
       <td>
-        <a href="/klassen/<%= klasse.id %>"><%= klasse %></a>
+        <%== link_to(klasse) %>
       </td>
     </tr>
     <% end %>

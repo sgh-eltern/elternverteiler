@@ -5,6 +5,7 @@ ENV['DB'] = 'sqlite:/'
 
 require 'rack/test'
 require 'sgh/elternverteiler/web/app'
+require 'sgh/elternverteiler/web/view_helpers'
 
 describe SGH::Elternverteiler::Web::App do
   include Rack::Test::Methods
@@ -59,5 +60,26 @@ describe SGH::Elternverteiler::Web::App do
     post '/verteiler/upload', distribution_list: updated_distribution_list
     expect(last_response.status).to eq(302)
     expect(last_response.location).to eq('/verteiler')
+  end
+
+  context 'non-existing Klasse' do
+    it 'returns 404' do
+      get '/klassen/5x'
+      expect(last_response).to_not be_ok
+      expect(last_response.status).to eq(404)
+    end
+  end
+
+  context 'Klasse 5a exists' do
+    include SGH::Elternverteiler::Web::PathHelpers
+
+    let(:klassenstufe_5) { Klassenstufe.create(name: '5') }
+    let(:k5a) { Klasse.create(stufe: klassenstufe_5, zug: 'A') }
+
+    it "shows the Klasse's page when addressed via its pretty URL" do
+      get klasse_path(k5a)
+      expect(last_response).to be_ok
+      expect(last_response.body).to include('Klasse 5A')
+    end
   end
 end

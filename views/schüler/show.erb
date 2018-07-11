@@ -15,11 +15,13 @@
 
   <tr>
     <th style="background-color: #f2f2f2; text-align: right;">Klasse</th>
-    <td><a href="/klassen/<%= @schüler.klasse.id %>"><%= @schüler.klasse %></a></td>
+    <td>
+      <%== link_to(@schüler.klasse) %>
+    </td>
   </tr>
 
   <tr>
-    <th style="background-color: #f2f2f2; text-align: right;">Eltern</th>
+    <th valign="top" style="background-color: #f2f2f2; text-align: right;">Eltern</th>
     <td>
       <% @schüler.eltern.each do |paren| %>
         <a href="/eltern/<%= paren.id %>"><%= paren %></a><br/>

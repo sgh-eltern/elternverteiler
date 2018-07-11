@@ -13,13 +13,14 @@ require 'sgh/elternverteiler/recovery'
 require 'sgh/elternverteiler/mail_server'
 require 'sgh/elternverteiler/mailing_list'
 
+require 'sgh/elternverteiler/web/view_helpers'
+
 module SGH
   module Elternverteiler
     module Web
       class App < Roda
         use Rack::Session::Cookie, secret: ENV.fetch('SESSION_SECRET')
 
-        plugin :error_handler
         plugin :flash
         plugin :forme
         plugin :h
@@ -27,14 +28,24 @@ module SGH
         plugin :render, escape: true
         plugin :render_each
         plugin :request_headers
+        plugin :empty_root
         plugin :static, ['/js', '/css']
-        plugin :status_handler
         Sequel::Model.plugin :forme
 
+        plugin :status_handler
         status_handler(404) do
           topic 'Nicht gefunden'
           view :not_found
         end
+
+        plugin :error_handler do |e|
+          topic 'Sorry'
+          @error = e
+          response.status = 500
+          view 'error'
+        end
+
+        include SGH::Elternverteiler::Web::PathHelpers
 
         # rubocop:disable Metrics/BlockLength
         route do |r|
@@ -194,68 +205,74 @@ module SGH
           end
 
           r.on 'klassen' do
-            r.get 'neu' do |id|
+            # /klassen/j1 or /klassen/7c
+            r.on [%r{(j[12])}, %r{(\d{1,2})([a-z])}] do |st, zg|
+              stufe = Klassenstufe.first!(name: st.upcase)
+              @klasse = Klasse.first!(stufe: stufe, zug: zg&.upcase.to_s)
+
+              r.root do
+                @schüler = @klasse.schüler.sort_by(&:nachname)
+                @amtsperioden = Amtsperiode.where(
+                    amt: Amt.where(Sequel.like(:name, '%.EV')),
+                    klasse: @klasse
+                  ).sort_by(&:to_s)
+                topic @klasse
+                view 'klassen/show'
+              end
+
+              r.get CGI.escape('ämter'), 'add' do |klasse_id|
+                topic "Neue Amtsperiode in der #{@klasse}"
+                @amtsperiode = Amtsperiode.new(klasse: @klasse)
+                view 'elternvertreter/add'
+              end
+
+              r.post CGI.escape('ämter'), 'add' do
+                amt = Amt.first!(id: r.params['sgh-elternverteiler-amtsperiode']['amt_id'])
+                inhaber = Erziehungsberechtigter.first!(id: r.params['sgh-elternverteiler-amtsperiode']['inhaber_id'])
+                Amtsperiode.new(klasse: @klasse, amt: amt, inhaber: inhaber).save
+                flash[:success] = "#{inhaber} ist jetzt #{amt} in der #{@klasse}"
+                r.redirect(klasse_path(@klasse))
+              end
+
+              r.post CGI.escape('ämter'), Integer, 'inhaber', Integer do |amt_id, inhaber_id|
+                topic 'Amtsperiode löschen'
+                amt = Amt.first!(id: amt_id)
+                inhaber = Erziehungsberechtigter.first!(id: inhaber_id)
+                Amtsperiode.first!(klasse: @klasse, amt: amt, inhaber: inhaber).destroy
+                flash[:success] = "#{inhaber} ist nicht mehr #{amt} in der #{@klasse}."
+                r.redirect(klasse_path(@klasse))
+              end
+
+              r.post 'delete' do
+                @klasse.destroy
+                flash[:success] = "#{@klasse} wurde gelöscht."
+                r.redirect '/klassen'
+              rescue StandardError
+                flash[:error] = "Die #{@klasse} hat Schüler und kann deshalb nicht gelöscht werden."
+                r.redirect(r.referrer)
+              end
+
+              r.post do
+                raise "Missing implementation for editing #{@klasse}"
+              end
+            rescue Sequel::NoMatchingRow
+               flash.now[:error] = "Es gibt keine Klasse #{st}#{zg}"
+               response.status = 404
+               topic 'Klasse nicht gefunden'
+               view 'klassen/not_found'
+            end
+
+            r.get 'neu' do
               topic 'Neue Klasse anlegen'
               @klasse = Klasse.new
               view 'klassen/new'
-            end
-
-            r.get Integer do |id|
-              @klasse = Klasse.first!(id: id)
-              @schüler = @klasse.schüler.sort_by(&:nachname)
-              @amtsperioden = Amtsperiode.where(
-                amt: Amt.where(Sequel.like(:name, '%.EV')),
-                klasse: @klasse
-                ).sort_by(&:to_s)
-              topic @klasse
-              view 'schüler/list'
-            end
-
-            r.get Integer, CGI.escape('ämter'), 'add' do |klasse_id|
-              topic 'Neue Amtsperiode'
-              klasse = Klasse.first!(id: klasse_id)
-              @amtsperiode = Amtsperiode.new(klasse: klasse)
-              view 'elternvertreter/add'
-            end
-
-            r.post Integer, CGI.escape('ämter'), 'add' do |klasse_id|
-              klasse = Klasse.first!(id: klasse_id)
-              amt = Amt.first!(id: r.params['sgh-elternverteiler-amtsperiode']['amt_id'])
-              inhaber = Erziehungsberechtigter.first!(id: r.params['sgh-elternverteiler-amtsperiode']['inhaber_id'])
-              Amtsperiode.new(klasse: klasse, amt: amt, inhaber: inhaber).save
-              flash[:success] = "#{inhaber} ist jetzt #{amt} in der #{klasse}"
-              r.redirect "/klassen/#{klasse.id}"
-            end
-
-            r.post Integer, CGI.escape('ämter'), Integer, 'inhaber', Integer do |klasse_id, amt_id, inhaber_id|
-              topic 'Amtsperiode löschen'
-              klasse = Klasse.first!(id: klasse_id)
-              amt = Amt.first!(id: amt_id)
-              inhaber = Erziehungsberechtigter.first!(id: inhaber_id)
-              Amtsperiode.first!(klasse: klasse, amt: amt, inhaber: inhaber).destroy
-              flash[:success] = "#{inhaber} ist nicht mehr #{amt} in der #{klasse}."
-              r.redirect "/klassen/#{klasse.id}"
-            end
-
-            r.post Integer, 'delete' do |id|
-              @klasse = Klasse.first!(id: id)
-              @klasse.destroy
-              flash[:success] = "#{@klasse} wurde gelöscht."
-              r.redirect '/klassen'
-            rescue StandardError
-              flash[:error] = "Die #{@klasse} hat Schüler und kann deshalb nicht gelöscht werden."
-              r.redirect(r.referrer)
-            end
-
-            r.post Integer do |id|
-              raise 'Missing implementation for editing Klasse'
             end
 
             r.post do
               @klasse = Klasse.new
               @klasse.set_fields(r.params['sgh-elternverteiler-klasse'], %w[stufe_id zug])
               @klasse.save
-              r.redirect "/klassen/#{@klasse.id}"
+              r.redirect(klasse_path(@klasse))
             rescue Sequel::UniqueConstraintViolation
               topic 'Neue Klasse anlegen'
               flash.now[:error] = "Die #{@klasse} existiert bereits"
@@ -266,7 +283,7 @@ module SGH
               view 'klassen/new'
             end
 
-            r.on do
+            r.root do
               topic 'Alle Klassen'
               view 'klassen/list'
             end
@@ -465,13 +482,6 @@ module SGH
           end
         end
         # rubocop:enable Metrics/BlockLength
-
-        error do |e|
-          topic 'Sorry'
-          @error = e
-          response.status = 500
-          view 'error'
-        end
 
         def ebv
           @ebv ||= SGH::Elternverteiler.elternbeiratsvorsitzende

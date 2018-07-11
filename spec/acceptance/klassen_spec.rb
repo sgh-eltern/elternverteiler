@@ -75,13 +75,13 @@ describe 'Klassen', type: :feature do
 
     context 'J1 exists' do
       before do
-        create_klassenstufe('J')
-        create_class('J', '1')
+        create_klassenstufe('J1')
+        create_class('J1')
       end
 
       after do
         delete_class('J1')
-        delete_klassenstufe('J')
+        delete_klassenstufe('J1')
       end
 
       it 'lists both 5K and J1' do
