@@ -22,6 +22,10 @@ module SGH
         "#{nachname}, #{vorname}"
       end
 
+      def <=>(other)
+        [nachname.to_s, vorname.to_s] <=> [other.nachname.to_s, other.vorname.to_s]
+      end
+
       def to_s
         "#{vorname} #{nachname}, #{klasse}"
       end

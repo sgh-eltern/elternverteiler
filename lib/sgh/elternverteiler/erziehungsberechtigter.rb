@@ -51,6 +51,10 @@ module SGH
         end
       end
 
+      def <=>(other)
+        [nachname.to_s, vorname.to_s, mail.to_s] <=> [other.nachname.to_s, other.vorname.to_s, other.mail.to_s]
+      end
+
       def to_s
         if vorname.to_s.empty? && nachname.to_s.empty?
           mail

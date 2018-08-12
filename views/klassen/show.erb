@@ -67,7 +67,7 @@
 
     <tbody>
 
-    <% @klasse.eltern.each do |erziehungsberechtigter| %>
+    <% @klasse.eltern.sort.each do |erziehungsberechtigter| %>
       <tr>
         <td>
           <a href="/eltern/<%= erziehungsberechtigter.id %>"><%= erziehungsberechtigter.nachname %></a>
