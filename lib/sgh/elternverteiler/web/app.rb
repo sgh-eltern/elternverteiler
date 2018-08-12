@@ -91,7 +91,7 @@ module SGH
 
             r.on 'klassen' do
               topic 'Elternvertreter der Klassen'
-              @klassen_amtsperioden = Klasse.sort.map do |klasse|
+              @klassen_amtsperioden = klassen.map do |klasse|
                 [
                   klasse,
                   Amtsperiode.where(
@@ -110,6 +110,12 @@ module SGH
           end
 
           r.on 'eltern' do
+            r.root do
+              topic 'Alle Eltern'
+              @eltern = eltern.sort!
+              view 'erziehungsberechtigter/list'
+            end
+
             r.get 'neu' do |id|
               topic 'Erziehungsberechtigten hinzufügen'
               @erziehungsberechtigter = Erziehungsberechtigter.new
@@ -156,15 +162,14 @@ module SGH
               flash.now[:error] = $ERROR_INFO.message
               view 'erziehungsberechtigter/new'
             end
-
-            r.on do
-              topic 'Alle Eltern'
-              @eltern = eltern
-              view 'erziehungsberechtigter/list'
-            end
           end
 
           r.on 'klassenstufen' do
+            r.root do
+              topic 'Alle Klassenstufen'
+              view 'klassenstufen/list'
+            end
+
             r.get 'neu' do |id|
               topic 'Neue Klassenstufe anlegen'
               @klassenstufe = Klassenstufe.new
@@ -197,11 +202,6 @@ module SGH
               flash.now[:error] = "Die #{@klassenstufe} existiert bereits"
               view 'klassenstufen/new'
             end
-
-            r.on do
-              topic 'Alle Klassenstufen'
-              view 'klassenstufen/list'
-            end
           end
 
           r.on 'klassen' do
@@ -211,7 +211,7 @@ module SGH
               @klasse = Klasse.first!(stufe: stufe, zug: zg&.upcase.to_s)
 
               r.root do
-                @schüler = @klasse.schüler.sort_by(&:nachname)
+                @schüler = @klasse.schüler.sort
                 @amtsperioden = Amtsperiode.where(
                     amt: Amt.where(Sequel.like(:name, '%.EV')),
                     klasse: @klasse
