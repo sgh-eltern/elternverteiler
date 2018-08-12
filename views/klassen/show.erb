@@ -39,7 +39,12 @@
                   action: "#{klasse_path(amtsperiode.klasse)}/ämter/#{amtsperiode.amt.id}/inhaber/#{amtsperiode.inhaber.id}",
                   method: 'post',
                   ) do |f| %>
-            <%== f.button(value: 'Entfernen', class: "pure-button pure-button-primary") %>
+            <%== f.button(
+                   value: 'Entfernen',
+                   class: "pure-button button-destructive",
+                   onclick: "return confirm('Sind Sie sicher, daß Sie den #{amtsperiode.amt} der #{amtsperiode.klasse} löschen möchten?')"
+                 )
+            %>
           <% end %>
         </td>
       </tr>
