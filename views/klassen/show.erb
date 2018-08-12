@@ -62,6 +62,7 @@
       <tr>
         <th>Nachname</th>
         <th>Vorname</th>
+        <th>eMail</th>
       </tr>
     </thead>
 
@@ -74,6 +75,9 @@
         </td>
         <td>
           <a href="/eltern/<%= erziehungsberechtigter.id %>"><%= erziehungsberechtigter.vorname %></a>
+        </td>
+        <td>
+          <a href="/eltern/<%= erziehungsberechtigter.id %>"><%= erziehungsberechtigter.mail %></a>
         </td>
       </tr>
     <% end %>

@@ -17,6 +17,7 @@
     <tr>
       <th>Nachname</th>
       <th>Vorname</th>
+      <th>eMail</th>
       <th>Ämter</th>
     </tr>
   </thead>
@@ -31,6 +32,9 @@
       </td>
       <td>
         <a href="/eltern/<%= elternteil.id %>"><%= elternteil.vorname %></a>
+      </td>
+      <td>
+        <a href="/eltern/<%= elternteil.id %>"><%= elternteil.mail %></a>
       </td>
       <td>
         <% elternteil.amtsperioden.each do |amtsperiode| %>
