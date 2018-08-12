@@ -1,15 +1,15 @@
 # Domain
 
+* Add ability to rename a Klasse (will be useful for moving up after summer)
+* Add ability to delete a class with all pupils (J2 leaves after Abitur)
+  => Make sure parents with other kids in school are kept
 * There are duplicate entries, e.g. parents of Aurelio and Matteo Wagner
-* Sorting of all parents is borked, e.g. in `/eltern`
+* Klassenstufe needs to be addressed by its slug (5,6,7,8,9,10,J1,J2)
 * Amt needs a new field `slug` ("ev1") besides the long name (which should actually be longer and more descriptive, like "1. Elternvertreter")
+  - Also add ability to rename an Amt
 * Extract the many `define_singleton_method` calls into a common one, maybe as a method on all Amt#inhaber. With this, concepts like "Elternbeiratsvorsitzende" become a compound of multiple instances of Amt
 * Amtsperioden could be ordered, which would allow us to have a generic EV, and the order determines who is EV1 and who's EV2 in a Klasse. Same for EBV etc. This would even allow more than two EV per Klasse.
 * Change the `PostmapPresenter` to present a `MailingList`
-* Add ability to rename a Klasse (will be useful for moving up after summer)
-* Add ability to rename an Amt (will be useful for moving up after summer)
-* Add ability to delete a class with all pupils (J2 leaves after Abitur)
-  => Make sure parents with other kids in school are kept
 * Amt needs a new field `address` where we can specify the (unique) short address of the mailing list for the Amtsinhaber
 * navbar must not be printed
 * navbar should be extracted into partial
