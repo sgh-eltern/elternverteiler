@@ -15,7 +15,9 @@ module SGH
 
       def before_destroy
         # destroy all parents that have no other kid in school besides this
-        eltern.each { |ezb| ezb.destroy if ezb.kinder.size == 1 }
+        eltern.each do |ezb|
+          ezb.destroy unless ezb.kinder.any? { |kind| kind.klasse != klasse }
+        end
       end
 
       def name

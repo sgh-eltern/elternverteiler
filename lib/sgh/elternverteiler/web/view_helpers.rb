@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SGH
   module Elternverteiler
     module Web
@@ -7,7 +9,7 @@ module SGH
         end
 
         def link_to(klasse)
-          %Q(<a href="#{klasse_path(klasse)}">#{klasse.name}</a>)
+          %(<a href="#{klasse_path(klasse)}">#{klasse.name}</a>)
         end
       end
     end

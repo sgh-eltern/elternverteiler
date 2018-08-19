@@ -59,16 +59,23 @@ describe 'Klassen', type: :feature do
         assign_parent('Simpson', 'Simpson, Homer')
       end
 
-      after do
-        delete_parent('Simpson', 'Homer', 'homer@simpson.name')
-        delete_pupil('Simpson', 'Bart', '5K')
-        delete_class('5K')
-      end
+      context '5K is deleted' do
+        before do
+          delete_class('5K')
+        end
 
-      it 'refuses to remove the Klasse while it still has pupils' do
-        delete_class('5K')
-        within('aside.error') do
-          expect(page).to have_content('Die Klasse 5K hat Schüler und kann deshalb nicht gelöscht werden.')
+        it 'the pupils are gone, too' do
+          within('#menu') { click_link('Schüler') }
+          within('section.sgh-elternverteiler-schüler') do
+            expect(page).to_not have_content('Bart')
+          end
+        end
+
+        it 'the pupils parents are gone, too' do
+          within('#menu') { click_link('Eltern') }
+          within('section.sgh-elternverteiler-erziehungsberechtigter') do
+            expect(page).to_not have_content('Homer')
+          end
         end
       end
     end

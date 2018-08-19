@@ -206,15 +206,15 @@ module SGH
 
           r.on 'klassen' do
             # /klassen/j1 or /klassen/7c
-            r.on [%r{(j[12])}, %r{(\d{1,2})([a-z])}] do |st, zg|
+            r.on [/(j[12])/, /(\d{1,2})([a-z])/] do |st, zg|
               stufe = Klassenstufe.first!(name: st.upcase)
               @klasse = Klasse.first!(stufe: stufe, zug: zg&.upcase.to_s)
 
               r.root do
                 @schüler = @klasse.schüler.sort
                 @amtsperioden = Amtsperiode.where(
-                    amt: Amt.where(Sequel.like(:name, '%.EV')),
-                    klasse: @klasse
+                  amt: Amt.where(Sequel.like(:name, '%.EV')),
+                  klasse: @klasse
                   ).sort_by(&:to_s)
                 topic @klasse
                 view 'klassen/show'
@@ -247,19 +247,16 @@ module SGH
                 @klasse.destroy
                 flash[:success] = "#{@klasse} wurde gelöscht."
                 r.redirect '/klassen'
-              rescue StandardError
-                flash[:error] = "Die #{@klasse} hat Schüler und kann deshalb nicht gelöscht werden."
-                r.redirect(r.referrer)
               end
 
               r.post do
                 raise "Missing implementation for editing #{@klasse}"
               end
             rescue Sequel::NoMatchingRow
-               flash.now[:error] = "Es gibt keine Klasse #{st}#{zg}"
-               response.status = 404
-               topic 'Klasse nicht gefunden'
-               view 'klassen/not_found'
+              flash.now[:error] = "Es gibt keine Klasse #{st}#{zg}"
+              response.status = 404
+              topic 'Klasse nicht gefunden'
+              view 'klassen/not_found'
             end
 
             r.get 'neu' do
@@ -277,7 +274,7 @@ module SGH
               topic 'Neue Klasse anlegen'
               flash.now[:error] = "Die #{@klasse} existiert bereits"
               view 'klassen/new'
-            rescue Sequel::ValidationFailed => e
+            rescue Sequel::ValidationFailed
               topic 'Neue Klasse anlegen'
               flash.now[:error] = 'Validierung fehlgeschlagen'
               view 'klassen/new'

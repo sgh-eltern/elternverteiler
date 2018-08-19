@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'tempfile'
 require 'google/cloud/storage'
 
@@ -50,14 +52,14 @@ describe 'Google Cloud Storage' do
       end
 
       it 'is listed as entry of the bucket' do
-        expect(bucket.files.map{|f| f.name}).to include(blob_name)
+        expect(bucket.files.map(&:name)).to include(blob_name)
       end
 
       it 'is has a name' do
         expect(bucket.file(blob_name).name).to eq(blob_name)
       end
 
-      fit 'is has a creation date' do
+      it 'is has a creation date' do
         expect(bucket.file(blob_name).created_at).to be
       end
 

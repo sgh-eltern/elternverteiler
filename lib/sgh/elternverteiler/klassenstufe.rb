@@ -9,9 +9,11 @@ module SGH
 
       one_to_many :klassen, class: Klasse, key: :stufe_id
 
+      # rubocop:disable Naming/MethodName
       def schüler
         Schüler.where(klasse: Klasse.where(stufe: self))
       end
+      # rubocop:enable Naming/MethodName
 
       with_mailing_list(
         name: lambda { |k| "Eltern der #{k}" },

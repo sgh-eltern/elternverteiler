@@ -78,7 +78,7 @@ describe 'Helper', type: :feature do
       create_parent('Simpson', 'Homer', 'homer@simpson.name')
 
       within('#menu') { click_link('Eltern') }
-      within('.sgh-elternverteiler-erziehungsberechtigter') do
+      within('section.sgh-elternverteiler-erziehungsberechtigter') do
         expect(page).to have_content('Homer')
       end
     end
@@ -91,7 +91,7 @@ describe 'Helper', type: :feature do
     it 'removes Homer' do
       delete_parent('Simpson', 'Homer', 'homer@simpson.name')
       within('#menu') { click_link('Eltern') }
-      within('.sgh-elternverteiler-erziehungsberechtigter') do
+      within('section.sgh-elternverteiler-erziehungsberechtigter') do
         expect(page).to_not have_content('Homer')
       end
     end

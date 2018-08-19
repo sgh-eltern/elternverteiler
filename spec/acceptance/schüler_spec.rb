@@ -63,7 +63,7 @@ describe 'Schüler', type: :feature do
 
           it 'removes his parents' do
             within('#menu') { click_link('Eltern') }
-            expect(find('.sgh-elternverteiler-erziehungsberechtigter')).to_not have_content('Simpson')
+            expect(find('section.sgh-elternverteiler-erziehungsberechtigter')).to_not have_content('Simpson')
           end
         end
       end

@@ -12,36 +12,39 @@
   <a href="/eltern/neu" class="pure-button pure-button-primary">Anlegen</a>
 </p>
 
-<table class="pure-table pure-table-horizontal pure-table-striped sgh-elternverteiler-erziehungsberechtigter">
-  <thead>
-    <tr>
-      <th>Nachname</th>
-      <th>Vorname</th>
-      <th>eMail</th>
-      <th>Ämter</th>
-    </tr>
-  </thead>
 
-  <tbody>
+<section class="sgh-elternverteiler-erziehungsberechtigter">
+  <table class="pure-table pure-table-horizontal pure-table-striped sgh-elternverteiler-erziehungsberechtigter">
+    <thead>
+      <tr>
+        <th>Nachname</th>
+        <th>Vorname</th>
+        <th>eMail</th>
+        <th>Ämter</th>
+      </tr>
+    </thead>
 
-  <% eltern.each do |elternteil| %>
-    <tr>
-      <td>
-        <a name="<%= elternteil.nachname&.chars&.first %>"/>
-        <a href="/eltern/<%= elternteil.id %>"><%= elternteil.nachname %></a>
-      </td>
-      <td>
-        <a href="/eltern/<%= elternteil.id %>"><%= elternteil.vorname %></a>
-      </td>
-      <td>
-        <a href="/eltern/<%= elternteil.id %>"><%= elternteil.mail %></a>
-      </td>
-      <td>
-        <% elternteil.amtsperioden.each do |amtsperiode| %>
-          <%= amtsperiode %><br/>
-        <% end %>
-      </td>
-    </tr>
-    <% end %>
-  </tbody>
-</table>
+    <tbody>
+
+    <% eltern.each do |elternteil| %>
+      <tr>
+        <td>
+          <a name="<%= elternteil.nachname&.chars&.first %>"/>
+          <a href="/eltern/<%= elternteil.id %>"><%= elternteil.nachname %></a>
+        </td>
+        <td>
+          <a href="/eltern/<%= elternteil.id %>"><%= elternteil.vorname %></a>
+        </td>
+        <td>
+          <a href="/eltern/<%= elternteil.id %>"><%= elternteil.mail %></a>
+        </td>
+        <td>
+          <% elternteil.amtsperioden.each do |amtsperiode| %>
+            <%= amtsperiode %><br/>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

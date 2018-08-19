@@ -55,9 +55,9 @@ describe Erziehungsberechtigung do
 
       it 'retains Homer and Marge because of Lisa' do
         bart.destroy
-        expect(Erziehungsberechtigter.find(vorname: 'Homer', nachname: 'Simpson')).to be
-        expect(Erziehungsberechtigter.find(vorname: 'Marge', nachname: 'Simpson')).to be
-        expect(Schüler.find(vorname: 'Lisa', nachname: 'Simpson')).to be
+        expect(Erziehungsberechtigter.first!(vorname: 'Homer', nachname: 'Simpson')).to be
+        expect(Erziehungsberechtigter.first!(vorname: 'Marge', nachname: 'Simpson')).to be
+        expect(Schüler.first!(vorname: 'Lisa', nachname: 'Simpson')).to be
       end
     end
   end
@@ -72,17 +72,17 @@ describe Erziehungsberechtigung do
       milhouse.add_eltern(kirk)
     end
 
-    context "Milhouse' parents get divorced; Milhouse stays with Kirk" do
+    context "Milhouse' parents get divorced; Luann looses parentship; Milhouse stays with Kirk" do
       before do
         luann.destroy
       end
 
-      it "retains Kirk's parentship" do
-        expect(Erziehungsberechtigter.find(nachname: 'Van Houten', vorname: 'Kirk')).to be
+      it 'removes Luann from the parentship' do
+        expect(Erziehungsberechtigter.first(nachname: 'Van Houten', vorname: 'Luann')).to be_nil
       end
 
-      it 'removes Luann from the parentship' do
-        expect(Erziehungsberechtigter.find(nachname: 'Van Houten', vorname: 'Luann')).to be_nil
+      it "retains Kirk's parentship" do
+        expect(Erziehungsberechtigter.first!(nachname: 'Van Houten', vorname: 'Kirk')).to be
       end
 
       it "shows just Kirk as Milhouse' parents" do
@@ -95,8 +95,8 @@ describe Erziehungsberechtigung do
     context 'Milhouse leaves the school' do
       it 'removes Luann and Kirk because they have no other kids in this school' do
         milhouse.destroy
-        expect(Erziehungsberechtigter.find(nachname: 'Van Houten', vorname: 'Luann')).to be_nil
-        expect(Erziehungsberechtigter.find(nachname: 'Van Houten', vorname: 'Kirk')).to be_nil
+        expect(Erziehungsberechtigter.where(nachname: 'Van Houten', vorname: 'Luann')).to be_empty
+        expect(Erziehungsberechtigter.where(nachname: 'Van Houten', vorname: 'Kirk')).to be_empty
       end
     end
   end
@@ -126,8 +126,8 @@ describe Erziehungsberechtigung do
       end
 
       it 'retains ***REMOVED***a and Thomas because of Mika' do
-        expect(Erziehungsberechtigter.find(nachname: 'Bock', vorname: '***REMOVED***a')).to be
-        expect(Erziehungsberechtigter.find(nachname: 'Mustermann', vorname: 'Thomas')).to be
+        expect(Erziehungsberechtigter.first!(nachname: 'Bock', vorname: '***REMOVED***a')).to be
+        expect(Erziehungsberechtigter.first!(nachname: 'Mustermann', vorname: 'Thomas')).to be
       end
     end
 
@@ -137,8 +137,8 @@ describe Erziehungsberechtigung do
       end
 
       it 'retains ***REMOVED***a and Thomas because of Mika' do
-        expect(Erziehungsberechtigter.find(nachname: 'Bock', vorname: '***REMOVED***a')).to be
-        expect(Erziehungsberechtigter.find(nachname: 'Mustermann', vorname: 'Thomas')).to be
+        expect(Erziehungsberechtigter.first!(nachname: 'Bock', vorname: '***REMOVED***a')).to be
+        expect(Erziehungsberechtigter.first!(nachname: 'Mustermann', vorname: 'Thomas')).to be
       end
     end
 
@@ -148,8 +148,8 @@ describe Erziehungsberechtigung do
       end
 
       it 'retains ***REMOVED***a and Thomas because of Tajana and David, respectively' do
-        expect(Erziehungsberechtigter.find(nachname: 'Bock', vorname: '***REMOVED***a')).to be
-        expect(Erziehungsberechtigter.find(nachname: 'Mustermann', vorname: 'Thomas')).to be
+        expect(Erziehungsberechtigter.first!(nachname: 'Bock', vorname: '***REMOVED***a')).to be
+        expect(Erziehungsberechtigter.first!(nachname: 'Mustermann', vorname: 'Thomas')).to be
       end
     end
 
@@ -160,8 +160,8 @@ describe Erziehungsberechtigung do
       end
 
       it 'retains ***REMOVED***a and Thomas because of Mika' do
-        expect(Erziehungsberechtigter.find(nachname: 'Bock', vorname: '***REMOVED***a')).to be
-        expect(Erziehungsberechtigter.find(nachname: 'Mustermann', vorname: 'Thomas')).to be
+        expect(Erziehungsberechtigter.first!(nachname: 'Bock', vorname: '***REMOVED***a')).to be
+        expect(Erziehungsberechtigter.first!(nachname: 'Mustermann', vorname: 'Thomas')).to be
       end
     end
 
@@ -172,11 +172,11 @@ describe Erziehungsberechtigung do
       end
 
       it 'retains ***REMOVED***a because of Tajana' do
-        expect(Erziehungsberechtigter.find(nachname: 'Bock', vorname: '***REMOVED***a')).to be
+        expect(Erziehungsberechtigter.first!(nachname: 'Bock', vorname: '***REMOVED***a')).to be
       end
 
       it 'destroys Thomas because he has no kid in school anymore' do
-        expect(Erziehungsberechtigter.find(nachname: 'Mustermann', vorname: 'Thomas')).to_not be
+        expect(Erziehungsberechtigter.first(nachname: 'Mustermann', vorname: 'Thomas')).to_not be
       end
     end
 
@@ -187,11 +187,11 @@ describe Erziehungsberechtigung do
       end
 
       it 'retains Thomas because of David' do
-        expect(Erziehungsberechtigter.find(nachname: 'Mustermann', vorname: 'Thomas')).to be
+        expect(Erziehungsberechtigter.first!(nachname: 'Mustermann', vorname: 'Thomas')).to be
       end
 
       it 'destroys ***REMOVED***a because she has no kid in school anymore' do
-        expect(Erziehungsberechtigter.find(nachname: 'Bock', vorname: '***REMOVED***a')).to_not be
+        expect(Erziehungsberechtigter.first(nachname: 'Bock', vorname: '***REMOVED***a')).to_not be
       end
     end
   end

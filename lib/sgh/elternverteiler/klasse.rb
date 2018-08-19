@@ -24,6 +24,13 @@ module SGH
         members: :eltern
       )
 
+      def before_destroy
+        # destroy all parents that have no other kid in school besides this
+        eltern.each do |ezb|
+          ezb.destroy unless ezb.kinder.any? { |kind| kind.klasse != self }
+        end
+      end
+
       def eltern
         schüler.collect(&:eltern).flatten.uniq.tap do |all|
           k = self
@@ -71,17 +78,19 @@ module SGH
         super
 
         if !zug.to_s.empty?
-          if existing = Klasse[{ stufe: stufe, zug: zug.swapcase }]
+          existing = Klasse[{ stufe: stufe, zug: zug.swapcase }]
+
+          if existing
             errors.add(:zug, "#{existing.zug} existiert bereits (Groß- und Kleinschreibung wird nicht unterschieden)")
           end
-        else
-          if stufe.name.start_with?('J')
-            if existing = Klasse[{ stufe: stufe }]
-              errors.add(:stufe, "#{existing} existiert bereits")
-            end
-          else
-            errors.add(:zug, 'darf nicht leer sein (außer in der Jahrgangsstufe)')
+        elsif stufe.name.start_with?('J')
+          existing = Klasse[{ stufe: stufe }]
+
+          if existing
+            errors.add(:stufe, "#{existing} existiert bereits")
           end
+        else
+          errors.add(:zug, 'darf nicht leer sein (außer in der Jahrgangsstufe)')
         end
       end
     end
