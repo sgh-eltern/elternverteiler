@@ -2,6 +2,7 @@
 
 require 'tempfile'
 require 'google/cloud/storage'
+require 'open-uri'
 
 #
 # Explore the GCP storage API
@@ -30,11 +31,12 @@ describe 'Google Cloud Storage' do
     end
 
     context 'a test file' do
-      let(:blob_name) { 'stuff' }
+      let(:blob_name) { URI.escape('stuff with space') }
+      let(:blob_content) { 'foobar' }
       let(:local_blob_file) { Pathname.new(Dir.mktmpdir) / blob_name }
 
       before do
-        local_blob_file.write('foobar')
+        local_blob_file.write(blob_content)
         bucket.create_file(local_blob_file.to_s, blob_name)
       end
 
@@ -48,7 +50,7 @@ describe 'Google Cloud Storage' do
 
         expect(content).to be
         expect(content).to_not be_empty
-        expect(content).to eq('foobar')
+        expect(content).to eq(blob_content)
       end
 
       it 'is listed as entry of the bucket' do
@@ -68,6 +70,10 @@ describe 'Google Cloud Storage' do
           bucket.file(blob_name).download(file.path)
           expect(file.read).to eq('foobar')
         end
+      end
+
+      it 'can be fetched anonymously' do
+        expect(open(bucket.file(blob_name).signed_url).read).to eq(blob_content)
       end
     end
   end

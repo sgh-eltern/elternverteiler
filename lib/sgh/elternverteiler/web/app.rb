@@ -420,7 +420,7 @@ module SGH
                 r.redirect
               end
 
-              @backup_manager.restore(Recovery::Backup.new(name))
+              @backup_manager.restore(Recovery::Backup.new(name: name))
               flash[:success] = "Backup #{name} wurde eingespielt."
               r.redirect
             rescue Recovery::ExecutionError
@@ -432,7 +432,7 @@ module SGH
             end
 
             r.post do
-              @backup = Recovery::Backup.new(r.params['name'])
+              @backup = Recovery::Backup.new(name: r.params['name'])
               @backup_manager.backup(@backup)
               flash[:success] = "Backup #{@backup.name} wurde angelegt."
               r.redirect

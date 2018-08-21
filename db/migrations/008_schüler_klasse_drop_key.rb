@@ -1,16 +1,15 @@
 Sequel.migration do
   up do
-    alter_table(:schüler) do
-      drop_foreign_key :klasse_id
-      add_foreign_key :klasse_id, :klasse, on_delete: :cascade
-      set_column_not_null(:klasse_id)
-    end
+    self.run <<~EOS
+      ALTER TABLE ONLY public."schüler" DROP CONSTRAINT "schüler_klasse_id_fkey";
+      ALTER TABLE ONLY public."schüler" ADD CONSTRAINT "schüler_klasse_id_fkey" FOREIGN KEY (klasse_id) REFERENCES public.klasse(id) ON DELETE CASCADE;
+    EOS
   end
 
   down do
-    alter_table(:schüler) do
-      drop_foreign_key :klasse_id
-      add_foreign_key :klasse_id, :klasse, null: false
-    end
+    self.run <<~EOS
+      ALTER TABLE ONLY public."schüler" DROP CONSTRAINT "schüler_klasse_id_fkey";
+      ALTER TABLE ONLY public."schüler" ADD CONSTRAINT "schüler_klasse_id_fkey" FOREIGN KEY (klasse_id) REFERENCES public.klasse(id) ON DELETE CASCADE;
+    EOS
   end
 end

@@ -19,7 +19,13 @@ module SGH
         end
 
         def all
-          @bucket.files.map { |f| Backup.new(f.name, f.created_at) }
+          @bucket.files.map do |f|
+            Backup.new(
+              name: f.name,
+              created_at: f.created_at,
+              signed_url: f.signed_url
+            )
+          end
         end
 
         def backup(backup)
