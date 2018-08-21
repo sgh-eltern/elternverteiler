@@ -2,7 +2,7 @@ Sequel.migration do
   change do
     create_table(:klasse) do
       primary_key :id
-      foreign_key :stufe_id, :klassenstufe, null: false
+      foreign_key :stufe_id, :klassenstufe, null: false, on_delete: :cascade
       String :zug
       DateTime :created_at
       DateTime :updated_at

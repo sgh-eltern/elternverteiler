@@ -29,8 +29,7 @@
         <td><%= backup.created_at %></td>
         <td><%= backup.name %></td>
         <!--
-        google-cloud-ruby has broken escaping. It creates + for spaces with CGI.escape, where %20 would be correct.
-        This was introduced here: https://github.com/GoogleCloudPlatform/google-cloud-ruby/commit/403ac382e943809a0ea93c51b786a123fab98f09#diff-030a250aa9bc3edca850f0e6158da318L44
+        see spec/system/recovery/blobstore_spec.rb:76 for why it is disabled
         <td><a href="<%#= backup.signed_url %>">Download</a></td>
         -->
       </tr>

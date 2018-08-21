@@ -4,7 +4,7 @@ Sequel.migration do
       primary_key :id
       String :nachname, null: false
       String :vorname, null: false
-      foreign_key :klasse_id, :klasse, null: false
+      foreign_key :klasse_id, :klasse, null: false, on_delete: :cascade
       DateTime :created_at
       DateTime :updated_at
 
