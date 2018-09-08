@@ -54,6 +54,13 @@ describe Klassenstufe do
       expect(subject.klassen).to include(klasse_4b)
     end
 
+    it 'has Schüler' do
+      expect(klassenstufe_4).to respond_to(:schüler)
+      expect(klassenstufe_4.schüler.count).to eq(2)
+      expect(klassenstufe_4.schüler).to include(sherri)
+      expect(klassenstufe_4.schüler).to include(terri)
+    end
+
     context 'mailing list' do
       let(:mailing_list) { klassenstufe_4.mailing_list }
 

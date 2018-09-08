@@ -6,6 +6,9 @@
   <thead>
     <tr>
       <th>Klassenstufe</th>
+      <th>Klassen</th>
+      <th>Schüler</th>
+      <th>Eltern</th>
     </tr>
   </thead>
 
@@ -15,6 +18,15 @@
     <tr>
       <td>
         <a href="/klassenstufen/<%= stufe.id %>"><%= stufe %></a>
+      </td>
+      <td>
+        <%= stufe.klassen.size %>
+      </td>
+      <td>
+        <%= stufe.schüler.size %>
+      </td>
+      <td>
+        <%= stufe.eltern.size %>
       </td>
     </tr>
     <% end %>
