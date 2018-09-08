@@ -1,0 +1,125 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+$LOAD_PATH.unshift(File.expand_path('../lib', __dir__))
+
+require 'sequel'
+Sequel::Model.db = Sequel.connect(ENV.fetch('DB'))
+
+require 'sgh/elternverteiler'
+
+# rubocop:disable Style/MixinUsage
+include SGH::Elternverteiler
+# rubocop:enable Style/MixinUsage
+
+require 'simple-spreadsheet'
+require 'pry'
+
+if ARGV.empty?
+  warn 'Error: Missing argument for document to read'
+  exit 1
+end
+
+s = SimpleSpreadsheet::Workbook.read(ARGV.first)
+s.selected_sheet = s.sheets.last
+
+headers = s.first_column.upto(s.last_column).map do |column_number|
+  [s.cell(s.first_row, column_number), column_number]
+end.to_h
+
+def find_or_create_klasse(klassenname)
+  case klassenname
+  when /(1?\d)([A-Z])/
+   ks = Klassenstufe.find_or_create(name: Regexp.last_match(1))
+   Klasse.find_or_create(stufe: ks, zug: Regexp.last_match(2))
+  when /J(1|2)/
+   ks = Klassenstufe.find_or_create(name: klassenname)
+   Klasse.find_or_create(stufe: ks)
+  else
+   raise "Konnte Klasse #{klassenname} nicht in Stufe und Zug zerlegen."
+  end
+end
+
+(s.first_row + 1).upto(s.last_row) do |line_number|
+  begin
+    klassenname = s.cell(line_number, headers['Klasse']).upcase
+    klasse = find_or_create_klasse(klassenname)
+
+    child = Schüler.first(
+      vorname: s.cell(line_number, headers['Vorname'])&.strip,
+      nachname: s.cell(line_number, headers['Name'])&.strip
+    )
+
+    if child
+      if child.klasse == klasse
+        warn "Bleibt: #{child}"
+      else
+        if child.klasse.stufe != klasse.stufe
+          warn "Stufenwechsel: #{child} => #{klasse}"
+        else
+          warn "Klassenwechsel: #{child} => #{klasse}"
+        end
+
+        child.klasse = klasse
+      end
+
+      child.save
+    else
+      child = Schüler.create(
+        vorname: s.cell(line_number, headers['Vorname'])&.strip,
+        nachname: s.cell(line_number, headers['Name'])&.strip,
+        klasse: klasse
+      )
+      warn "Zugang: #{child}"
+    end
+
+    begin
+      parent_emails = s.cell(line_number, headers['EMail'])&.split(';')&.map(&:strip)
+
+      1.upto(2).each do |parent_index|
+        parent_vorname = s.cell(line_number, headers["Erz#{parent_index}Vorname"])&.strip
+        parent_nachname = s.cell(line_number, headers["Erz#{parent_index}Name"])&.strip
+        parent_email = s.cell(line_number, headers["Erz#{parent_index}Email"])&.strip
+
+        if parent_email.nil?
+          # does not matter for new 5ers
+          # warn "Not updating parent => child relationship for #{parent_vorname} #{parent_nachname} => #{child}"
+        else
+          parent = Erziehungsberechtigter.find(
+            vorname: parent_vorname,
+            nachname: parent_nachname,
+            mail: parent_email
+          )
+
+          if parent.nil?
+            if child.klasse.stufe.name == "5"
+              parent = Erziehungsberechtigter.create(
+                vorname: parent_vorname,
+                nachname: parent_nachname,
+                mail: parent_email
+              )
+            else
+              matching = child.eltern_dataset.where(mail: parent_email)
+
+              if matching.empty?
+                warn "Missing: Could not find #{parent_vorname} #{parent_nachname} <#{parent_email}> as parent of #{child}"
+              else
+                if matching.count == 1
+                  parent = matching.first
+                else
+                  warn "Missing: Could not find parent #{parent_vorname} #{parent_nachname} with address #{parent_email} as parent of #{child}"
+                end
+              end
+            end
+          end
+
+          parent.add_kinder(child) unless parent.kinder.include?(child) if parent
+        end
+      end
+    rescue Erziehungsberechtigter::ValidationError => error
+      warn "Error: Not adding parent of #{child}: #{error.message}"
+    end
+  rescue StandardError => error
+    warn "Error: Skipping #{child} because of: #{error.message}"
+  end
+end

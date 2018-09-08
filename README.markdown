@@ -4,7 +4,7 @@ Input für Elternverteiler der SGH. Wird von `cron` alle 5 min eingelesen und pe
 
 Ansprechpartner: ***REMOVED***
 
-Hochladen:
+# Hochladen
 
 ```bash
 scp elternverteiler.txt ***REMOVED***.schickhardt-gymnasium-herrenberg.de:
@@ -24,10 +24,14 @@ scp elternverteiler.txt ***REMOVED***.schickhardt-gymnasium-herrenberg.de:
 ## Schuljahresbeginn
 
 * bei der Schulanmeldung stimmen alle Eltern zu, daß die eMail für schulische Zwecke verwendet werden darf
-* ca. 1 Woche vor Schuljahresbeginn: ***REMOVED*** geht ins Sekretariat (Frau ***REMOVED***) und bekommt Name, Klasse und eMail auf USB (Excel)
-  - J2 fällt raus (ca. 1 Woche vor Schuljahresbeginn löschen)
-  - 5er kommen dazu
-  - Großteil wird versetzt
+* ca. 1 Woche vor Schuljahresbeginn: Schülersekretariat (Frau ***REMOVED***) stellt Excel-Sheet auf USB zur Verfügung mit Name, Klasse und eMail
+* Vorhehen:
+  1. Großteil wird versetzt
+  1. J2 fällt raus (ca. 1 Woche vor Schuljahresbeginn löschen)
+  1. 5er kommen dazu
+
+  => #1 amd #2 werden durch `bin/bump` erledigt, #3 durch `bin/update-from-spreadsheet` mit dem Excel-Sheet als Argument. Muß in dieser Reihenfolge geschehen!
+
 * Ziel: in der zweiten Hälfte der letzten Ferienwoche soll der Verteiler stehen, damit die Informationen zum Schuljahresbeginn rechtzeitig ankommen
 * Nach Fertigstellung Information an Schulleitung
 

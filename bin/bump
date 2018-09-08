@@ -1,0 +1,59 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+$LOAD_PATH.unshift(File.expand_path('../lib', __dir__))
+
+require 'bundler/setup'
+
+require 'sequel'
+Sequel::Model.db = Sequel.connect(ENV.fetch('DB'))
+
+require 'sgh/elternverteiler'
+
+# rubocop:disable Style/MixinUsage
+include SGH::Elternverteiler
+# rubocop:enable Style/MixinUsage
+
+def bump(from, to = from + 1)
+  ks = Klassenstufe.first!(name: from.to_s)
+  warn "Bumping #{ks} from #{from} to #{to}"
+  ks.name = to.to_s
+  ks.save
+end
+
+Klassenstufe.where(name: 'J2').destroy
+
+bump('J1', 'J2')
+bump(10, 'J1')
+
+# all 10er get moved to a new, single class J1
+ksj1 = Klassenstufe.first!(name: 'J1')
+target, *remainder = ksj1.klassen
+
+remainder.each do |klasse|
+  warn "Bumping #{klasse.schüler.size} pupils of #{klasse} to #{target}"
+
+  klasse.schüler.each do |schüler|
+    warn "  Bumping #{schüler} to #{target}"
+
+    Schüler.db.transaction do
+      schüler.lock!
+      schüler.update(klasse: target)
+    end
+  end
+
+  Amtsperiode.where(klasse: klasse).each do |ap|
+    warn "Moving #{ap} to have klasse #{target}"
+
+    Amtsperiode.db.transaction do
+      ap.lock!
+      ap.update(klasse: target)
+    end
+  end
+
+  klasse.destroy
+end
+
+target.update(zug: nil)
+
+9.downto(5).each{ |i| bump(i) }
