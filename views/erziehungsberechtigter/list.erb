@@ -1,8 +1,4 @@
-<div id=navbar style="position: fixed; right: 5%; top: 15%">
-  <% ('A'..'Z').each do |char| %>
-  <p><a href="#<%= char %>"><%= char %></a></p>
-  <% end %>
-</div>
+<%== partial('charbar') %>
 
 <p>
   <%== partial('email', locals: { address: eltern.mailing_list.address(:long) }) %>

@@ -10,6 +10,10 @@
       <tr>
         <th>Nachname</th>
         <th>Vorname</th>
+      <% if local_variables.include?(:with_details) && with_details %>
+        <th>Klasse</th>
+        <th>Eltern</th>
+      <% end %>
       </tr>
     </thead>
 
@@ -24,6 +28,16 @@
         <td>
           <a href="/schüler/<%= sch.id %>"><%= sch.vorname %></a>
         </td>
+      <% if local_variables.include?(:with_details) && with_details %>
+        <td>
+          <%== link_to(sch.klasse) %>
+        </td>
+        <td>
+          <% sch.eltern.each do |elternteil| %>
+            <a href="/eltern/<%= elternteil.id %>"><%= elternteil %></a><br/>
+          <% end %>
+        </td>
+      <% end %>
       </tr>
     <% end %>
   </tbody>

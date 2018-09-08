@@ -9,8 +9,6 @@
 * Amtsperioden could be ordered, which would allow us to have a generic EV, and the order determines who is EV1 and who's EV2 in a Klasse. Same for EBV etc. This would even allow more than two EV per Klasse.
 * Change the `PostmapPresenter` to present a `MailingList`
 * Amt needs a new field `address` where we can specify the (unique) short address of the mailing list for the Amtsinhaber
-* navbar must not be printed
-* navbar should be extracted into partial
 * Amtsperiode beginnt an einem Datum und endet optional
   - Amt kann auch unbesetzt sein (keine Periode definiert)
   - Amtsperiode hat Historie (wer hat das Amt wann besetzt)

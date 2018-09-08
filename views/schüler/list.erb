@@ -1,7 +1,2 @@
-<div id=navbar style="position: fixed; right: 5%; top: 15%">
-  <% ('A'..'Z').each do |char| %>
-    <p><a href="#<%= char %>"><%= char %></a></p>
-  <% end %>
-</div>
-
-<%== partial('list_schüler', locals: { schueler: @schüler }) %>
+<%== partial('charbar') %>
+<%== partial('list_schüler', locals: { schueler: @schüler, with_details: true }) %>
