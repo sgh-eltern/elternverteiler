@@ -21,7 +21,7 @@
     </thead>
 
     <tbody>
-      <% @backup_manager.all.each do |backup| %>
+      <% @backup_manager.all.sort.each do |backup| %>
       <tr>
         <td>
           <input name="sgh/elternverteiler/backups" type="radio" value="<%= backup.name %>"/>

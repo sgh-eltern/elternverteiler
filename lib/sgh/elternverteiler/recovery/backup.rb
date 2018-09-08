@@ -21,6 +21,10 @@ module SGH
         def file_name
           Pathname(name).sub_ext('.gz').to_s
         end
+
+        def <=>(other)
+          [other.created_at, other.name] <=> [created_at, name]
+        end
       end
     end
   end
