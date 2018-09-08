@@ -13,6 +13,7 @@ gem 'rake'
 gem 'roda'
 gem 'ruby-progressbar'
 gem 'sequel'
+gem 'sequel_pg'
 gem 'simple-spreadsheet'
 gem 'tilt'
 
