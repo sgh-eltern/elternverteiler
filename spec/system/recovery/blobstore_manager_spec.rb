@@ -118,7 +118,7 @@ describe Recovery::BlobstoreManager do
 
       it 'restores a previous state (full roundtrip)' do
         # backup _before_ making a mistake
-        backup_manager.backup(Recovery::Backup.new('before price change'))
+        backup_manager.backup(Recovery::Backup.new(name: 'before price change'))
 
         # kill that row
         @db[:items].where(id: id).delete
