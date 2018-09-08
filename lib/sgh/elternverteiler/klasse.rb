@@ -76,7 +76,6 @@ module SGH
 
       def validate
         super
-
         if !zug.to_s.empty?
           existing = Klasse[{ stufe: stufe, zug: zug.swapcase }]
 
@@ -84,7 +83,7 @@ module SGH
             errors.add(:zug, "#{existing.zug} existiert bereits (Groß- und Kleinschreibung wird nicht unterschieden)")
           end
         elsif stufe.name.start_with?('J')
-          existing = Klasse[{ stufe: stufe }]
+          existing = Klasse[{ stufe: stufe, zug: nil }]
 
           if existing
             errors.add(:stufe, "#{existing} existiert bereits")

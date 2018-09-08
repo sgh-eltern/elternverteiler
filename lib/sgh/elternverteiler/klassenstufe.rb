@@ -11,7 +11,7 @@ module SGH
 
       # rubocop:disable Naming/MethodName
       def schüler
-        Schüler.where(klasse: Klasse.where(stufe: self))
+        Schüler.where(klasse: Klasse.where(stufe: self)).all
       end
       # rubocop:enable Naming/MethodName
 

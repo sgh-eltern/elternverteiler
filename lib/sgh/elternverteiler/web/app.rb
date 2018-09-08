@@ -208,7 +208,7 @@ module SGH
             # /klassen/j1 or /klassen/7c
             r.on [/(j[12])/, /(\d{1,2})([a-z])/] do |st, zg|
               stufe = Klassenstufe.first!(name: st.upcase)
-              @klasse = Klasse.first!(stufe: stufe, zug: zg&.upcase.to_s)
+              @klasse = Klasse.first!(stufe: stufe, zug: zg ? zg.upcase.to_s : nil)
 
               r.root do
                 @schüler = @klasse.schüler.sort
