@@ -93,6 +93,7 @@ describe 'Klassen', type: :feature do
 
       it 'lists both 5K and J1' do
         within('#menu') { click_link('Klassen') }
+
         within('.content') do
           expect(page).to have_content '5K'
           expect(page).to have_content 'J1'

@@ -30,6 +30,10 @@ bump(10, 'J1')
 ksj1 = Klassenstufe.first!(name: 'J1')
 target, *remainder = ksj1.klassen
 
+# What was 10A became J1A and is now used as new J1
+target.update(zug: '')
+
+# Move pupils and holders of roles from J1B, J1C, etc. to J1
 remainder.each do |klasse|
   warn "Bumping #{klasse.schüler.size} pupils of #{klasse} to #{target}"
 
@@ -53,7 +57,5 @@ remainder.each do |klasse|
 
   klasse.destroy
 end
-
-target.update(zug: nil)
 
 9.downto(5).each{ |i| bump(i) }
