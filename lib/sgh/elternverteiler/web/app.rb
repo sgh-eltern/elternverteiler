@@ -514,7 +514,7 @@ module SGH
         end
 
         def schüler_unreachable
-          @schüler_unreachable ||= Schüler.all.select { |sch| sch.eltern.collect(&:mail).compact.empty? }.sort_by(&:nachname)
+          @schüler_unreachable ||= Schüler.all.select { |sch| sch.eltern.collect(&:mail).compact.reject(&:empty?).empty? }.sort_by(&:nachname)
         end
 
         def schüler_unreachable_total
