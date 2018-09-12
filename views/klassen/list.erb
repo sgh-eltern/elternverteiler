@@ -6,6 +6,8 @@
   <thead>
     <tr>
       <th>Klasse</th>
+      <th>Schüler</th>
+      <th>Eltern</th>
     </tr>
   </thead>
 
@@ -15,6 +17,12 @@
     <tr>
       <td>
         <%== link_to(klasse) %>
+      </td>
+      <td>
+        <%= klasse.schüler.size %>
+      </td>
+      <td>
+        <%= klasse.eltern.size %>
       </td>
     </tr>
     <% end %>
