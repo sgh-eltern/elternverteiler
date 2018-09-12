@@ -74,6 +74,8 @@ end
     end
 
     begin
+
+      # TODO check-spreadsheet has a better version of this
       parent_emails = s.cell(line_number, headers['EMail'])&.split(';')&.map(&:strip)
 
       1.upto(2).each do |parent_index|

@@ -1,7 +1,7 @@
 # Domain
 
-* Tests for `bin/bump`
 * Find duplicate entries, maybe merge them
+* Tests for `bin/bump`
 * Klassenstufe needs to be addressed by its slug (5,6,7,8,9,10,J1,J2)
 * Amt needs a new field `slug` ("ev1") besides the long name (which should actually be longer and more descriptive, like "1. Elternvertreter")
   - Also add ability to rename an Amt

@@ -1,0 +1,143 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+$LOAD_PATH.unshift(File.expand_path('../lib', __dir__))
+
+require 'sequel'
+Sequel::Model.db = Sequel.connect(ENV.fetch('DB'))
+
+require 'sgh/elternverteiler'
+
+# rubocop:disable Style/MixinUsage
+include SGH::Elternverteiler
+# rubocop:enable Style/MixinUsage
+
+require 'simple-spreadsheet'
+require 'pry'
+
+if ARGV.empty?
+  warn 'Error: Missing argument for document to read'
+  exit 1
+end
+
+s = SimpleSpreadsheet::Workbook.read(ARGV.first)
+s.selected_sheet = s.sheets.last
+
+headers = s.first_column.upto(s.last_column).map do |column_number|
+  [s.cell(s.first_row, column_number), column_number]
+end.to_h
+
+# Must be corrected in master spreadsheet
+IGNORED = [
+  '***REMOVED***', # missing e in de
+  '***REMOVED***', # typo
+  '***REMOVED***', # who's got which email?
+  '***REMOVED***', # is probably steinki.name
+  '***REMOVED***', # is probably steinki.name
+]
+
+def find_klasse(klassenname)
+  case klassenname
+  when /(1?\d)([A-Z])/
+   ks = Klassenstufe.first!(name: Regexp.last_match(1))
+   Klasse.first!(stufe: ks, zug: Regexp.last_match(2))
+  when /J(1|2)/
+   ks = Klassenstufe.first!(name: klassenname)
+   Klasse.first!(stufe: ks)
+  else
+   raise "Konnte Klasse #{klassenname} nicht in Stufe und Zug zerlegen."
+  end
+end
+
+def found?(vorname, nachname, email, child)
+  parent = Erziehungsberechtigter.first{
+    Sequel.&(
+      Sequel.ilike(:vorname, vorname),
+      Sequel.ilike(:nachname, nachname),
+      Sequel.ilike(:mail, email)
+    )
+  }
+
+  if parent.nil?
+    return IGNORED.include?(email)
+  elsif parent.kinder.include?(child)
+    puts "OK: #{parent} is parent of #{child}"
+    return true
+  else
+    warn "WRONG: #{parent} does not have child #{child}"
+    return false
+  end
+end
+
+# Make sure there are no database entries that are not in the spreadsheet
+# e.g. left school
+all_in_spreadsheet = (s.first_row + 1).upto(s.last_row).map do |row_index|
+  klassenname = s.cell(row_index, headers['Klasse']).upcase
+
+  {
+    vorname: s.cell(row_index, headers['Vorname'])&.strip,
+    nachname: s.cell(row_index, headers['Name'])&.strip,
+    klasse: klassenname
+  }
+end
+
+Schüler.each do |schüler|
+  warn "LEFT: #{schüler} has left school" unless all_in_spreadsheet.include?(
+    {
+      vorname: schüler.vorname,
+      nachname: schüler.nachname,
+      klasse: schüler.klasse.name,
+    }
+  )
+end
+
+# Make sure all spreadsheet entries are in the database
+(s.first_row + 1).upto(s.last_row) do |line_number|
+  begin
+    klassenname = s.cell(line_number, headers['Klasse']).upcase
+
+    child = Schüler.first!(
+      vorname: s.cell(line_number, headers['Vorname'])&.strip,
+      nachname: s.cell(line_number, headers['Name'])&.strip,
+      klasse: find_klasse(klassenname)
+    )
+
+    found = false
+
+    parents = 1.upto(2).map do |parent_index|
+      nachname = s.cell(line_number, headers["Erz#{parent_index}Name"])&.strip
+
+      if md = /^(Dr\.)(.+)/.match(nachname)
+        title = md[1].strip # not stored yet
+        nachname = md[2].strip
+      end
+
+      vorname = s.cell(line_number, headers["Erz#{parent_index}Vorname"])&.strip
+
+      { vorname: vorname, nachname: nachname }
+    end
+
+    parent_emails = 1.upto(2).map do |parent_index|
+      s.cell(line_number, headers["Erz#{parent_index}Email"])&.strip&.downcase
+    end
+      .append(s.cell(line_number, headers['EMail'])&.split(';')&.map(&:strip)&.map(&:downcase))
+      .flatten
+      .compact
+
+    combinations = parents.product(parent_emails)
+
+    combinations.each do |parent, email|
+      if found?(parent[:vorname], parent[:nachname], email, child)
+        puts "DEBUG: Found #{parent} <#{email}> as parent of #{child}"
+        found = true
+        break
+      end
+    end
+
+    if !found
+      warn "MISSING: Could not find any combination of #{combinations} as parents of #{child} "
+    end
+  rescue StandardError => error
+    warn "Error: Skipping #{child} because of: #{error.message}"
+  end
+end
