@@ -12,6 +12,7 @@ require 'sgh/elternverteiler/postmap_parser'
 require 'sgh/elternverteiler/recovery'
 require 'sgh/elternverteiler/mail_server'
 require 'sgh/elternverteiler/mailing_list'
+require 'sgh/elternverteiler/vcard_presenter'
 
 require 'sgh/elternverteiler/web/view_helpers'
 
@@ -68,7 +69,7 @@ module SGH
             '/backups/new': '&nbsp;&nbsp;Neu',
 
             '/verteiler': 'Verteiler',
-            '/verteiler/export': '&nbsp;&nbsp;Plain',
+            '/verteiler.txt': '&nbsp;&nbsp;Plain',
             # TODO: New views
             # '/verteiler/klassen': '&nbsp;Eltern',
             # '/verteiler/klassenstufen': '&nbsp;Klassenstufen',
@@ -448,15 +449,20 @@ module SGH
             end
           end
 
+          r.on 'verteiler.txt' do
+            response['Content-Type'] = 'text/plain; charset=utf-8'
+            render 'verteiler/_distribution_list'
+          end
+
           r.on 'verteiler' do
             r.root do
               topic 'eMail-Verteiler'
-              view 'verteiler/all'
+              view 'verteiler/list'
             end
 
-            r.get 'export' do
-              response['Content-Type'] = 'text/plain; charset=utf-8'
-              render 'verteiler/_distribution_list'
+            r.post do
+              response['Content-Type'] = 'text/vcard; charset=utf-8'
+              render 'verteiler/vcard'
             end
 
             r.post 'diff' do

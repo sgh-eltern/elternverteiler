@@ -135,4 +135,13 @@ describe 'Verteiler', type: :feature do
       end
     end
   end
+
+  it 'exports as plain text' do
+    within('#menu') { click_link('Plain') }
+    expect(page).to have_content('# Klassen')
+  end
+
+  it 'has a button to export as vCard' do
+    expect(page).to have_button('Exportieren')
+  end
 end
