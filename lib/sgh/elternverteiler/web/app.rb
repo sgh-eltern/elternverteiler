@@ -449,6 +449,11 @@ module SGH
           end
 
           r.on 'verteiler' do
+            r.root do
+              topic 'eMail-Verteiler'
+              view 'verteiler/all'
+            end
+
             r.get 'export' do
               response['Content-Type'] = 'text/plain; charset=utf-8'
               render 'verteiler/_distribution_list'
@@ -470,11 +475,6 @@ module SGH
               SGH::Elternverteiler::MailServer.new.upload(distribution_list, 'elternverteiler.txt')
               flash[:success] = 'Verteiler wurde erfolgreich aktualisiert.'
               r.redirect '/verteiler'
-            end
-
-            r.on do
-              topic 'eMail-Verteiler'
-              view 'verteiler/all'
             end
           end
         end

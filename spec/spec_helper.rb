@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'sequel'
+require 'pry'
 
 Sequel::Model.db = Sequel.sqlite
 Sequel.extension :migration

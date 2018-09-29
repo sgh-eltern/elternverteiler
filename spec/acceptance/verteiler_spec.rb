@@ -29,15 +29,27 @@ describe 'Verteiler', type: :feature do
 
   it 'has the address of the Elternvertreter of 5V' do
     within('.sgh-elternverteiler-klasse-elternvertreter') do
-      expect(page).to have_link('Elternvertreter der Klasse 5V')
-      expect(page).to have_link('elternvertreter-5v')
+      expect(page).to have_link('elternvertreter-5v@schickhardt-gymnasium-herrenberg.de')
+    end
+  end
+
+  it 'links to the distribution list details for Elternvertreter of 5V' do
+    within('.sgh-elternverteiler-klasse-elternvertreter') do
+      expect(page).to have_link('Elternvertreter der Klasse 5V',
+      href: '/verteiler/elternvertreter-5v')
     end
   end
 
   it 'has the address of the Eltern of 5V' do
     within('.sgh-elternverteiler-klasse-eltern') do
-      expect(page).to have_link('Eltern der Klasse 5V')
       expect(page).to have_link('eltern-5v')
+    end
+  end
+
+  it 'links to the distribution list details for Eltern of 5V' do
+    within('.sgh-elternverteiler-klasse-eltern') do
+      expect(page).to have_link('Eltern der Klasse 5V',
+      href: '/verteiler/eltern-5v')
     end
   end
 
