@@ -461,26 +461,28 @@ module SGH
             end
 
             r.post do
-              response['Content-Type'] = 'text/vcard; charset=utf-8'
-              render 'verteiler/vcard'
-            end
+              r.on 'diff' do
+                @distribution_list = r.params['distribution_list']
+                parser = SGH::Elternverteiler::PostmapParser.new
+                updated_distribution_list = parser.parse(@distribution_list)
+                current = parser.parse(SGH::Elternverteiler::MailServer.new.download)
+                @diff = HashDiff.diff(current, updated_distribution_list)
 
-            r.post 'diff' do
-              @distribution_list = r.params['distribution_list']
-              parser = SGH::Elternverteiler::PostmapParser.new
-              updated_distribution_list = parser.parse(@distribution_list)
-              current = parser.parse(SGH::Elternverteiler::MailServer.new.download)
-              @diff = HashDiff.diff(current, updated_distribution_list)
+                topic 'Änderungen überprüfen'
+                view 'verteiler/diff'
+              end
 
-              topic 'Änderungen überprüfen'
-              view 'verteiler/diff'
-            end
+              r.on 'upload' do
+                distribution_list = r.params['distribution_list']
+                SGH::Elternverteiler::MailServer.new.upload(distribution_list, 'elternverteiler.txt')
+                flash[:success] = 'Verteiler wurde erfolgreich aktualisiert.'
+                r.redirect '/verteiler'
+              end
 
-            r.post 'upload' do
-              distribution_list = r.params['distribution_list']
-              SGH::Elternverteiler::MailServer.new.upload(distribution_list, 'elternverteiler.txt')
-              flash[:success] = 'Verteiler wurde erfolgreich aktualisiert.'
-              r.redirect '/verteiler'
+              r.on 'export' do
+                response['Content-Type'] = 'text/vcard; charset=utf-8'
+                render 'verteiler/vcard'
+              end
             end
           end
         end

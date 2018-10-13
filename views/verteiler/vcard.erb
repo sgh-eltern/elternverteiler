@@ -1,15 +1,16 @@
 <% presenter = SGH::Elternverteiler::VCardPresenter.new %>
+
 <% klassen.each do |klasse| %>
 <%= presenter.present(klasse.elternvertreter.mailing_list) %>
 <%= presenter.present(klasse.eltern.mailing_list) %>
 <% end %>
 
 <% klassenstufen.each do |klassenstufe| %>
-<% presenter.present(klassenstufe.elternvertreter.mailing_list) %>
-<% presenter.present(klassenstufe.eltern.mailing_list) %>
+<%= presenter.present(klassenstufe.elternvertreter.mailing_list) %>
+<%= presenter.present(klassenstufe.eltern.mailing_list) %>
 <% end %>
 
-<% presenter.present(eltern.mailing_list) %>
-<% presenter.present(elternbeirat.mailing_list) %>
-<% presenter.present(evsk.mailing_list) %>
-<% presenter.present(ebv.mailing_list) %>
+<%= presenter.present(eltern.mailing_list) %>
+<%= presenter.present(elternbeirat.mailing_list) %>
+<%= presenter.present(ebv.mailing_list) %>
+<%= presenter.present(evsk.mailing_list) %>
