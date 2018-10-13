@@ -4,7 +4,7 @@ module SGH
   module Elternverteiler
     class VCardPresenter
       def present(exhibit)
-        return <<~HEREDOC.chomp
+        <<~HEREDOC.chomp
           BEGIN:VCARD
           VERSION:3.0
           EMAIL;TYPE=work,pref:#{exhibit.address(:long)}

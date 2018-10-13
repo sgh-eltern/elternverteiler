@@ -34,23 +34,23 @@ IGNORED = [
   '***REMOVED***', # who's got which email?
   '***REMOVED***', # is probably steinki.name
   '***REMOVED***', # is probably steinki.name
-]
+].freeze
 
 def find_klasse(klassenname)
   case klassenname
   when /(1?\d)([A-Z])/
-   ks = Klassenstufe.first!(name: Regexp.last_match(1))
-   Klasse.first!(stufe: ks, zug: Regexp.last_match(2))
+    ks = Klassenstufe.first!(name: Regexp.last_match(1))
+    Klasse.first!(stufe: ks, zug: Regexp.last_match(2))
   when /J(1|2)/
-   ks = Klassenstufe.first!(name: klassenname)
-   Klasse.first!(stufe: ks)
+    ks = Klassenstufe.first!(name: klassenname)
+    Klasse.first!(stufe: ks)
   else
-   raise "Konnte Klasse #{klassenname} nicht in Stufe und Zug zerlegen."
+    raise "Konnte Klasse #{klassenname} nicht in Stufe und Zug zerlegen."
   end
 end
 
 def found?(vorname, nachname, email, child)
-  parent = Erziehungsberechtigter.first{
+  parent = Erziehungsberechtigter.first {
     Sequel.&(
       Sequel.ilike(:vorname, vorname),
       Sequel.ilike(:nachname, nachname),
@@ -93,51 +93,49 @@ end
 
 # Make sure all spreadsheet entries are in the database
 (s.first_row + 1).upto(s.last_row) do |line_number|
-  begin
-    klassenname = s.cell(line_number, headers['Klasse']).upcase
+  klassenname = s.cell(line_number, headers['Klasse']).upcase
 
-    child = Schüler.first!(
-      vorname: s.cell(line_number, headers['Vorname'])&.strip,
-      nachname: s.cell(line_number, headers['Name'])&.strip,
-      klasse: find_klasse(klassenname)
-    )
+  child = Schüler.first!(
+    vorname: s.cell(line_number, headers['Vorname'])&.strip,
+    nachname: s.cell(line_number, headers['Name'])&.strip,
+    klasse: find_klasse(klassenname)
+  )
 
-    found = false
+  found = false
 
-    parents = 1.upto(2).map do |parent_index|
-      nachname = s.cell(line_number, headers["Erz#{parent_index}Name"])&.strip
+  parents = 1.upto(2).map do |parent_index|
+    nachname = s.cell(line_number, headers["Erz#{parent_index}Name"])&.strip
 
-      if md = /^(Dr\.)(.+)/.match(nachname)
-        title = md[1].strip # not stored yet
-        nachname = md[2].strip
-      end
-
-      vorname = s.cell(line_number, headers["Erz#{parent_index}Vorname"])&.strip
-
-      { vorname: vorname, nachname: nachname }
+    if md = /^(Dr\.)(.+)/.match(nachname)
+      title = md[1].strip # not stored yet
+      nachname = md[2].strip
     end
 
-    parent_emails = 1.upto(2).map do |parent_index|
-      s.cell(line_number, headers["Erz#{parent_index}Email"])&.strip&.downcase
-    end
-      .append(s.cell(line_number, headers['EMail'])&.split(';')&.map(&:strip)&.map(&:downcase))
-      .flatten
-      .compact
+    vorname = s.cell(line_number, headers["Erz#{parent_index}Vorname"])&.strip
 
-    combinations = parents.product(parent_emails)
-
-    combinations.each do |parent, email|
-      if found?(parent[:vorname], parent[:nachname], email, child)
-        puts "DEBUG: Found #{parent} <#{email}> as parent of #{child}"
-        found = true
-        break
-      end
-    end
-
-    if !found
-      warn "MISSING: Could not find any combination of #{combinations} as parents of #{child} "
-    end
-  rescue StandardError => error
-    warn "Error: Skipping #{child} because of: #{error.message}"
+    { vorname: vorname, nachname: nachname }
   end
+
+  parent_emails = 1.upto(2).map do |parent_index|
+    s.cell(line_number, headers["Erz#{parent_index}Email"])&.strip&.downcase
+  end.
+                  append(s.cell(line_number, headers['EMail'])&.split(';')&.map(&:strip)&.map(&:downcase)).
+                  flatten.
+                  compact
+
+  combinations = parents.product(parent_emails)
+
+  combinations.each do |parent, email|
+    if found?(parent[:vorname], parent[:nachname], email, child)
+      puts "DEBUG: Found #{parent} <#{email}> as parent of #{child}"
+      found = true
+      break
+    end
+  end
+
+  if !found
+    warn "MISSING: Could not find any combination of #{combinations} as parents of #{child} "
+  end
+rescue StandardError => error
+  warn "Error: Skipping #{child} because of: #{error.message}"
 end

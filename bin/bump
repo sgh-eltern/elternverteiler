@@ -14,7 +14,7 @@ require 'sgh/elternverteiler'
 include SGH::Elternverteiler
 # rubocop:enable Style/MixinUsage
 
-def bump(from, to = from + 1)
+def bump(from, to=from + 1)
   ks = Klassenstufe.first!(name: from.to_s)
   warn "Bumping #{ks} from #{from} to #{to}"
   ks.name = to.to_s
@@ -58,4 +58,4 @@ remainder.each do |klasse|
   klasse.destroy
 end
 
-9.downto(5).each{ |i| bump(i) }
+9.downto(5).each { |i| bump(i) }

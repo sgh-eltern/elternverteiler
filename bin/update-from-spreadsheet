@@ -30,98 +30,95 @@ end.to_h
 def find_or_create_klasse(klassenname)
   case klassenname
   when /(1?\d)([A-Z])/
-   ks = Klassenstufe.find_or_create(name: Regexp.last_match(1))
-   Klasse.find_or_create(stufe: ks, zug: Regexp.last_match(2))
+    ks = Klassenstufe.find_or_create(name: Regexp.last_match(1))
+    Klasse.find_or_create(stufe: ks, zug: Regexp.last_match(2))
   when /J(1|2)/
-   ks = Klassenstufe.find_or_create(name: klassenname)
-   Klasse.find_or_create(stufe: ks)
+    ks = Klassenstufe.find_or_create(name: klassenname)
+    Klasse.find_or_create(stufe: ks)
   else
-   raise "Konnte Klasse #{klassenname} nicht in Stufe und Zug zerlegen."
+    raise "Konnte Klasse #{klassenname} nicht in Stufe und Zug zerlegen."
   end
 end
 
 (s.first_row + 1).upto(s.last_row) do |line_number|
-  begin
-    klassenname = s.cell(line_number, headers['Klasse']).upcase
-    klasse = find_or_create_klasse(klassenname)
+  klassenname = s.cell(line_number, headers['Klasse']).upcase
+  klasse = find_or_create_klasse(klassenname)
 
-    child = Schüler.first(
-      vorname: s.cell(line_number, headers['Vorname'])&.strip,
-      nachname: s.cell(line_number, headers['Name'])&.strip
-    )
+  child = Schüler.first(
+    vorname: s.cell(line_number, headers['Vorname'])&.strip,
+    nachname: s.cell(line_number, headers['Name'])&.strip
+  )
 
-    if child
-      if child.klasse == klasse
-        warn "Bleibt: #{child}"
+  if child
+    if child.klasse == klasse
+      warn "Bleibt: #{child}"
+    else
+      if child.klasse.stufe != klasse.stufe
+        warn "Stufenwechsel: #{child} => #{klasse}"
       else
-        if child.klasse.stufe != klasse.stufe
-          warn "Stufenwechsel: #{child} => #{klasse}"
-        else
-          warn "Klassenwechsel: #{child} => #{klasse}"
-        end
-
-        child.klasse = klasse
+        warn "Klassenwechsel: #{child} => #{klasse}"
       end
 
-      child.save
-    else
-      child = Schüler.create(
-        vorname: s.cell(line_number, headers['Vorname'])&.strip,
-        nachname: s.cell(line_number, headers['Name'])&.strip,
-        klasse: klasse
-      )
-      warn "Zugang: #{child}"
+      child.klasse = klasse
     end
 
-    begin
+    child.save
+  else
+    child = Schüler.create(
+      vorname: s.cell(line_number, headers['Vorname'])&.strip,
+      nachname: s.cell(line_number, headers['Name'])&.strip,
+      klasse: klasse
+    )
+    warn "Zugang: #{child}"
+  end
 
-      # TODO check-spreadsheet has a better version of this
-      parent_emails = s.cell(line_number, headers['EMail'])&.split(';')&.map(&:strip)
+  begin
+    # TODO: check-spreadsheet has a better version of this
+    parent_emails = s.cell(line_number, headers['EMail'])&.split(';')&.map(&:strip)
 
-      1.upto(2).each do |parent_index|
-        parent_vorname = s.cell(line_number, headers["Erz#{parent_index}Vorname"])&.strip
-        parent_nachname = s.cell(line_number, headers["Erz#{parent_index}Name"])&.strip
-        parent_email = s.cell(line_number, headers["Erz#{parent_index}Email"])&.strip
+    1.upto(2).each do |parent_index|
+      parent_vorname = s.cell(line_number, headers["Erz#{parent_index}Vorname"])&.strip
+      parent_nachname = s.cell(line_number, headers["Erz#{parent_index}Name"])&.strip
+      parent_email = s.cell(line_number, headers["Erz#{parent_index}Email"])&.strip
 
-        if parent_email.nil?
-          # does not matter for new 5ers
-          # warn "Not updating parent => child relationship for #{parent_vorname} #{parent_nachname} => #{child}"
-        else
-          parent = Erziehungsberechtigter.find(
-            vorname: parent_vorname,
-            nachname: parent_nachname,
-            mail: parent_email
-          )
+      if parent_email.nil?
+        # does not matter for new 5ers
+        # warn "Not updating parent => child relationship for #{parent_vorname} #{parent_nachname} => #{child}"
+      else
+        parent = Erziehungsberechtigter.find(
+          vorname: parent_vorname,
+          nachname: parent_nachname,
+          mail: parent_email
+        )
 
-          if parent.nil?
-            if child.klasse.stufe.name == "5"
-              parent = Erziehungsberechtigter.create(
-                vorname: parent_vorname,
-                nachname: parent_nachname,
-                mail: parent_email
-              )
+        if parent.nil?
+          if child.klasse.stufe.name == '5'
+            parent = Erziehungsberechtigter.create(
+              vorname: parent_vorname,
+              nachname: parent_nachname,
+              mail: parent_email
+            )
+          else
+            matching = child.eltern_dataset.where(mail: parent_email)
+
+            if matching.empty?
+              warn "Missing: Could not find #{parent_vorname} #{parent_nachname} <#{parent_email}> as parent of #{child}"
             else
-              matching = child.eltern_dataset.where(mail: parent_email)
-
-              if matching.empty?
-                warn "Missing: Could not find #{parent_vorname} #{parent_nachname} <#{parent_email}> as parent of #{child}"
+              if matching.count == 1
+                parent = matching.first
               else
-                if matching.count == 1
-                  parent = matching.first
-                else
-                  warn "Missing: Could not find parent #{parent_vorname} #{parent_nachname} with address #{parent_email} as parent of #{child}"
-                end
+                warn "Missing: Could not find parent #{parent_vorname} #{parent_nachname} with address #{parent_email} as parent of #{child}"
               end
             end
           end
-
-          parent.add_kinder(child) unless parent.kinder.include?(child) if parent
         end
+
+        parent.add_kinder(child) if parent && !parent.kinder.include?(child)
       end
-    rescue Erziehungsberechtigter::ValidationError => error
-      warn "Error: Not adding parent of #{child}: #{error.message}"
     end
-  rescue StandardError => error
-    warn "Error: Skipping #{child} because of: #{error.message}"
+  rescue Erziehungsberechtigter::ValidationError => error
+    warn "Error: Not adding parent of #{child}: #{error.message}"
   end
+rescue StandardError => error
+  warn "Error: Skipping #{child} because of: #{error.message}"
 end
