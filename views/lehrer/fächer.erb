@@ -1,0 +1,9 @@
+<ul class="sgh-elternverteiler-fächer">
+<% fächer.each do |fach| %>
+  <li>
+    <a href="/lehrer?fach=<%= fach %>">
+      <%= fach %>
+    </a>
+  </li>
+<% end %>
+</ul>

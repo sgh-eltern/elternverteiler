@@ -13,6 +13,7 @@ require 'sgh/elternverteiler/recovery'
 require 'sgh/elternverteiler/mail_server'
 require 'sgh/elternverteiler/mailing_list'
 require 'sgh/elternverteiler/vcard_presenter'
+require 'sgh/elternverteiler/lehrer_repository'
 
 require 'sgh/elternverteiler/web/view_helpers'
 
@@ -64,12 +65,15 @@ module SGH
             '/schüler': 'Schüler',
             '/schüler/nicht-erreichbar': '&nbsp;&nbsp;Nicht erreichbar',
             '/eltern': 'Eltern',
+            '/lehrer': 'Lehrer',
+            '/lehrer/fächer': '&nbsp;&nbsp;Fächer',
 
             '/backups': 'Backups',
             '/backups/new': '&nbsp;&nbsp;Neu',
 
             '/verteiler': 'Verteiler',
             '/verteiler.txt': '&nbsp;&nbsp;Plain',
+
             # TODO: New views
             # '/verteiler/klassen': '&nbsp;Eltern',
             # '/verteiler/klassenstufen': '&nbsp;Klassenstufen',
@@ -485,6 +489,25 @@ module SGH
               end
             end
           end
+
+          r.on 'lehrer' do
+            r.root do
+              if fach = r.params['fach']
+                topic "Lehrer im Fach #{fach}"
+                @lehrer = lehrer.select{|l| l.fächer.include?(fach)}.sort
+              else
+                topic 'Alle Lehrer'
+                @lehrer = lehrer.sort
+              end
+              view 'lehrer/list'
+            end
+
+            r.on CGI.escape('fächer') do
+              topic 'Fächer'
+              @fächer = fächer.sort
+              view 'lehrer/fächer'
+            end
+          end
         end
         # rubocop:enable Metrics/BlockLength
 
@@ -564,6 +587,14 @@ module SGH
             # Credentials are read from ENV['STORAGE_KEYFILE_JSON']
             project_id: 'sgh-elternbeirat'
           ).bucket('sgh-elternbeirat-app-backup')
+        end
+
+        def lehrer
+          @lehrer ||= LehrerRepository.new(open('http://www.schickhardt.net/?page_id=90'))
+        end
+
+        def fächer
+          @fächer ||= FÄCHER.values.sort
         end
       end
     end

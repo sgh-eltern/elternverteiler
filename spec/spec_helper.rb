@@ -2,6 +2,7 @@
 
 require 'sequel'
 require 'pry'
+require 'pathname'
 
 Sequel::Model.db = Sequel.sqlite
 Sequel.extension :migration
@@ -48,4 +49,8 @@ RSpec.configure do |config|
   config.around(:each) do |example|
     Sequel::Model.db.transaction(rollback: :always, auto_savepoint: true) { example.run }
   end
+end
+
+def fixture(path)
+  Pathname(__dir__).join('fixtures', path)
 end

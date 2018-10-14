@@ -1,0 +1,49 @@
+<%== partial('charbar') %>
+
+<p>
+  <%#== partial('email', locals: { address: lehrer.mailing_list.address(:long) }) %>
+</p>
+
+<section class="sgh-elternverteiler-lehrer">
+  <table class="pure-table pure-table-horizontal pure-table-striped sgh-elternverteiler-lehrer">
+    <thead>
+      <tr>
+        <th>Titel</th>
+        <th>Nachname</th>
+        <th>Vorname</th>
+        <th>eMail</th>
+        <th>Fächer</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+    <% lehrer.each do |l| %>
+      <tr>
+        <td>
+          <%= l.titel %>
+        </td>
+        <td>
+          <a name="<%= l.nachname.chars.first %>"/>
+          <%= l.nachname %>
+        </td>
+        <td>
+          <%= l.vorname %>
+        </td>
+        <td>
+          <a href="mailto:<%= l.email %>">
+            <%= l.email %>
+          </a>
+        </td>
+        <td>
+          <% l.fächer.map do |fach| %>
+            <a href="/lehrer?fach=<%= fach %>">
+              <%= fach %>
+            </a><br/>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

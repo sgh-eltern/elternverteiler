@@ -36,3 +36,12 @@ aside a, aside a:visited {
   color: #ff3300;
   margin-left: 1em;
 }
+
+/*
+  TODO Does not work yet because we are using anchors ('<a name=foo>').
+  The approach below requires element with a unique id (the char), which
+  we don't have (yet).
+*/
+:target {
+   background-color: #ffa;
+}
