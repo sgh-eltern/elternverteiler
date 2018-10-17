@@ -1,21 +1,20 @@
 <h2>Statistik</h2>
 
 <ul>
+  <li><a href="/eltern"><%= eltern_total %> Eltern </a> </li>
+  <li><a href="/elternbeirat"><%= elternbeirat.count %> Elternvertreter </a> </li>
   <li>
-    <a href="/eltern">
-      <%= eltern_total %> Eltern
-    </a>
+      <a href="/schüler"><%= schüler_total %> Schüler </a>,
+      davon <a href="/schüler/nicht-erreichbar"><%= schüler_unreachable_total %>
+      (<%= sprintf('%.2f%%', schüler_unreachable_percent) %>) </a> nicht per
+      Mail erreichbar
   </li>
   <li>
-    <a href="/schüler">
-      <%= schüler_total %> Schüler
-    </a>
-    <ul>
-      <li>
-        <a href="/schüler/nicht-erreichbar">
-          <%= schüler_unreachable_total %> (<%= sprintf('%.2f%%', schüler_unreachable_percent) %>) nicht per Mail erreichbar
-        </a>
-      </li>
-    </ul>
+    <a href="/klassen"><%= SGH::Elternverteiler::Klasse.count %> Klassen</a> in
+    <a href="/klassenstufen"><%= SGH::Elternverteiler::Klassenstufe.count %> Klassenstufen</a>
+  </li>
+  <li>
+    <a href="/lehrer"><%= lehrer.count %> Lehrer</a> in
+    <a href="/lehrer/fächer"><%= fächer.count %> Fächern</a>
   </li>
 </ul>
