@@ -1,0 +1,24 @@
+Liebe Elternvertreter der <%= klasse %>,
+
+wie auf der Sitzung des Elternbeirats am 23.10.18 vereinbart möchte ich Euch darüber informieren, daß in Eurer Klasse die Eltern von
+<% if unreachable.count.zero? %>
+  **allen** Schülern per eMail erreichbar sind.
+<% else %>
+  <%= unreachable.count %> Schüler<%= 'n' if unreachable.count > 1 %> nicht per eMail erreichbar sind:
+<% end %>
+
+<% unreachable.each do |u| %>
+  * <%= u.name %>
+<% end %>
+
+Änderungen an den Adressen sind nur über das Schülersekretariat (Frau ***REMOVED***) möglich: schuelersekretariat@schickhardt.net
+
+Ihr erreicht die Eltern Eurer Klasse über <%= klasse.mailing_list.address(:long) %> sowie die Elternvertreter über <%= klasse.elternvertreter.mailing_list.address(:long) %>.
+
+Bei Rückfragen könnt Ihr Euch gern per Mail an vorstand@eltern-sgh.de melden.
+
+--&nbsp;\
+Mit freundlichen Grüßen
+
+Steffen Uhlig\
+Elternbeiratsvorsitzender SGH

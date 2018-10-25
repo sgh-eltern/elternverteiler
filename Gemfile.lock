@@ -25,6 +25,7 @@ GEM
     diff-lcs (1.3)
     digest-crc (0.4.1)
     erubi (1.7.1)
+    erubis (2.7.0)
     faraday (0.15.2)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.25)
@@ -82,6 +83,8 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
     lumberjack (1.0.13)
+    mail (2.7.1)
+      mini_mime (>= 0.1.1)
     memoist (0.16.0)
     method_source (0.9.0)
     mime-types (3.2.2)
@@ -101,12 +104,15 @@ GEM
       nenv (~> 0.1)
       shellany (~> 0.0)
     os (1.0.0)
+    pandoc-ruby (2.0.2)
     parallel (1.12.1)
     parallel_tests (2.22.1)
       parallel
     parser (2.5.1.2)
       ast (~> 2.4.0)
     pg (1.1.3)
+    pony (1.12)
+      mail (>= 2.0)
     powerpack (0.1.2)
     pry (0.11.3)
       coderay (~> 1.1.0)
@@ -199,6 +205,7 @@ DEPENDENCIES
   capybara
   chromedriver-helper
   erubi
+  erubis
   forme
   google-cloud-storage
   guard-bundler
@@ -206,8 +213,10 @@ DEPENDENCIES
   hashdiff
   net-scp
   nokogiri
+  pandoc-ruby
   parallel_tests
   pg
+  pony
   pry
   pry-byebug
   puma
