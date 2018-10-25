@@ -325,7 +325,7 @@ module SGH
               view 'ämter/new'
             end
 
-            r.on do
+            r.root do
               topic 'Alle Ämter'
               view 'ämter/list'
             end
@@ -544,8 +544,8 @@ module SGH
           @ämter ||= Amt.sort
         end
 
-        def schüler_unreachable
-          @schüler_unreachable ||= Schüler.all.select { |sch| sch.eltern.collect(&:mail).compact.reject(&:empty?).empty? }.sort_by(&:nachname)
+        def schüler_unreachable(schüler=Schüler.all)
+          @schüler_unreachable ||= schüler.select { |sch| sch.eltern.collect(&:mail).compact.reject(&:empty?).empty? }.sort_by(&:nachname)
         end
 
         def schüler_unreachable_total
@@ -590,6 +590,7 @@ module SGH
         end
 
         def lehrer
+          # TODO Cache it in the filesystem, so that we can work offline
           @lehrer ||= LehrerRepository.new(open('http://www.schickhardt.net/?page_id=90'))
         end
 

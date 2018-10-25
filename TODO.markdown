@@ -1,6 +1,11 @@
 # Domain
 
+* Add / remove an Amtsinhaber from the Amt page: http://localhost:9292/ämter/3
 * Find duplicate entries, maybe merge them
+* Vor Neuwahl der EBV gibt es keine gewählten Vertreter mehr; löschen ist aber im UI noch nicht drin.
+
+  Manuell: 'Amtsperiode.where( amt: Amt.first(name: '1.EBV')).map(&:delete)'
+
 * Tests for `bin/bump`
 * Klassenstufe needs to be addressed by its slug (5,6,7,8,9,10,J1,J2)
 * Amt needs a new field `slug` ("ev1") besides the long name (which should actually be longer and more descriptive, like "1. Elternvertreter")
@@ -18,8 +23,7 @@
   - Kassenprüfung 1 und 2
   - Protokollführung 1 und 2
   - Vertreter im GEB
-  - Vertreter/in in der Schulkonferenz
-* Liste für alle Lehrer anlegen (nächtlich scrapen von http://www.schickhardt.net/?page_id=90)
+  - Vertreter 1,2 und 3 in der Schulkonferenz und deren Stellvertreter
 * Mitglied in der SK muß von stellvertretendem Mitglied in der SK getrennt werden
 * For J1 and J2: `Elternvertreter der J1 == Elternvertreter der Klassenstufe J1`
 * Pressing "Add a pupil" (within a class list) selects the right class in the dropdown of the "New Pupil" form
