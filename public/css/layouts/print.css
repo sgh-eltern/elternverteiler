@@ -1,5 +1,9 @@
 .menu-link, #menu {
-  display: none ;
+  display: none;
+}
+
+.pure-form {
+  display: none;
 }
 
 .content {
@@ -10,7 +14,6 @@
   padding-left: 0;
 }
 
-.no-print, .no-print *
-{
+.no-print, .no-print * {
   display: none !important;
 }
