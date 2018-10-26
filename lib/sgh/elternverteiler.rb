@@ -48,7 +48,7 @@ module SGH
     end
 
     def self.elternvertreter_schulkonferenz
-      Amt.where(name: ['SK', 'SKV']).
+      Amt.where(name: ['1.EBV', 'SK', 'SKV']).
         map(&:inhaber).
         flatten.
         sort_by(&:nachname).

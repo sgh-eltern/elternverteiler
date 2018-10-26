@@ -24,13 +24,12 @@
   - Protokollführung 1 und 2
   - Vertreter im GEB
   - Vertreter 1,2 und 3 in der Schulkonferenz und deren Stellvertreter
-* Mitglied in der SK muß von stellvertretendem Mitglied in der SK getrennt werden
 * For J1 and J2: `Elternvertreter der J1 == Elternvertreter der Klassenstufe J1`
 * Pressing "Add a pupil" (within a class list) selects the right class in the dropdown of the "New Pupil" form
 * There can only be one EBV1 / EBV2
 * Only EV can become EBV
 * A person can only be EV in a class of their children
-* EBV1 cannot be elected member of the SK
+* EBV1 is member of SK by design and cannot be elected as member of the SK
 * Dropdown boxes have the class list in the wrong order
 * Some roles are being delegated from the Elternbeirat, and not from the class (e.g. Schulkonferenz). For those, do not record the class where the parent is having this role for, or at least do not show it (in `to_s` etc)
 
