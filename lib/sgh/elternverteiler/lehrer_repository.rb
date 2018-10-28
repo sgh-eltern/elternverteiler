@@ -29,7 +29,6 @@ module SGH
 
     class LehrerRepository
       class FächerMapper
-
         def map(kürzel)
           FÄCHER.fetch(kürzel.strip, kürzel.strip)
         end
