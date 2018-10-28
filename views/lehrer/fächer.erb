@@ -1,9 +1,28 @@
-<ul class="sgh-elternverteiler-fächer">
-<% fächer.each do |fach| %>
-  <li>
-    <a href="/lehrer?fach=<%= fach %>">
-      <%= fach %>
-    </a>
-  </li>
-<% end %>
-</ul>
+<table class="pure-table pure-table-horizontal pure-table-striped sgh-elternverteiler-fächer">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Kürzel</th>
+      <th>Lehrer</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+  <% fächer.each do |fach| %>
+    <tr>
+      <td>
+        <a href="/lehrer?fach=<%= fach.kürzel %>">
+          <%= fach.name %>
+        </a>
+      </td>
+      <td>
+        <%= fach.kürzel %>
+      </td>
+      <td>
+        <%= fach.lehrer.count %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

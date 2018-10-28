@@ -28,6 +28,7 @@ module SGH
             domain: ENV.fetch('smtp_host'),
           }
         )
+        finish
       end
     end
   end

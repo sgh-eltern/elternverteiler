@@ -13,7 +13,9 @@ require 'sgh/elternverteiler/recovery'
 require 'sgh/elternverteiler/mail_server'
 require 'sgh/elternverteiler/mailing_list'
 require 'sgh/elternverteiler/vcard_presenter'
-require 'sgh/elternverteiler/lehrer_repository'
+
+require 'sgh/elternverteiler/jobs/update_lehrer_job'
+require 'sgh/elternverteiler/jobs/job'
 
 require 'sgh/elternverteiler/web/view_helpers'
 
@@ -73,6 +75,8 @@ module SGH
 
             '/verteiler': 'Verteiler',
             '/verteiler.txt': '&nbsp;&nbsp;Plain',
+
+            '/jobs': 'Jobs',
 
             # TODO: New views
             # '/verteiler/klassen': '&nbsp;Eltern',
@@ -501,7 +505,8 @@ module SGH
             r.root do
               if fach = r.params['fach']
                 topic "Lehrer im Fach #{fach}"
-                @lehrer = lehrer.select { |l| l.fächer.include?(fach) }.sort
+                @fach = Fach.where(kürzel: fach)
+                @lehrer = Lehrer.where(fächer: @fach).sort
               else
                 topic 'Alle Lehrer'
                 @lehrer = lehrer.sort
@@ -513,6 +518,26 @@ module SGH
               topic 'Fächer'
               @fächer = fächer.sort
               view 'lehrer/fächer'
+            end
+
+            r.post do
+              job = UpdateLehrerJob.enqueue(queue: 'lehrer')
+              flash[:success] = "Liste wird aktualisiert als job <a href='/jobs/#{job.que_attrs[:id]}'>#{job.que_attrs[:id]}</a>."
+              r.redirect '/lehrer'
+            end
+          end
+
+          r.on 'jobs' do
+            r.root do
+              topic 'Alle Jobs'
+              @queues = Job.distinct(:queue).select(:queue).map(&:queue)
+              view 'jobs/list'
+            end
+
+            r.get Integer do |id|
+              @job = Job.first!(id: id)
+              topic "Job #{@job.id}"
+              view 'jobs/show'
             end
           end
         end
@@ -601,12 +626,11 @@ module SGH
         end
 
         def lehrer
-          # TODO: Cache it in the filesystem, so that we can work offline
-          @lehrer ||= LehrerRepository.new(open('http://www.schickhardt.net/?page_id=90'))
+          @lehrer ||= Lehrer.all.sort
         end
 
         def fächer
-          @fächer ||= FÄCHER.values.sort
+          @fächer ||= Fach.all.sort
         end
       end
     end

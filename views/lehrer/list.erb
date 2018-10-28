@@ -5,6 +5,14 @@
 </p>
 
 <section class="sgh-elternverteiler-lehrer">
+  <form action="/lehrer" class="pure-form" method="post">
+    <p>
+      <input class="pure-button pure-button-primary"
+             type="submit"
+             value="Aktualisieren" />
+    </p>
+  </form>
+
   <table class="pure-table pure-table-horizontal pure-table-striped sgh-elternverteiler-lehrer">
     <thead>
       <tr>
@@ -37,7 +45,7 @@
         </td>
         <td>
           <% l.fächer.map do |fach| %>
-            <a href="/lehrer?fach=<%= fach %>">
+            <a href="/lehrer?fach=<%= fach.kürzel %>">
               <%= fach %>
             </a><br/>
           <% end %>

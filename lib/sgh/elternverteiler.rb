@@ -14,6 +14,8 @@ module SGH
     class Schüler < Sequel::Model(:schüler); end
     class Erziehungsberechtigter < Sequel::Model(:erziehungsberechtigte); end
     class Erziehungsberechtigung < Sequel::Model(:erziehungsberechtigung); end
+    class Fach < Sequel::Model(:fächer); end
+    class Lehrer < Sequel::Model(:lehrer); end
 
     def self.elternbeirat
       Amt.where(name: ['1.EV', '2.EV']).
@@ -89,3 +91,6 @@ require 'sgh/elternverteiler/schüler'
 require 'sgh/elternverteiler/erziehungsberechtigung'
 require 'sgh/elternverteiler/erziehungsberechtigter'
 require 'sgh/elternverteiler/amtsperiode'
+require 'sgh/elternverteiler/lehrer'
+require 'sgh/elternverteiler/fach'
+require 'sgh/elternverteiler/lehrer'

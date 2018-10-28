@@ -3,27 +3,46 @@
 
 require_relative '../config/db'
 require_relative '../config/que'
+require 'sgh/elternverteiler/jobs/job'
 
-require 'que/sequel/model'
-class QueJob < Que::Sequel::Model; end
+include SGH::Elternverteiler
 
-QueJob.distinct(:queue).select(:queue).map(&:queue).each do |queue|
-  warn "Queue #{queue}:"
-  jobs = QueJob.by_queue(queue)
-  warn '  Total: ' + jobs.count.to_s
+Job.distinct(:queue).select(:queue).map(&:queue).each do |queue|
+  warn "#{queue}:"
+  jobs = Job.by_queue(queue)
 
   %I(errored expired finished scheduled).each do |condition|
-    warn "  #{condition}: #{jobs.send(condition).count}"
+    puts "  #{condition}: #{jobs.send(condition).count}"
   end
 end
 
-QueJob.each do |job|
+#Job.dataset.destroy
+
+__END__
+
+
+Job.each do |job|
   if job.last_error_message.nil?
-    warn "#{job.run_at}: #{job.job_class} - Success"
+    warn "#{job.run_at}: #{job.job_class} - #{job.id}"
   else
     warn "#{job.run_at}: #{job.job_class} - #{job.error_count} errors. Last: #{job.last_error_message}"
     warn job.last_error_backtrace
     warn ''
   end
   # job.destroy
+end
+
+columns = Job.columns
+warn columns.join("\t")
+
+%I[not_ready ready finished].each do |ds|
+  warn " "
+  warn "# #{ds.to_s.upcase}"
+  Job.send(ds).each do |j|
+    columns.each do |column|
+      print j.send(column)
+      print "\t"
+    end
+    puts
+  end
 end

@@ -1,0 +1,27 @@
+<table class="pure-table pure-table-horizontal sgh-elternverteiler-job">
+<% {
+     queue: 'Queue',
+     id: 'ID',
+     priority: 'Priority',
+     run_at: 'Last Run at',
+     job_class: 'Class',
+     error_count: 'Errors',
+     last_error_message: 'Last Error',
+     last_error_backtrace: 'Last Backtrace',
+     finished_at: 'Finished At',
+     expired_at: 'Expired At',
+     args: 'Args',
+     data: 'Data',
+   }.each do |attribute, title| %>
+  <tr>
+    <th valign="top" style="background-color: #f2f2f2; text-align: right;">
+      <%= title %>
+    </th>
+    <td>
+      <code>
+        <%= @job.send(attribute) %>
+      <code>
+    </td>
+  </tr>
+<% end %>
+</table>

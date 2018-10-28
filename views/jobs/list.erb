@@ -1,0 +1,30 @@
+<% @queues.each do |queue| %>
+  <h1><code><%= queue %></code></h1>
+
+  <table class="pure-table pure-table-bordered sgh-elternverteiler-jobs">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Last Run at</th>
+        <th>Errors</th>
+        <th>Last Error</th>
+        <th>Finished / Expired</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% Job.by_queue(queue).reverse(:run_at).each do |job| %>
+      <tr valign="top">
+        <td>
+          <a href="/jobs/<%= job.id %>">
+            <%= job.id %>
+          </a>
+        </td>
+        <td><%= job.run_at %></td>
+        <td><%= job.error_count %></td>
+        <td><%= job.last_error_message %></td>
+        <td><%= job.finished_at || job.expired_at %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

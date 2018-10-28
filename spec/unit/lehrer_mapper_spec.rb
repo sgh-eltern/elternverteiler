@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 require 'spec_helper'
 
-require 'sgh/elternverteiler/lehrer_repository'
+require 'sgh/elternverteiler/lehrer_mapper'
 
-describe LehrerRepository do
-  subject(:lehrer) { LehrerRepository.new(fixture('lehrer.html').read).all }
+describe LehrerMapper do
+  subject(:lehrer) { described_class.new.map(fixture('lehrer.html').read).each }
 
   it 'has Lehrer' do
-    expect(lehrer).to_not be_empty
+    expect(lehrer.to_a).to_not be_empty
   end
 
   it 'has the expected amount of Lehrer' do
