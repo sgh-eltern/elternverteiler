@@ -181,27 +181,34 @@ module SGH
               view 'klassenstufen/new'
             end
 
-            r.get Integer do |id|
-              @klassenstufe = Klassenstufe.first!(id: id)
-              topic @klassenstufe
-              view 'klassenstufen/show'
-            end
+            # /klassenstufen/j1 or /klassenstufen/7
+            r.on [/(j[12])/, /(\d{1,2})/] do |st|
+              @klassenstufe = Klassenstufe.first!(name: st.upcase)
 
-            r.post Integer, 'delete' do |id|
-              @klassenstufe = Klassenstufe.first!(id: id)
-              @klassenstufe.destroy
-              flash[:success] = "#{@klassenstufe} wurde gelöscht."
-              r.redirect '/klassenstufen'
-            rescue StandardError
-              flash[:error] = "Die #{@klassenstufe} hat Klassen und kann deshalb nicht gelöscht werden."
-              r.redirect(r.referrer)
+              r.root do
+                topic @klassenstufe
+                view 'klassenstufen/show'
+              end
+
+              r.post 'delete' do |id|
+                @klassenstufe.destroy
+                flash[:success] = "#{@klassenstufe} wurde gelöscht."
+                r.redirect '/klassenstufen'
+              rescue StandardError
+                flash[:error] = "Die #{@klassenstufe} hat Klassen und kann deshalb nicht gelöscht werden."
+                r.redirect(r.referrer)
+              end
+
+              r.get 'edit' do
+                raise "Missing implementation for editing #{@klassenstufe}"
+              end
             end
 
             r.post do
               @klassenstufe = Klassenstufe.new
               @klassenstufe.set_fields(r.params['sgh-elternverteiler-klassenstufe'], %w[name])
               @klassenstufe.save
-              r.redirect "/klassenstufen/#{@klassenstufe.id}"
+              r.redirect klassenstufe_path(@klassenstufe)
             rescue Sequel::UniqueConstraintViolation
               topic 'Neue Klassenstufe anlegen'
               flash.now[:error] = "Die #{@klassenstufe} existiert bereits"
@@ -494,7 +501,7 @@ module SGH
             r.root do
               if fach = r.params['fach']
                 topic "Lehrer im Fach #{fach}"
-                @lehrer = lehrer.select{|l| l.fächer.include?(fach)}.sort
+                @lehrer = lehrer.select { |l| l.fächer.include?(fach) }.sort
               else
                 topic 'Alle Lehrer'
                 @lehrer = lehrer.sort
@@ -590,7 +597,7 @@ module SGH
         end
 
         def lehrer
-          # TODO Cache it in the filesystem, so that we can work offline
+          # TODO: Cache it in the filesystem, so that we can work offline
           @lehrer ||= LehrerRepository.new(open('http://www.schickhardt.net/?page_id=90'))
         end
 

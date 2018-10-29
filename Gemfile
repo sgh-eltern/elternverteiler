@@ -3,11 +3,13 @@
 source 'https://rubygems.org'
 
 gem 'erubi'
+gem 'erubis'
 gem 'forme'
 gem 'google-cloud-storage'
 gem 'hashdiff'
 gem 'net-scp'
 gem 'nokogiri'
+gem 'pandoc-ruby'
 gem 'pg'
 gem 'pony'
 gem 'puma'
@@ -18,8 +20,6 @@ gem 'sequel'
 gem 'sequel_pg'
 gem 'simple-spreadsheet'
 gem 'tilt'
-gem 'erubis'
-gem 'pandoc-ruby'
 
 group 'development' do
   gem 'capybara'

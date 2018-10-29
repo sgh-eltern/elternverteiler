@@ -14,6 +14,13 @@ describe SGH::Elternverteiler::Web::App do
     described_class
   end
 
+  def extract_error(last_response)
+    doc = Nokogiri::HTML(last_response.body)
+    message = doc.css('code.message').text
+    backtrace = doc.css('code.backtrace').text
+    "Error #{last_response.status}: #{message}\n#{backtrace.lines[0..3].join}..."
+  end
+
   let(:current_distribution_list) { <<~CONTENT
     # all parents
     eltern@springfield-elementary.edu homer@simpson.org,marge@simpson.org,kirk@vanhouten.org,eddie@muntz.org
@@ -70,16 +77,24 @@ describe SGH::Elternverteiler::Web::App do
     end
   end
 
-  context 'Klasse 5a exists' do
+  context 'Klassenstufe 5 exists' do
     include SGH::Elternverteiler::Web::PathHelpers
-
     let(:klassenstufe_5) { Klassenstufe.create(name: '5') }
-    let(:k5a) { Klasse.create(stufe: klassenstufe_5, zug: 'A') }
 
-    it "shows the Klasse's page when addressed via its pretty URL" do
-      get klasse_path(k5a)
-      expect(last_response).to be_ok
-      expect(last_response.body).to include('Klasse 5A')
+    it "shows the Klassenstufe's page when addressed via its name" do
+      get klassenstufe_path(klassenstufe_5)
+      expect(last_response).to be_ok, extract_error(last_response)
+      expect(last_response.body).to include('Klassenstufe 5')
+    end
+
+    context 'Klasse 5a exists' do
+      let(:k5a) { Klasse.create(stufe: klassenstufe_5, zug: 'A') }
+
+      it "shows the Klasse's page when addressed via its pretty URL" do
+        get klasse_path(k5a)
+        expect(last_response).to be_ok
+        expect(last_response.body).to include('Klasse 5A')
+      end
     end
   end
 end

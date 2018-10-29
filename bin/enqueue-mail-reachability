@@ -50,8 +50,8 @@ Klasse.each do |klasse|
     id: id,
     to: to,
     subject: subject,
-    body: PandocRuby.convert(erb_body, :from => :markdown, :to => :plain),
-    html_body: PandocRuby.convert(erb_body, :from => :markdown, :to => :html),
+    body: PandocRuby.convert(erb_body, from: :markdown, to: :plain),
+    html_body: PandocRuby.convert(erb_body, from: :markdown, to: :html),
   }.to_json)
 
   warn "Mail to #{to} enqueued as #{job_file}"

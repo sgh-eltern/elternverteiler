@@ -5,8 +5,8 @@ AllCops:
     - '**/Rakefile'
     - '**/config.ru'
     - '**/*.rake'
-    - lib/**/*
-    - spec/**/*
+    - 'lib/**/*.rb'
+    - 'spec/**/*.rb'
   Exclude:
     - vendor/**/*
     - db/migrations/**/*

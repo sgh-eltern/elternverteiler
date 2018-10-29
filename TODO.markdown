@@ -7,7 +7,6 @@
   Manuell: 'Amtsperiode.where( amt: Amt.first(name: '1.EBV')).map(&:delete)'
 
 * Tests for `bin/bump`
-* Klassenstufe needs to be addressed by its slug (5,6,7,8,9,10,J1,J2)
 * Amt needs a new field `slug` ("ev1") besides the long name (which should actually be longer and more descriptive, like "1. Elternvertreter")
   - Also add ability to rename an Amt
 * Extract the many `define_singleton_method` calls into a common one, maybe as a method on all Amt#inhaber. With this, concepts like "Elternbeiratsvorsitzende" become a compound of multiple instances of Amt

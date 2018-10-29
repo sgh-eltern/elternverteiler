@@ -4,6 +4,7 @@
 require 'pony'
 require 'json'
 require 'pathname'
+require 'English'
 
 if ARGV.empty?
   warn 'Error: Missing argument for the queue directory'
@@ -23,7 +24,7 @@ def deliver(job)
     via_options: {
       address: ENV.fetch('smtp_host'),
       port: ENV.fetch('smtp_port'),
-      #tls: !!ENV.fetch('smtp_tls'),
+      # tls: !!ENV.fetch('smtp_tls'),
       enable_starttls_auto: true,
       user_name: ENV.fetch('smtp_user'),
       password: ENV.fetch('smtp_password'),
@@ -31,12 +32,12 @@ def deliver(job)
       domain: ENV.fetch('smtp_host'),
     }
   )
-rescue
-  warn "Error delivering job: #{$!.message}"
+rescue StandardError
+  warn "Error delivering job: #{$ERROR_INFO.message}"
   warn result
 end
 
-ARGV.map{|f| Pathname(f)}.each do |job_file|
+ARGV.map { |f| Pathname(f) }.each do |job_file|
   job = JSON.parse(job_file.read)
 
   if job['status'] == 'delivered'
@@ -46,10 +47,11 @@ ARGV.map{|f| Pathname(f)}.each do |job_file|
 
   begin
     deliver(job)
-    job.merge!('status' => 'delivered', 'delivered_at' => Time.now.utc)
+    job['status'] = 'delivered'
+    job['delivered_at'] = Time.now.utc
     job_file.write(job.to_json)
     warn "Job #{job['id']} (#{job_file}) was delivered."
-  rescue => e
+  rescue StandardError => e
     warn "Error delivering #{job['id']} (#{job_file}): #{e.message}"
     job_file.write(job.merge('status' => 'failed', 'last_failed_at' => Time.now.utc, last_failure: e.message).to_json)
   end

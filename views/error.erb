@@ -3,13 +3,13 @@ Entschuldigung, hier ging etwas schief.
 </p>
 
 <p>
-  <code>
+  <code class="message">
   <%= @error.message %>
   </code>
 </p>
 
 <p style="width: max-content;">
-  <code>
+  <code class="backtrace">
   <% @error.backtrace.each do |line| %>
     <%= line %><br/>
   <% end %>

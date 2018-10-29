@@ -17,7 +17,7 @@
   <% klassenstufen.each do |stufe| %>
     <tr>
       <td>
-        <a href="/klassenstufen/<%= stufe.id %>"><%= stufe %></a>
+        <a href="<%= klassenstufe_path(stufe) %>"><%= stufe %></a>
       </td>
       <td>
         <%= stufe.klassen.size %>

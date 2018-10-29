@@ -8,6 +8,10 @@ module SGH
           "/klassen/#{klasse.name.downcase}"
         end
 
+        def klassenstufe_path(klassenstufe)
+          "/klassenstufen/#{klassenstufe.name.downcase}"
+        end
+
         def link_to(klasse)
           %(<a href="#{klasse_path(klasse)}">#{klasse.name}</a>)
         end

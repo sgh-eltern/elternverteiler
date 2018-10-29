@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sgh/elternverteiler/lehrer'
 require 'nokogiri'
 require 'forwardable'
@@ -25,7 +27,7 @@ module SGH
       'Sm' => 'Sport männlich',
       'Sp' => 'Spanisch',
       'Sw' => 'Sport weiblich',
-    }
+    }.freeze
 
     class LehrerRepository
       class FächerMapper
@@ -70,7 +72,7 @@ module SGH
           lehrer_mapper.map(tr.xpath('td/text()').map(&:to_s).map(&:strip))
         end
 
-        @lehrer.group_by{|l| l.nachname}.each do |nachname, lehrer|
+        @lehrer.group_by(&:nachname).each do |nachname, lehrer|
           if lehrer.size == 1
             l = lehrer.first
             l.email = email(l.nachname)
@@ -88,7 +90,7 @@ module SGH
 
       private
 
-      def email(nachname, vorname = nil)
+      def email(nachname, vorname=nil)
         if vorname
           "#{local_part(vorname)}.#{local_part(nachname)}@sgh-mail.de"
         else

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SGH
   module Elternverteiler
     Lehrer = Struct.new(:kürzel, :titel, :nachname, :vorname, :fächer, :email, keyword_init: true) do
