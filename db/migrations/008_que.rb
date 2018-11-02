@@ -2,16 +2,25 @@ require 'que'
 
 Sequel.migration do
   up do
-    if adapter_scheme == :postgres
+    if postgres?
       Que.connection = self
       Que.migrate! :version => 3
     end
   end
 
   down do
-    if adapter_scheme == :postgres
+    if postgres?
       Que.connection = self
       Que.migrate! :version => 0
     end
+  end
+end
+
+def postgres?
+  if adapter_scheme == :postgres
+    true
+  else
+    warn "NOT migrating Que tables because schema '#{adapter_scheme}' is not ':postgres'"
+    false
   end
 end

@@ -1,42 +1,19 @@
 # frozen_string_literal: true
 
-require_relative 'helpers/postgres'
+require_relative 'spec_helper'
+
 require 'sequel'
+require 'que'
+require 'pathname'
 require 'sgh/elternverteiler/reachability_presenter'
 
 describe 'Mail is handled asynchronously', type: 'system' do
-  def example_id
-    @example_id ||= "async-mail-systemtest-#{Time.now.to_i}"
-  end
-
-  let(:db_url) { "postgres://localhost/#{example_id}" }
-  let(:klassenstufe_4) { Klassenstufe.new(name: '4').save }
-  let(:k4a) { Klasse.new(stufe: klassenstufe_4, zug: 'a').save }
+  let(:klassenstufe_4) { Klassenstufe.create(name: '4') }
+  let(:k4a) { Klasse.create(stufe: klassenstufe_4, zug: 'a') }
   let(:view_path) {Pathname(__dir__) / '..' / '..' / 'views/mail/missing.markdown.erb'}
 
-  before(:all) do
-    PostgresHelpers.create_db(example_id)
-  end
-
   before do
-    Sequel::Model.db = Sequel.connect(db_url)
-    Sequel.extension :migration
-    Sequel::Migrator.run(Sequel::Model.db, 'db/migrations')
-  end
-
-  after do
-    Sequel::Model.db.disconnect
-  end
-
-  after(:all) do
-    PostgresHelpers.drop_db(example_id)
-  end
-
-  around do |example|
-    Sequel::Model.db.transaction(rollback: :always, auto_savepoint: true) { example.run }
-  end
-
-  before do
+    Que.connection = Sequel::Model.db
     bart = Schüler.create(vorname: 'Bart', nachname: 'Simpson', klasse: k4a)
     homer = Erziehungsberechtigter.create(vorname: 'Homer', nachname: 'Simpson', mail: 'homer@simpson.org')
     marge = Erziehungsberechtigter.create(vorname: 'Marge', nachname: 'Simpson', mail: 'marge@simpson.org')
@@ -54,10 +31,14 @@ describe 'Mail is handled asynchronously', type: 'system' do
     nelson.add_eltern(eddie)
   end
 
-  subject(:presenter) { SGH::Elternverteiler::ReachabilityPresenter.new(view_path) }
+  subject(:presenter) { ReachabilityPresenter.new(view_path) }
 
   it 'accepts a new mailer job' do
     expect(presenter.jobs).not_to be_empty
-    expect(presenter.jobs.size).to eq(1)
+    expect(presenter.jobs.size).to eq(25)
+  end
+
+  it 'has stats' do
+    expect(Que.job_stats).not_to be_nil
   end
 end

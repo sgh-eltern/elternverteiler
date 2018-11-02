@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
+require_relative 'spec_helper'
+
+require 'sequel'
 require 'tempfile'
 require 'sgh/elternverteiler/postmap_presenter'
 
 describe 'A file with all parents presented with PostmapPresenter', type: 'system' do
-  let(:klassenstufe_4) { Klassenstufe.new(name: '4').save }
-  let(:k4a) { Klasse.new(stufe: klassenstufe_4, zug: 'a').save }
+  let(:klassenstufe_4) { Klassenstufe.create(name: '4') }
+  let(:k4a) { Klasse.create(stufe: klassenstufe_4, zug: 'a') }
 
   subject {
     File.write(@db_file.path, PostmapPresenter.new('eltern@springfield-elementary.edu').present(Erziehungsberechtigter.all))
@@ -13,15 +16,19 @@ describe 'A file with all parents presented with PostmapPresenter', type: 'syste
   }
 
   before do
-    Schüler.new(vorname: 'Bart', nachname: 'Simpson', klasse: k4a).save
-    Erziehungsberechtigter.new(vorname: 'Homer', nachname: 'Simpson', mail: 'homer@simpson.org').save
-    Erziehungsberechtigter.new(vorname: 'Marge', nachname: 'Simpson', mail: 'marge@simpson.org').save
-    Schüler.new(vorname: 'Milhouse', nachname: 'Van Houten', klasse: k4a).save
-    Erziehungsberechtigter.new(vorname: 'Luann', nachname: 'Van Houten', mail: 'luann@vanhouten.org').save
-    Erziehungsberechtigter.new(vorname: 'Kirk', nachname: 'Van Houten', mail: 'kirk@vanhouten.org').save
-    Schüler.new(vorname: 'Nelson', nachname: 'Muntz', klasse: k4a).save
-    Erziehungsberechtigter.new(vorname: 'Eddie', nachname: 'Muntz', mail: 'eddie@muntz.org').save
-    Erziehungsberechtigter.new(nachname: 'Muntz').save
+    Sequel.extension :migration
+    Sequel::Migrator.run(Sequel::Model.db, 'db/migrations')
+    require 'sgh/elternverteiler'
+
+    Schüler.create(vorname: 'Bart', nachname: 'Simpson', klasse: k4a)
+    Erziehungsberechtigter.create(vorname: 'Homer', nachname: 'Simpson', mail: 'homer@simpson.org')
+    Erziehungsberechtigter.create(vorname: 'Marge', nachname: 'Simpson', mail: 'marge@simpson.org')
+    Schüler.create(vorname: 'Milhouse', nachname: 'Van Houten', klasse: k4a)
+    Erziehungsberechtigter.create(vorname: 'Luann', nachname: 'Van Houten', mail: 'luann@vanhouten.org')
+    Erziehungsberechtigter.create(vorname: 'Kirk', nachname: 'Van Houten', mail: 'kirk@vanhouten.org')
+    Schüler.create(vorname: 'Nelson', nachname: 'Muntz', klasse: k4a)
+    Erziehungsberechtigter.create(vorname: 'Eddie', nachname: 'Muntz', mail: 'eddie@muntz.org')
+    Erziehungsberechtigter.create(nachname: 'Muntz')
   end
 
   around do |example|
