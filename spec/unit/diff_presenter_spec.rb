@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'spec_helper'
 
 require 'hashdiff'
 require 'sgh/elternverteiler/postmap_parser'

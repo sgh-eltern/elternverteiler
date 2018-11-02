@@ -3,6 +3,10 @@
 require 'sgh/elternverteiler/mail_server'
 require 'securerandom'
 
+# rubocop:disable Style/MixinUsage
+include SGH::Elternverteiler
+# rubocop:enable Style/MixinUsage
+
 describe MailServer do
   subject(:server) { described_class.new }
   let(:random_string) { SecureRandom.uuid }

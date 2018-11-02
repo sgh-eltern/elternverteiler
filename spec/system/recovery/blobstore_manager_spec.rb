@@ -1,9 +1,14 @@
 # frozen_string_literal: true
 
 require 'sgh/elternverteiler/recovery'
+require 'sequel'
 require 'zlib'
 require 'google/cloud/storage'
 require_relative '../helpers/postgres'
+
+# rubocop:disable Style/MixinUsage
+include SGH::Elternverteiler
+# rubocop:enable Style/MixinUsage
 
 describe Recovery::BlobstoreManager do
   def example_id

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'spec_helper'
 
 describe Erziehungsberechtigter do
   context 'with existing parents' do

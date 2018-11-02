@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'spec_helper'
 
 describe Amt do
   subject(:pab) { Amt.new(name: 'Member of the Parent Advisory Board').save }

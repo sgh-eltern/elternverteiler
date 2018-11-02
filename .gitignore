@@ -2,5 +2,6 @@
 .bundle
 .cache_rake_t
 .envrc
+.rake_tasks
 spec/failure-state
 tmp

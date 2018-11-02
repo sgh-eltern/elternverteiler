@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'spec_helper'
 
 describe Erziehungsberechtigung do
   let(:klassenstufe_4) { Klassenstufe.new(name: '4').save }
