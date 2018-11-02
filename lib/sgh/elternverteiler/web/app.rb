@@ -467,7 +467,7 @@ module SGH
 
           r.on 'verteiler' do
             r.root do
-              topic 'eMail-Verteiler'
+              topic 'Alle eMail-Verteiler'
               view 'verteiler/list'
             end
 
