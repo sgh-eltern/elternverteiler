@@ -1,5 +1,14 @@
 # Domain
 
+* Amt needs a new field `address` where we can specify the (unique) short address of the mailing list for the Amtsinhaber
+* Amt needs a new field `slug` ("ev1") besides the long name (which should actually be longer and more descriptive, like "1. Elternvertreter")
+* The following are composite roles, made by combining two or more other roles:
+  - elternbeirat
+  - elternbeiratsvorsitzende
+  - elternvertreter_schulkonferenz
+  - delegierte_gesamtelternbeirat
+
+* Change the `PostmapPresenter` to present a `MailingList`
 * Add / remove an Amtsinhaber from the Amt page: http://localhost:9292/ämter/3
 * Find duplicate entries, maybe merge them
 * Vor Neuwahl der EBV gibt es keine gewählten Vertreter mehr; löschen ist aber im UI noch nicht drin.
@@ -7,12 +16,9 @@
   Manuell: 'Amtsperiode.where( amt: Amt.first(name: '1.EBV')).map(&:delete)'
 
 * Tests for `bin/bump`
-* Amt needs a new field `slug` ("ev1") besides the long name (which should actually be longer and more descriptive, like "1. Elternvertreter")
   - Also add ability to rename an Amt
 * Extract the many `define_singleton_method` calls into a common one, maybe as a method on all Amt#inhaber. With this, concepts like "Elternbeiratsvorsitzende" become a compound of multiple instances of Amt
 * Amtsperioden could be ordered, which would allow us to have a generic EV, and the order determines who is EV1 and who's EV2 in a Klasse. Same for EBV etc. This would even allow more than two EV per Klasse.
-* Change the `PostmapPresenter` to present a `MailingList`
-* Amt needs a new field `address` where we can specify the (unique) short address of the mailing list for the Amtsinhaber
 * Amtsperiode beginnt an einem Datum und endet optional
   - Amt kann auch unbesetzt sein (keine Periode definiert)
   - Amtsperiode hat Historie (wer hat das Amt wann besetzt)

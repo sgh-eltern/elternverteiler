@@ -62,6 +62,22 @@ module SGH
         end
       end
     end
+
+    def self.delegierte_gesamtelternbeirat
+      Amt.where(name: 'GEB-Delegierte').
+        map(&:inhaber).
+        flatten.
+        sort_by(&:nachname).
+        tap do |all|
+        all.define_singleton_method(:mailing_list) do
+          MailingList.new(
+            name: 'GEB-Delegierte',
+            address: 'geb-delegierte',
+            members: all
+          )
+        end
+      end
+    end
   end
 end
 

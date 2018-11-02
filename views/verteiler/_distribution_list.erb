@@ -35,6 +35,10 @@
 <% mailing_list = evsk.mailing_list %>
 <%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
 
+# GEB-Delegierte: <%= gebd.count %> Adressen
+<% mailing_list = gebd.mailing_list %>
+<%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
+
 # Elternbeiratsvorsitzende: <%= ebv.count %> Adressen
 <% mailing_list = ebv.mailing_list %>
 <%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>

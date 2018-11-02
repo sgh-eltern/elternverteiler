@@ -526,6 +526,10 @@ module SGH
           @evsk ||= SGH::Elternverteiler.elternvertreter_schulkonferenz
         end
 
+        def gebd
+          @gebd ||= SGH::Elternverteiler.delegierte_gesamtelternbeirat
+        end
+
         def elternbeirat
           @elternbeirat ||= SGH::Elternverteiler.elternbeirat
         end
