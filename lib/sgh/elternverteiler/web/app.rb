@@ -31,7 +31,7 @@ module SGH
         plugin :render_each
         plugin :request_headers
         plugin :empty_root
-        plugin :static, ['/js', '/css']
+        plugin :static, ['/js', '/css', '/favicon.ico']
         Sequel::Model.plugin :forme
 
         plugin :status_handler
