@@ -1,18 +1,10 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-$LOAD_PATH.unshift(File.expand_path('../lib', __dir__))
-
-require 'bundler/setup'
-
-require 'sequel'
-Sequel::Model.db = Sequel.connect(ENV.fetch('DB'))
-
-require 'sgh/elternverteiler'
-
-# rubocop:disable Style/MixinUsage
-include SGH::Elternverteiler
-# rubocop:enable Style/MixinUsage
-
+require_relative '../config/db'
 require 'pry'
-Pry.start
+
+module SGH::Elternverteiler
+  Pry.config.prompt_name = self
+  Pry.start
+end
