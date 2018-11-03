@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative '../config/db'
+require_relative '../config/que'
+
+require 'que/sequel/model'
+class QueJob < Que::Sequel::Model; end
+
+QueJob.distinct(:queue).select(:queue).map(&:queue).each do |queue|
+  warn "Queue #{queue}:"
+  jobs = QueJob.by_queue(queue)
+  warn '  Total: ' + jobs.count.to_s
+
+  %I(errored expired finished scheduled).each do |condition|
+    warn "  #{condition}: #{jobs.send(condition).count}"
+  end
+end
+
+QueJob.each do |job|
+  if job.last_error_message.nil?
+    warn "#{job.run_at}: #{job.job_class} - Success"
+  else
+    warn "#{job.run_at}: #{job.job_class} - #{job.error_count} errors. Last: #{job.last_error_message}"
+    warn job.last_error_backtrace
+    warn ''
+  end
+  # job.destroy
+end

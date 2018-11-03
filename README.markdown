@@ -148,3 +148,11 @@ $ bundle exec sequel $DB
   $ export RACK_ENV=production
   $ puma
   ```
+
+* Run Jobs
+
+  We use `--worker-count 2` so that we do not overload the eMail servers. mailtrap.io at least does not accept more than 2/sec.
+
+  ```bash
+  $ que --log-level debug --queue mailer --worker-count 2 ./config/que.rb
+  ```

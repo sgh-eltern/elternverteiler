@@ -1,6 +1,6 @@
 name: <%= File.basename(Dir.pwd) %>
 windows:
-  - ruby:
+  - app:
       panes:
         - bundle exec guard
         - rerun -i 'spec/*' bundle exec rackup

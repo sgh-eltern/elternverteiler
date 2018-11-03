@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative '../config/db'
+require_relative '../config/que'
+
+require 'pathname'
+require 'sgh/elternverteiler/reachability_mail_generator'
+require 'sgh/elternverteiler/jobs/reachability_mail_job'
+
+template = Pathname(__dir__) / '..' / 'views/mail/missing.markdown.erb'
+ReachabilityMailGenerator.new(template) do |to, subject, body, html_body|
+  ReachabilityMailJob.enqueue(
+    to,
+    subject,
+    body,
+    html_body,
+    queue: 'mailer',
+  )
+end

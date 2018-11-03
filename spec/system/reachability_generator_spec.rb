@@ -2,18 +2,15 @@
 
 require_relative 'spec_helper'
 
-require 'sequel'
-require 'que'
 require 'pathname'
-require 'sgh/elternverteiler/reachability_presenter'
+require 'sgh/elternverteiler/reachability_mail_generator'
 
-describe 'Mail is handled asynchronously', type: 'system' do
+describe ReachabilityMailGenerator, type: 'system' do
   let(:klassenstufe_4) { Klassenstufe.create(name: '4') }
   let(:k4a) { Klasse.create(stufe: klassenstufe_4, zug: 'a') }
-  let(:view_path) {Pathname(__dir__) / '..' / '..' / 'views/mail/missing.markdown.erb'}
+  let(:view_path) { Pathname(__dir__) / '..' / '..' / 'views/mail/missing.markdown.erb' }
 
   before do
-    Que.connection = Sequel::Model.db
     bart = Schüler.create(vorname: 'Bart', nachname: 'Simpson', klasse: k4a)
     homer = Erziehungsberechtigter.create(vorname: 'Homer', nachname: 'Simpson', mail: 'homer@simpson.org')
     marge = Erziehungsberechtigter.create(vorname: 'Marge', nachname: 'Simpson', mail: 'marge@simpson.org')
@@ -31,14 +28,7 @@ describe 'Mail is handled asynchronously', type: 'system' do
     nelson.add_eltern(eddie)
   end
 
-  subject(:presenter) { ReachabilityPresenter.new(view_path) }
-
-  it 'accepts a new mailer job' do
-    expect(presenter.jobs).not_to be_empty
-    expect(presenter.jobs.size).to eq(25)
-  end
-
-  it 'has stats' do
-    expect(Que.job_stats).not_to be_nil
+  it 'yields to the block for every Klasse' do
+    expect{ |block| described_class.new(view_path, &block)}.to yield_control.exactly(25).times
   end
 end

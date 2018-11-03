@@ -4,7 +4,7 @@ Sequel.migration do
   up do
     if postgres?
       Que.connection = self
-      Que.migrate! :version => 3
+      Que.migrate! :version => 4
     end
   end
 

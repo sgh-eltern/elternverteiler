@@ -3,16 +3,13 @@
 require 'tilt'
 require 'erb'
 require 'pandoc-ruby'
+require 'sgh/elternverteiler'
 
 module SGH
   module Elternverteiler
-    class ReachabilityPresenter
+    class ReachabilityMailGenerator
       def initialize(template_path)
-        @erb_template = Tilt.new(template_path)
-      end
-
-      def jobs
-        Klasse.map do |klasse|
+        Klasse.each do |klasse|
           unreachable = klasse.schüler.select { |sch| sch.eltern.collect(&:mail).compact.reject(&:empty?).empty? }.sort_by(&:nachname)
           subject = if unreachable.count.zero?
             "Alle Schüler der #{klasse} per eMail erreichbar"
@@ -22,18 +19,16 @@ module SGH
 
           to = "#{klasse.elternvertreter.mailing_list.name} <#{klasse.elternvertreter.mailing_list.address(:long)}>"
 
-          erb_body = @erb_template.render(
+          erb_body = Tilt.new(template_path).render(
             self,
             klasse: klasse,
             unreachable: unreachable
           )
 
-          {
-            to: to,
-            subject: subject,
-            body: PandocRuby.convert(erb_body, from: :markdown, to: :plain),
-            html_body: PandocRuby.convert(erb_body, from: :markdown, to: :html),
-          }
+          yield to,
+                subject,
+                PandocRuby.convert(erb_body, from: :markdown, to: :plain),
+                PandocRuby.convert(erb_body, from: :markdown, to: :html)
         end
       end
     end
