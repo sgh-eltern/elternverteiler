@@ -6,7 +6,7 @@ Ansprechpartner: ***REMOVED***
 
 # Hochladen
 
-```bash
+```sh
 scp elternverteiler.txt ***REMOVED***.schickhardt-gymnasium-herrenberg.de:
 ```
 
@@ -92,27 +92,49 @@ scp elternverteiler.txt ***REMOVED***.schickhardt-gymnasium-herrenberg.de:
 
 # Development
 
-```bash
-# Create the database cluster if it does not exist yet.
-# See brew info postgresql on how to start the database server.
-initdb -D /usr/local/var/postgres-10
+* Create the database cluster if it does not exist yet.
 
-# Create the dev database
-createdb elternverteiler_dev
+  See `brew info postgresql` on how to start the database server.
 
-# Configure the DB URI
-export DB=postgres://localhost/elternverteiler_dev
+  ```sh
+  $ initdb -D /usr/local/var/postgres-10
+  ```
 
-# Migrate the database
-bundle exec rake db:migrate
+* Create the dev database
 
-# Run the web app
-rerun -i 'spec/*' bundle exec rackup
-```
+  ```sh
+  $ createdb elternverteiler_dev
+  ```
+
+* Configure the DB URI
+
+  ```sh
+  $ export DB=postgres://localhost/elternverteiler_dev
+  ```
+
+* Migrate the database
+
+  ```sh
+  $ bundle exec rake db:migrate
+  ```
+
+* Run the web app
+
+  ```sh
+  $ rerun -i 'spec/*' bundle exec rackup
+  ```
+
+* Run Jobs Manually
+
+  We use `--worker-count 2` so that we do not overload the eMail servers. mailtrap.io at least does not accept more than 2/sec.
+
+  ```sh
+  $ que --log-level debug --queue mailer --worker-count 2 ./config/que.rb
+  ```
 
 # Test
 
-```bash
+```sh
 dropdb elternverteiler_test; createdb elternverteiler_test; rake db:migrate
 bundle exec rake
 ```
@@ -123,7 +145,7 @@ If desired, restore a backup from within the app in order to get some real data.
 
 ## Use the `sequel` database monitor
 
-```bash
+```sh
 $ bundle exec sequel $DB
 ```
 
@@ -141,18 +163,21 @@ $ bundle exec sequel $DB
 
 * Setup the database
 
-  ```bash
+  ```sh
   $ createdb elternverteiler
   $ export DB=postgres://localhost/elternverteiler
   $ bundle exec rake db:migrate
+
+* Start the app and the background processor
+
+  ```sh
   $ export RACK_ENV=production
-  $ puma
+  $ gem install foreman
+  $ foreman start
   ```
 
-* Run Jobs
+* Show Puma stats
 
-  We use `--worker-count 2` so that we do not overload the eMail servers. mailtrap.io at least does not accept more than 2/sec.
-
-  ```bash
-  $ que --log-level debug --queue mailer --worker-count 2 ./config/que.rb
+  ```sh
+  pumactl --control-url unix://var/puma-ctl.sock --control-token ***REMOVED*** stats
   ```

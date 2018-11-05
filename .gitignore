@@ -5,3 +5,4 @@
 .rake_tasks
 spec/failure-state
 tmp
+var
