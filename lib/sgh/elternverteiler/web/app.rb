@@ -15,7 +15,6 @@ require 'sgh/elternverteiler/mailing_list'
 require 'sgh/elternverteiler/vcard_presenter'
 
 require 'sgh/elternverteiler/jobs/update_lehrer_job'
-require 'sgh/elternverteiler/jobs/job'
 
 require 'sgh/elternverteiler/web/view_helpers'
 

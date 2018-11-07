@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require_relative '../config/db'
+require_relative '../config/que'
 require 'pry'
 
 module SGH::Elternverteiler
