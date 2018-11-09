@@ -6,5 +6,9 @@ describe Fach do
     expect(subject.forme_namespace).to eq('sgh-elternverteiler-fach')
   end
 
-  it 'needs to be tested'
+  it 'must not allow a duplicate name'
+  it 'must not allow a duplicate Kürzel'
+  it 'has a string representation'
+  it 'has a name'
+  it 'has a mailing list'
 end

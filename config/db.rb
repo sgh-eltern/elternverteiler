@@ -8,6 +8,3 @@ require 'sgh/elternverteiler'
 # rubocop:disable Style/MixinUsage
 include SGH::Elternverteiler
 # rubocop:enable Style/MixinUsage
-
-require 'que'
-Que.connection = Sequel::Model.db

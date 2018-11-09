@@ -69,11 +69,11 @@ RSpec.configure do |config|
     expect($CHILD_STATUS.success?).to be_truthy
 
     Sequel::Model.db = Sequel.connect("postgres://localhost/#{db_name}")
+
     Sequel.extension :migration
     Sequel::Migrator.run(Sequel::Model.db, 'db/migrations')
 
     require 'sgh/elternverteiler/web/app'
-
     Capybara.app = SGH::Elternverteiler::Web::App
     Capybara.default_driver = :selenium_chrome
     Capybara.server_port = 9887 + ENV['TEST_ENV_NUMBER'].to_i
