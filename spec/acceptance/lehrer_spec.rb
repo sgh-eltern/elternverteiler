@@ -40,7 +40,7 @@ describe 'Lehrer', type: :feature do
 
     context 'the job queue is processing jobs' do
       before do
-        @locker = Que::Locker.new( queues: [ 'lehrer' ] )
+        @locker = Que::Locker.new(queues: ['lehrer'])
       end
 
       after do

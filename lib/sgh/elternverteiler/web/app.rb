@@ -521,7 +521,7 @@ module SGH
             end
 
             r.post do
-              job = UpdateLehrerJob.enqueue(queue: 'lehrer')
+              job = UpdateLehrerJob.enqueue
               flash[:success] = "Liste wird aktualisiert als job <a href='/jobs/#{job.que_attrs[:id]}'>#{job.que_attrs[:id]}</a>."
               r.redirect '/lehrer'
             end

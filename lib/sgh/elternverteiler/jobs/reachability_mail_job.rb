@@ -7,6 +7,8 @@ module SGH
   module Elternverteiler
     # Don't forget to restart the que process after this file was changed.
     class ReachabilityMailJob < Que::Job
+      self.queue = 'mailer'
+
       def run(to, subject, body, html_body)
         Pony.mail(
           charset: 'utf-8',
