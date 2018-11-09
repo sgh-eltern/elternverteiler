@@ -15,7 +15,6 @@ require 'sgh/elternverteiler/mailing_list'
 require 'sgh/elternverteiler/vcard_presenter'
 
 require 'sgh/elternverteiler/jobs/update_lehrer_job'
-require 'sgh/elternverteiler/jobs/job'
 
 require 'sgh/elternverteiler/web/view_helpers'
 
@@ -528,6 +527,8 @@ module SGH
           end
 
           r.on 'jobs' do
+            require 'sgh/elternverteiler/jobs/job'
+
             r.root do
               topic 'Alle Jobs'
               @queues = Job.distinct(:queue).select(:queue).map(&:queue)
