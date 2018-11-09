@@ -7,6 +7,8 @@ require 'securerandom'
 require 'sequel'
 require 'tmpdir'
 
+require 'chromedriver-helper'
+
 require_relative 'helpers/klassenstufe_helpers'
 require_relative 'helpers/class_helpers'
 require_relative 'helpers/parent_helpers'
