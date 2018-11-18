@@ -1,0 +1,152 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'pry'
+require 'optparse'
+require 'simple-spreadsheet'
+
+dry_run = false
+
+begin
+  OptionParser.new do |opts|
+   opts.on('-n', '--dry-run', 'Dry-run. Analyze, but do not write back to the database') do
+     dry_run = true
+   end
+  end.parse!
+rescue StandardError => e
+  warn "Error: #{e.message}"
+  exit 1
+end
+
+$LOAD_PATH.unshift(File.expand_path('../lib', __dir__))
+
+require 'sequel'
+Sequel::Model.db = Sequel.connect(ENV.fetch('DB'))
+
+require 'sgh/elternverteiler'
+
+# rubocop:disable Style/MixinUsage
+include SGH::Elternverteiler
+# rubocop:enable Style/MixinUsage
+
+if ARGV.empty?
+  warn 'Error: Missing argument for document to read'
+  exit 1
+end
+
+s = SimpleSpreadsheet::Workbook.read(ARGV.first)
+s.selected_sheet = s.sheets.last
+
+headers = s.first_column.upto(s.last_column).map do |column_number|
+  [s.cell(s.first_row, column_number), column_number]
+end.to_h
+
+def find_klasse(klassenname)
+  case klassenname
+  when /(1?\d)([A-Z])/
+    ks = Klassenstufe.first!(name: Regexp.last_match(1))
+    Klasse.first!(stufe: ks, zug: Regexp.last_match(2))
+  when /J(1|2)/
+    ks = Klassenstufe.first!(name: klassenname)
+    Klasse.first!(stufe: ks)
+  else
+    raise "Konnte Klasse #{klassenname} nicht in Stufe und Zug zerlegen."
+  end
+end
+
+# Make sure there are no database entries that are not in the spreadsheet
+# e.g. left school
+all_in_spreadsheet = (s.first_row + 1).upto(s.last_row).map do |row_index|
+  klassenname = s.cell(row_index, headers['Klasse']).upcase
+
+  {
+    vorname: s.cell(row_index, headers['Vorname'])&.strip,
+    nachname: s.cell(row_index, headers['Name'])&.strip,
+    klasse: klassenname
+  }
+end
+
+Schüler.each do |schüler|
+  warn "NO_DATA: No entry found for #{schüler}" unless all_in_spreadsheet.include?(
+    {
+      vorname: schüler.vorname,
+      nachname: schüler.nachname,
+      klasse: schüler.klasse.name,
+    }
+  )
+end
+
+# Make sure all spreadsheet entries are in the database
+(s.first_row + 1).upto(s.last_row) do |line_number|
+  klassenname = s.cell(line_number, headers['Klasse']).upcase
+  vorname = s.cell(line_number, headers['Vorname'])&.strip
+  nachname = s.cell(line_number, headers['Name'])&.strip
+  klasse = find_klasse(klassenname)
+
+  child = Schüler.first( vorname: vorname, nachname: nachname, klasse: klasse )
+
+  if child.nil?
+    puts "MISSING: The database has no #{vorname} #{nachname} in Klasse #{klasse}"
+    next
+  end
+
+  1.upto(2).each do |parent_index|
+    mail = s.cell(line_number, headers["Erz#{parent_index}Email"])&.strip&.downcase
+    vorname = s.cell(line_number, headers["Erz#{parent_index}Vorname"])&.strip
+    nachname = s.cell(line_number, headers["Erz#{parent_index}Name"])&.strip
+
+    if md = /^(Dr\.)(.+)/.match(nachname)
+      title = md[1].strip # not stored yet
+      nachname = md[2].strip
+    end
+
+    if mail.to_s.empty?
+      if vorname.to_s.empty? && nachname.to_s.empty?
+        # no information about this parent
+        next
+      end
+
+      ezb = Erziehungsberechtigter.where( vorname: vorname, nachname: nachname )
+
+      case ezb.count
+        when 0
+          puts "OK #{vorname} #{nachname} is not in DB and has no mail in spreadsheet"
+        when 1
+          # BUG: This script is not idempotent yet because it deletes parents that are present in one class
+          # and not present in another one. Depending on what comes first, it may be added and deleted
+          # immediately afterwards.
+          # warn "NO_CONSENT Deleting #{ezb.first}"
+          # ezb.destroy unless dry_run
+      else
+        warn "ERROR: No mail in spreadsheet and multiple matches for #{vorname} #{nachname}: #{ezb.all.join(', ')}"
+        binding.pry
+      end
+    else
+      ezb = Erziehungsberechtigter.where( vorname: vorname, nachname: nachname, mail: mail )
+
+      if ezb.any?
+        puts "OK #{ezb.all.join(', ')} up to date"
+      else
+        fallback = Erziehungsberechtigter.where( vorname: vorname, nachname: nachname )
+
+        case fallback.count
+          when 0
+            warn "ADDING #{vorname} #{nachname} <#{mail}> (parent of #{child}) to DB"
+            unless dry_run
+              child.add_eltern Erziehungsberechtigter.find_or_create(vorname: vorname, nachname: nachname, mail: mail)
+            end
+          when 1
+            warn "CHANGING #{fallback.first} => #{mail}"
+            binding.pry
+            fallback.first.update_fields({mail: mail}, [:mail]) unless dry_run
+          else
+            warn "ERROR: New eMail given as #{mail}, and multiple matches for #{vorname} #{nachname}: #{fallback.all.join(', ')}"
+            binding.pry
+        end
+      end
+    end
+  end
+rescue StandardError => error
+  binding.pry
+  warn "Error: Skipping #{child} because of: #{error.message}"
+end
