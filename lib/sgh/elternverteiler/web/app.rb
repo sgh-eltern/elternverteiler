@@ -134,6 +134,11 @@ module SGH
               @erziehungsberechtigter = Erziehungsberechtigter.first!(id: id)
               topic 'Erziehungsberechtigte/r'
               view 'erziehungsberechtigter/show'
+            rescue Sequel::NoMatchingRow
+              flash.now[:error] = "Es gibt keinen Erziehungsberechtigten mit der ID #{id}"
+              response.status = 404
+              topic 'Nicht gefunden'
+              view 'erziehungsberechtigter/not_found'
             end
 
             r.post Integer, 'delete' do |id|
