@@ -47,7 +47,7 @@ module SGH
           Tempfile.create do |local_file|
             local_file_path = local_file.path
             @bucket.file(backup.name).download(local_file_path)
-            execute("set -o pipefail; gunzip -c #{Shellwords.escape(local_file_path)} | psql --set ON_ERROR_STOP=on #{@db_url}")
+            execute("set -o pipefail; gunzip -c #{Shellwords.escape(local_file_path)} | psql --set ON_ERROR_STOP=off #{@db_url}")
           end
         end
 
