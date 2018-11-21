@@ -116,6 +116,7 @@ end
           # and not present in another one. Depending on what comes first, it may be added and deleted
           # immediately afterwards.
           # warn "NO_CONSENT Deleting #{ezb.first}"
+          # TODO DO not delete if the parent has Ämter
           # ezb.destroy unless dry_run
       else
         warn "ERROR: No mail in spreadsheet and multiple matches for #{vorname} #{nachname}: #{ezb.all.join(', ')}"
