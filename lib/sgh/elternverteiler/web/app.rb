@@ -659,7 +659,7 @@ module SGH
           @list_server ||= SGH::Elternverteiler::ListServer.new(
             server: ENV.fetch('list_server_hostname'),
             user: ENV.fetch('list_server_username'),
-            private_key: Pathname(ENV.fetch('list_server_key_file'))
+            private_key: Pathname(ENV.fetch('list_server_key_file')).expand_path.read
           )
         end
       end
