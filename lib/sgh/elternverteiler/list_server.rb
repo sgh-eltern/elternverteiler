@@ -6,8 +6,8 @@ require 'pathname'
 
 module SGH
   module Elternverteiler
-    class MailServer
-      def initialize(server: '***REMOVED***.schickhardt-gymnasium-herrenberg.de', user: '***REMOVED***', private_key: Pathname('~/.ssh/elternverteiler_rsa').expand_path.read)
+    class ListServer
+      def initialize(server:, user:, private_key:)
         @server = server
         @user = user
         @private_key = private_key

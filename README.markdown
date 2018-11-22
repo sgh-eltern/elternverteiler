@@ -79,6 +79,16 @@ $ bundle exec sequel $DB
   $ bundle exec rake db:migrate
   ```
 
+* Create and authorize the SCP account
+
+  The app uses SCP to up- and download the distribution list. Create an account that is capable of scp'ing to the server using a private key (the app does not do password authentiation). Configure the app using the following environment variables:
+
+  ```sh
+  export list_server_hostname=foo.example.com
+  export list_server_username=bar
+  export list_server_key_file=~/.ssh/id_rsa
+  ```
+
 * Start the app and the background processor
 
   ```sh

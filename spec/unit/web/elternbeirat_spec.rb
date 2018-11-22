@@ -58,13 +58,13 @@ describe SGH::Elternverteiler::Web::App do
   end
 
   it "downloads the server's distribution list" do
-    expect_any_instance_of(SGH::Elternverteiler::MailServer).to receive(:download).and_return(current_distribution_list)
+    expect_any_instance_of(SGH::Elternverteiler::ListServer).to receive(:download).and_return(current_distribution_list)
     post '/verteiler/diff', distribution_list: updated_distribution_list
     expect(last_response).to be_ok
   end
 
   it 'uploads the new distribution list' do
-    expect_any_instance_of(SGH::Elternverteiler::MailServer).to receive(:upload).with(updated_distribution_list, anything)
+    expect_any_instance_of(SGH::Elternverteiler::ListServer).to receive(:upload).with(updated_distribution_list, anything)
     post '/verteiler/upload', distribution_list: updated_distribution_list
     expect(last_response.status).to eq(302)
     expect(last_response.location).to eq('/verteiler')

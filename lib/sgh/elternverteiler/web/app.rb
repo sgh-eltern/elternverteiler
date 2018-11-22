@@ -10,7 +10,7 @@ require 'sgh/elternverteiler'
 require 'sgh/elternverteiler/postmap_presenter'
 require 'sgh/elternverteiler/postmap_parser'
 require 'sgh/elternverteiler/recovery'
-require 'sgh/elternverteiler/mail_server'
+require 'sgh/elternverteiler/list_server'
 require 'sgh/elternverteiler/mailing_list'
 require 'sgh/elternverteiler/vcard_presenter'
 
@@ -500,7 +500,7 @@ module SGH
                 @distribution_list = r.params['distribution_list']
                 parser = SGH::Elternverteiler::PostmapParser.new
                 updated_distribution_list = parser.parse(@distribution_list)
-                current = parser.parse(SGH::Elternverteiler::MailServer.new.download)
+                current = parser.parse(list_server.download)
                 @diff = HashDiff.diff(current, updated_distribution_list)
 
                 topic 'Änderungen überprüfen'
@@ -509,7 +509,7 @@ module SGH
 
               r.on 'upload' do
                 distribution_list = r.params['distribution_list']
-                SGH::Elternverteiler::MailServer.new.upload(distribution_list, 'elternverteiler.txt')
+                list_server.upload(distribution_list, 'elternverteiler.txt')
                 flash[:success] = 'Verteiler wurde erfolgreich aktualisiert.'
                 r.redirect '/verteiler'
               end
@@ -653,6 +653,14 @@ module SGH
 
         def fächer
           @fächer ||= Fach.all.sort
+        end
+
+        def list_server
+          @list_server ||= SGH::Elternverteiler::ListServer.new(
+            server: ENV.fetch('list_server_hostname'),
+            user: ENV.fetch('list_server_username'),
+            private_key: Pathname(ENV.fetch('list_server_key_file'))
+          )
         end
       end
     end
