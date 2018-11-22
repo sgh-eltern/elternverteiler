@@ -86,15 +86,15 @@ describe LehrerMapper do
     end
   end
 
-  context 'Dr. ***REMOVED***' do
-    subject(:dr_wiebel) { lehrer.select { |l| l.nachname == '***REMOVED***' && l.vorname == 'Dirk' }.first }
+  context 'Dr. Wiebel' do
+    subject(:dr_wiebel) { lehrer.select { |l| l.nachname == 'Wiebel' && l.vorname == 'Dirk' }.first }
 
     it 'removes titles from email addresses' do
       expect(dr_wiebel.email).to eq('wiebel@sgh-mail.de')
     end
 
     it 'has the last name separate from the title' do
-      expect(dr_wiebel.nachname).to eq('***REMOVED***')
+      expect(dr_wiebel.nachname).to eq('Wiebel')
       expect(dr_wiebel.titel).to eq('Dr.')
     end
   end

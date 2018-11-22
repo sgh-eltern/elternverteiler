@@ -92,6 +92,7 @@ $ bundle exec sequel $DB
 * Start the app and the background processor
 
   ```sh
+  $ export puma_control_token=********
   $ export RACK_ENV=production
   $ gem install foreman
   $ foreman start
@@ -100,5 +101,5 @@ $ bundle exec sequel $DB
 * Show Puma stats
 
   ```sh
-  $ pumactl --control-url unix://var/puma-ctl.sock --control-token ***REMOVED*** stats
+  $ pumactl --control-url unix://var/puma-ctl.sock --control-token "$puma_control_token" stats
   ```

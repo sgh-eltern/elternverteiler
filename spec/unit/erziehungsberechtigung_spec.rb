@@ -108,7 +108,7 @@ describe Erziehungsberechtigung do
     let(:k7b) { Klasse.new(stufe: klassenstufe_7, zug: 'b').save }
     let(:k10c) { Klasse.new(stufe: klassenstufe_10, zug: 'c').save }
 
-    let(:martina) { Erziehungsberechtigter.new(vorname: '***REMOVED***a', nachname: 'Bock').save }
+    let(:martina) { Erziehungsberechtigter.new(vorname: 'Martina', nachname: 'Bock').save }
     let(:thomas) { Erziehungsberechtigter.new(vorname: 'Thomas', nachname: 'Mustermann').save }
     let(:tajana) { Schüler.new(vorname: 'Tajana', nachname: 'Bock', klasse: k4a).save }
     let(:david) { Schüler.new(vorname: 'David', nachname: 'Mustermann', klasse: k7b).save }
@@ -126,8 +126,8 @@ describe Erziehungsberechtigung do
         tajana.destroy
       end
 
-      it 'retains ***REMOVED***a and Thomas because of Mika' do
-        expect(Erziehungsberechtigter.first!(nachname: 'Bock', vorname: '***REMOVED***a')).to be
+      it 'retains Martina and Thomas because of Mika' do
+        expect(Erziehungsberechtigter.first!(nachname: 'Bock', vorname: 'Martina')).to be
         expect(Erziehungsberechtigter.first!(nachname: 'Mustermann', vorname: 'Thomas')).to be
       end
     end
@@ -137,8 +137,8 @@ describe Erziehungsberechtigung do
         david.destroy
       end
 
-      it 'retains ***REMOVED***a and Thomas because of Mika' do
-        expect(Erziehungsberechtigter.first!(nachname: 'Bock', vorname: '***REMOVED***a')).to be
+      it 'retains Martina and Thomas because of Mika' do
+        expect(Erziehungsberechtigter.first!(nachname: 'Bock', vorname: 'Martina')).to be
         expect(Erziehungsberechtigter.first!(nachname: 'Mustermann', vorname: 'Thomas')).to be
       end
     end
@@ -148,8 +148,8 @@ describe Erziehungsberechtigung do
         mika.destroy
       end
 
-      it 'retains ***REMOVED***a and Thomas because of Tajana and David, respectively' do
-        expect(Erziehungsberechtigter.first!(nachname: 'Bock', vorname: '***REMOVED***a')).to be
+      it 'retains Martina and Thomas because of Tajana and David, respectively' do
+        expect(Erziehungsberechtigter.first!(nachname: 'Bock', vorname: 'Martina')).to be
         expect(Erziehungsberechtigter.first!(nachname: 'Mustermann', vorname: 'Thomas')).to be
       end
     end
@@ -160,8 +160,8 @@ describe Erziehungsberechtigung do
         david.destroy
       end
 
-      it 'retains ***REMOVED***a and Thomas because of Mika' do
-        expect(Erziehungsberechtigter.first!(nachname: 'Bock', vorname: '***REMOVED***a')).to be
+      it 'retains Martina and Thomas because of Mika' do
+        expect(Erziehungsberechtigter.first!(nachname: 'Bock', vorname: 'Martina')).to be
         expect(Erziehungsberechtigter.first!(nachname: 'Mustermann', vorname: 'Thomas')).to be
       end
     end
@@ -172,8 +172,8 @@ describe Erziehungsberechtigung do
         david.destroy
       end
 
-      it 'retains ***REMOVED***a because of Tajana' do
-        expect(Erziehungsberechtigter.first!(nachname: 'Bock', vorname: '***REMOVED***a')).to be
+      it 'retains Martina because of Tajana' do
+        expect(Erziehungsberechtigter.first!(nachname: 'Bock', vorname: 'Martina')).to be
       end
 
       it 'destroys Thomas because he has no kid in school anymore' do
@@ -191,8 +191,8 @@ describe Erziehungsberechtigung do
         expect(Erziehungsberechtigter.first!(nachname: 'Mustermann', vorname: 'Thomas')).to be
       end
 
-      it 'destroys ***REMOVED***a because she has no kid in school anymore' do
-        expect(Erziehungsberechtigter.first(nachname: 'Bock', vorname: '***REMOVED***a')).to_not be
+      it 'destroys Martina because she has no kid in school anymore' do
+        expect(Erziehungsberechtigter.first(nachname: 'Bock', vorname: 'Martina')).to_not be
       end
     end
   end

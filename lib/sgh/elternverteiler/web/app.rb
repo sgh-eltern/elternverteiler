@@ -76,12 +76,6 @@ module SGH
             '/verteiler.txt': '&nbsp;&nbsp;Plain',
 
             '/jobs': 'Jobs',
-
-            # TODO: New views
-            # '/verteiler/klassen': '&nbsp;Eltern',
-            # '/verteiler/klassenstufen': '&nbsp;Klassenstufen',
-            # '/verteiler/eltern': '&nbsp;Alle Eltern',
-            # '/verteiler/elternbeirat': '&nbsp;Elternbeirat',
           }
           @current_path = r.path
           @user = r.headers['Multipass-Handle']

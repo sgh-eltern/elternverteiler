@@ -29,11 +29,6 @@ end.to_h
 
 # Must be corrected in master spreadsheet
 IGNORED = [
-  '***REMOVED***', # missing e in de
-  '***REMOVED***', # typo
-  '***REMOVED***', # who's got which email?
-  '***REMOVED***', # is probably steinki.name
-  '***REMOVED***', # is probably steinki.name
 ].freeze
 
 def find_klasse(klassenname)

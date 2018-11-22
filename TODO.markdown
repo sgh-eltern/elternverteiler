@@ -36,6 +36,11 @@
 * EBV1 is member of SK by design and cannot be elected as member of the SK
 * Dropdown boxes have the class list in the wrong order
 * Some roles are being delegated from the Elternbeirat, and not from the class (e.g. Schulkonferenz). For those, do not record the class where the parent is having this role for, or at least do not show it (in `to_s` etc)
+* New views under Verteiler
+  - '/verteiler/klassen': '&nbsp;Eltern',
+  - '/verteiler/klassenstufen': '&nbsp;Klassenstufen',
+  - '/verteiler/eltern': '&nbsp;Alle Eltern',
+  - '/verteiler/elternbeirat': '&nbsp;Elternbeirat',
 
 # Development / Technical Dept
 
