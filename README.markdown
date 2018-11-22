@@ -45,7 +45,7 @@
 # Test
 
 ```sh
-dropdb elternverteiler_test; createdb elternverteiler_test; rake db:migrate
+$ dropdb elternverteiler_test; createdb elternverteiler_test; rake db:migrate
 bundle exec rake
 ```
 
@@ -77,6 +77,7 @@ $ bundle exec sequel $DB
   $ createdb elternverteiler
   $ export DB=postgres://localhost/elternverteiler
   $ bundle exec rake db:migrate
+  ```
 
 * Start the app and the background processor
 
@@ -89,5 +90,5 @@ $ bundle exec sequel $DB
 * Show Puma stats
 
   ```sh
-  pumactl --control-url unix://var/puma-ctl.sock --control-token ***REMOVED*** stats
+  $ pumactl --control-url unix://var/puma-ctl.sock --control-token ***REMOVED*** stats
   ```
