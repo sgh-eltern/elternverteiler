@@ -1,0 +1,11 @@
+<% form(@amtsperiode,
+        :inputs_wrapper => :fieldset,
+        class: 'pure-form pure-form-aligned',
+        method: 'post',
+        action: "#{amt_path(@amt)}/inhaber/add",
+        ) do |f| %>
+  <%== f.input(:klasse, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>
+  <%== f.input(:inhaber, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>
+  <%== f.button(value: 'Speichern', class: "pure-button pure-button-primary") %>
+  <input type="reset" value="Zurücksetzen" class="pure-button">
+<% end %>

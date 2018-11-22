@@ -1,27 +1,50 @@
-<table class="pure-table pure-table-horizontal sgh-elternverteiler-amt">
-  <tr>
-    <th style="border-left-style: hidden; border-right-style: hidden; border-top-style: hidden; text-align: left;" colspan=2>
-      <h2>Stammdaten</h2>
-    </th>
-  </tr>
+<h2>Inhaber</h2>
 
-  <tr>
-    <th style="background-color: #f2f2f2; text-align: right;">Name</th>
-    <td><%= @amt.name %></td>
-  </tr>
+<p>
+  <a href="<%= amt_path(@amt) %>/inhaber/add" class="pure-button pure-button-primary">Hinzufügen</a>
+</p>
 
+<table class="pure-table pure-table-horizontal sgh-elternverteiler-amtsinhaber">
+  <thead>
+    <tr>
+      <th>Inhaber</th>
+      <th>Klasse</th>
+      <th/>
+    </tr>
+  </thead>
+
+  <tbody>
+
+  <% @amt.amtsperioden.each do |amtsperiode| %>
   <tr>
-    <th valign="top" style="background-color: #f2f2f2; text-align: right;">
-      Inhaber
-    </th>
     <td>
-      <% @amt.inhaber.each do |inhaber| %>
-        <a href="/eltern/<%= inhaber.id %>"><%= inhaber.nachname %>, <%= inhaber.vorname %></a><br/>
-      <% end %>
+      <a href="/eltern/<%= amtsperiode.inhaber.id %>"><%= amtsperiode.inhaber.nachname %>, <%= amtsperiode.inhaber.vorname %></a><br/>
+    </td>
+
+    <td>
+      <%= amtsperiode.klasse.name %><br/>
+    </td>
+
+    <td class="no-print">
+        <% form(amtsperiode,
+                :inputs_wrapper => :fieldset,
+                class: 'pure-form pure-form-aligned',
+                action: "#{klasse_path(amtsperiode.klasse)}/ämter/#{amtsperiode.amt.id}/inhaber/#{amtsperiode.inhaber.id}",
+                method: 'post',
+                ) do |f| %>
+          <%== f.button(
+                 value: 'Entfernen',
+                 class: "pure-button button-destructive",
+                 onclick: "return confirm('Sind Sie sicher, daß Sie den #{@amt} der #{amtsperiode.klasse} löschen möchten?')"
+               )
+          %>
+        <% end %>
     </td>
   </tr>
+  <% end %>
 
   <%== partial('meta', locals: { item: @amt }) %>
+  </tbody>
 </table>
 
 <form action="/ämter/<%= @amt.id %>/delete" class="pure-form pure-form-aligned" method="post">

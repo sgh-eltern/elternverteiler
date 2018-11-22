@@ -17,8 +17,40 @@ describe 'Ämter', type: :feature do
     after { delete_role('Klassenkasper') }
 
     it 'lists the role' do
-      within('.sgh-elternverteiler-amt') do
-        expect(page).to have_content('Klassenkasper')
+      expect(page).to have_content('Klassenkasper')
+    end
+
+    context 'Homer and 5a exist' do
+      before do
+        create_klassenstufe('5')
+        create_class('5', 'A')
+        create_pupil('Simpson', 'Bart', '5A')
+        create_parent('Simpson', 'Homer', 'homer@simpson.name')
+        assign_parent('Simpson', 'Simpson, Homer')
+      end
+
+      after do
+        delete_parent('Simpson', 'Homer', 'homer@simpson.name')
+        delete_pupil('Simpson', 'Bart', '5A')
+        delete_class('5A')
+        delete_klassenstufe('5')
+      end
+
+      it 'makes Homer the Klassenkasper of 5a' do
+        visit '/'
+        within('#menu') { click_link('Ämter') }
+        within('.sgh-elternverteiler-ämter') { click_link('Klassenkasper') }
+        within('.content') { click_link('Hinzufügen') }
+        find('#sgh-elternverteiler-amtsperiode_klasse_id').click
+        select('5A')
+
+        find('#sgh-elternverteiler-amtsperiode_inhaber_id').click
+        select('Simpson, Homer')
+
+        click_button('Speichern')
+
+        within('aside.success') { expect(page).to have_content('Homer Simpson ist jetzt Klassenkasper in der Klasse 5A') }
+        within('.sgh-elternverteiler-amtsinhaber'){ expect(page).to have_content('Simpson, Homer') }
       end
     end
 

@@ -3,13 +3,12 @@
 * Amt needs a new field `address` where we can specify the (unique) short address of the mailing list for the Amtsinhaber
 * Amt needs a new field `slug` ("ev1") besides the long name (which should actually be longer and more descriptive, like "1. Elternvertreter")
 * The following are composite roles, made by combining two or more other roles:
-  - elternbeirat
+  - elternvertreter
   - elternbeiratsvorsitzende
   - elternvertreter_schulkonferenz
   - delegierte_gesamtelternbeirat
 
 * Change the `PostmapPresenter` to present a `MailingList`
-* Add / remove an Amtsinhaber from the Amt page: http://localhost:9292/ämter/3
 * Find duplicate entries, maybe merge them
 * Vor Neuwahl der EBV gibt es keine gewählten Vertreter mehr; löschen ist aber im UI noch nicht drin.
 

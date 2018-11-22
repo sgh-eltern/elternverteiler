@@ -240,7 +240,7 @@ module SGH
                 view 'klassen/show'
               end
 
-              r.get CGI.escape('ämter'), 'add' do |klasse_id|
+              r.get CGI.escape('ämter'), 'add' do
                 topic "Neue Amtsperiode in der #{@klasse}"
                 @amtsperiode = Amtsperiode.new(klasse: @klasse)
                 view 'elternvertreter/add'
@@ -308,21 +308,37 @@ module SGH
 
           r.on CGI.escape('ämter') do
             r.get 'neu' do |id|
-              topic 'Neue Amt anlegen'
+              topic 'Neues Amt anlegen'
               @amt = Amt.new
               view 'ämter/new'
             end
 
             r.get Integer do |id|
               @amt = Amt.first!(id: id)
-              topic 'Amt'
+              topic "Amt: #{@amt.name}"
               view 'ämter/show'
+            end
+
+            r.get Integer, 'inhaber', 'add' do |id|
+              @amt = Amt.first!(id: id)
+              @amtsperiode = Amtsperiode.new(amt: @amt)
+              topic "Neuer #{@amt.name}"
+              view 'ämter/add_inhaber'
             end
 
             r.post Integer, 'delete' do |id|
               @amt = Amt.first!(id: id).destroy
               flash[:success] = "Das Amt #{@amt} wurde gelöscht."
               r.redirect '/ämter'
+            end
+
+            r.post Integer, 'inhaber', 'add' do |id|
+              amt = Amt.first!(id: id)
+              klasse = Klasse.first!(id: r.params['sgh-elternverteiler-amtsperiode']['klasse_id'])
+              inhaber = Erziehungsberechtigter.first!(id: r.params['sgh-elternverteiler-amtsperiode']['inhaber_id'])
+              Amtsperiode.new(klasse: klasse, amt: amt, inhaber: inhaber).save
+              flash[:success] = "#{inhaber} ist jetzt #{amt} in der #{klasse}"
+              r.redirect amt_path(amt)
             end
 
             r.post Integer do |id|
