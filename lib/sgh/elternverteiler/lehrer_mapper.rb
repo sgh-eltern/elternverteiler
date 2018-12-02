@@ -17,9 +17,11 @@ module SGH
           if lehrer.size == 1
             l = lehrer.first
             l.email = email(l.nachname)
+            l.save
           else
             lehrer.each do |l|
               l.email = email(l.nachname, l.vorname)
+              l.save
             end
           end
         end
