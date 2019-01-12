@@ -1,5 +1,6 @@
 # Domain
 
+* Schüler may have an eMail address, too. This may be helpful for those that are members of the Schulkonferenz.
 * Amt needs a new field `address` where we can specify the (unique) short address of the mailing list for the Amtsinhaber
 * Amt needs a new field `slug` ("ev1") besides the long name (which should actually be longer and more descriptive, like "1. Elternvertreter")
 * The following are composite roles, made by combining two or more other roles:

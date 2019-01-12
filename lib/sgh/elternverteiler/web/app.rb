@@ -587,6 +587,10 @@ module SGH
           @klassen ||= Klasse.sort
         end
 
+        def schulkonferenz
+          @schulkonferenz ||= SGH::Elternverteiler.schulkonferenz
+        end
+
         def eltern_total
           @eltern_total ||= Erziehungsberechtigter.count
         end

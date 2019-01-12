@@ -56,3 +56,7 @@
 <%
 =end
 %>
+
+# Schulkonferenz: <%= schulkonferenz.count %> Adressen
+<% mailing_list = schulkonferenz.mailing_list %>
+<%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>

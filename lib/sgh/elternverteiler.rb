@@ -18,7 +18,7 @@ module SGH
     class Lehrer < Sequel::Model(:lehrer); end
 
     def self.elternbeirat
-      Amt.where(name: ['1.EV', '2.EV']).
+      Amt.where(Sequel.like(:name, '%.EV')).
         map(&:inhaber).
         flatten.
         sort_by(&:nachname).
@@ -34,7 +34,7 @@ module SGH
     end
 
     def self.elternbeiratsvorsitzende
-      Amt.where(name: ['1.EBV', '2.EBV']).
+      Amt.where(Sequel.like(:name, '%.EBV')).
         map(&:inhaber).
         flatten.
         sort_by(&:nachname).
@@ -75,6 +75,24 @@ module SGH
           MailingList.new(
             name: 'GEB-Delegierte',
             address: 'geb-delegierte',
+            members: all
+          )
+        end
+      end
+    end
+
+    SchulkonferenzMitglied = Struct.new(:mail)
+
+    def self.schulkonferenz
+      %w( wiebel@sgh-mail.de epple@sgh-mail.de kernchen@sgh-mail.de bertsch-noedinger@sgh-mail.de
+        sgh@familie-uhlig.net claudia.bartsch@gmx.net anja.hue@gmx.de elisabeth.schiffer@gmx.net kersten.alward@gmx.de
+        leo.verbarg@web.de lea.schrade@web.de philipp.hamm@gmx.de ).
+      map {|m| SchulkonferenzMitglied.new(m) }.
+      tap do |all|
+        all.define_singleton_method(:mailing_list) do
+          MailingList.new(
+            name: 'Schulkonferenz',
+            address: 'schulkonferenz',
             members: all
           )
         end
