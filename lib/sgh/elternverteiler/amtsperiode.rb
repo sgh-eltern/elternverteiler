@@ -12,7 +12,7 @@ module SGH
       many_to_one :klasse
 
       def to_s
-        [amt, klasse].join(' ')
+        [amt, klasse].join(' ') << ": #{inhaber}"
       end
     end
   end
