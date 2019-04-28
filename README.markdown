@@ -51,6 +51,12 @@ bundle exec rake
 
 If desired, restore a backup from within the app in order to get some real data.
 
+Acceptance tests can be run in parallel:
+
+```sh
+$ rake parallel:rspec:acceptance
+```
+
 # Troubleshooting
 
 ## Use the `sequel` database monitor

@@ -24,7 +24,7 @@ gem 'tilt'
 
 group 'development' do
   gem 'capybara'
-  gem 'chromedriver-helper'
+  gem 'webdrivers'
   gem 'guard-bundler', require: false
   gem 'guard-rspec', require: false
   gem 'parallel_tests'
