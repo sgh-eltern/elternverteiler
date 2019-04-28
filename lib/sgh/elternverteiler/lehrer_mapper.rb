@@ -8,10 +8,11 @@ module SGH
     class LehrerMapper
       def map(html)
         factory = LehrerFactory.new
-
         lehrer = Nokogiri::HTML(html).xpath('//table/tbody/tr[position() > 1]').map do |tr|
-          factory.map(tr.xpath('td/text()').map(&:to_s).map(&:strip))
-        end
+          factory.
+            map(tr.xpath('td/text()').
+            map(&:to_s).map(&:strip))
+        end.compact
 
         lehrer.group_by{|l| l.nachname}.each do |nachname, lehrer|
           if lehrer.size == 1

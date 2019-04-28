@@ -42,6 +42,28 @@
   - '/verteiler/klassenstufen': '&nbsp;Klassenstufen',
   - '/verteiler/eltern': '&nbsp;Alle Eltern',
   - '/verteiler/elternbeirat': '&nbsp;Elternbeirat',
+* Jede Amtsperiode hat eine Mailingliste
+
+  ```ruby
+  k8c = Klasse.first(stufe: Klassenstufe.first(name: '8'), zug: 'C')
+  ev1 = Amt.first name: '1.EV'
+  ev2 = Amt.first name: '2.EV'
+  ev8c = Amtsperiode.where(amt: [ev1, ev2], klasse: k8c)
+
+  ev8c.mailing_list =>
+  ```
+
+  Alternativ:
+
+  ```ruby
+  Amtsperiode.where(
+    amt: Amt.where(Sequel.like(:name, '%.EV')), klasse: klasse
+    ).sort_by(&:to_s)
+
+  k8c = Klasse.first(stufe: Klassenstufe.first(name: '8'), zug: 'C')
+  eb = Amt.where(Sequel.like(:name, '%.EV'))
+  Amtsperiode.where(amt: eb, klasse: k8c).inhaber.mailing_list
+  ```
 
 # Development / Technical Dept
 
