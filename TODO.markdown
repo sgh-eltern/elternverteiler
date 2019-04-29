@@ -68,7 +68,7 @@
 # Development / Technical Dept
 
 * Refactor the duplicate queries in app.rb to methods on the app instance
-* `plugin :csrf`
+* Add `<%== csrf_tag %>` to all forms
 * rubocop-rspec
 * https://github.com/ericqweinstein/ruumba
 * Double-check web security
