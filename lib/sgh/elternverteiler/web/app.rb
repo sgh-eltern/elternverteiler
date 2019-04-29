@@ -347,7 +347,7 @@ module SGH
               @amt.save
               r.redirect "/ämter/#{@amt.id}"
             rescue Sequel::UniqueConstraintViolation
-              topic 'Neue Amt anlegen'
+              topic 'Neues Amt anlegen'
               flash.now['error'] = "Das Amt #{@amt.name} existiert bereits"
               view 'ämter/new'
             end
