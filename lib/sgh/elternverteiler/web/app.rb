@@ -22,7 +22,9 @@ module SGH
   module Elternverteiler
     module Web
       class App < Roda
-        use Rack::Session::Cookie, secret: ENV.fetch('SESSION_SECRET')
+        plugin :sessions, secret: ENV.fetch('SESSION_SECRET'), key: 'elternverteiler.session'
+        plugin :request_aref, :raise
+        plugin :route_csrf, :csrf_failure => :clear_session
 
         plugin :flash
         plugin :forme
@@ -129,7 +131,7 @@ module SGH
               topic 'Erziehungsberechtigte/r'
               view 'erziehungsberechtigter/show'
             rescue Sequel::NoMatchingRow
-              flash.now[:error] = "Es gibt keinen Erziehungsberechtigten mit der ID #{id}"
+              flash.now['error'] = "Es gibt keinen Erziehungsberechtigten mit der ID #{id}"
               response.status = 404
               topic 'Nicht gefunden'
               view 'erziehungsberechtigter/not_found'
@@ -137,7 +139,7 @@ module SGH
 
             r.post Integer, 'delete' do |id|
               @erziehungsberechtigter = Erziehungsberechtigter.first!(id: id).destroy
-              flash[:success] = "#{@erziehungsberechtigter} wurde gelöscht."
+              flash['success'] = "#{@erziehungsberechtigter} wurde gelöscht."
               r.redirect '/eltern'
             end
 
@@ -151,11 +153,11 @@ module SGH
               @erziehungsberechtigter = Erziehungsberechtigter.first!(id: id)
               @erziehungsberechtigter.set_fields(r.params['sgh-elternverteiler-erziehungsberechtigter'], %w[vorname nachname mail telefon])
               @erziehungsberechtigter.save
-              flash[:success] = 'Erziehungsberechtigter wurde aktualisiert'
+              flash['success'] = 'Erziehungsberechtigter wurde aktualisiert'
               r.redirect
             rescue SGH::Elternverteiler::Erziehungsberechtigter::ValidationError
               topic 'Eltern bearbeiten'
-              flash.now[:error] = $ERROR_INFO.message
+              flash.now['error'] = $ERROR_INFO.message
               view 'erziehungsberechtigter/edit'
             end
 
@@ -166,7 +168,7 @@ module SGH
               r.redirect "/eltern/#{@erziehungsberechtigter.id}"
             rescue SGH::Elternverteiler::Erziehungsberechtigter::ValidationError
               topic 'Erziehungsberechtigten hinzufügen'
-              flash.now[:error] = $ERROR_INFO.message
+              flash.now['error'] = $ERROR_INFO.message
               view 'erziehungsberechtigter/new'
             end
           end
@@ -194,10 +196,10 @@ module SGH
 
               r.post 'delete' do |id|
                 @klassenstufe.destroy
-                flash[:success] = "#{@klassenstufe} wurde gelöscht."
+                flash['success'] = "#{@klassenstufe} wurde gelöscht."
                 r.redirect '/klassenstufen'
               rescue StandardError
-                flash[:error] = "Die #{@klassenstufe} hat Klassen und kann deshalb nicht gelöscht werden."
+                flash['error'] = "Die #{@klassenstufe} hat Klassen und kann deshalb nicht gelöscht werden."
                 r.redirect(r.referrer)
               end
 
@@ -213,7 +215,7 @@ module SGH
               r.redirect klassenstufe_path(@klassenstufe)
             rescue Sequel::UniqueConstraintViolation
               topic 'Neue Klassenstufe anlegen'
-              flash.now[:error] = "Die #{@klassenstufe} existiert bereits"
+              flash.now['error'] = "Die #{@klassenstufe} existiert bereits"
               view 'klassenstufen/new'
             end
           end
@@ -244,7 +246,7 @@ module SGH
                 amt = Amt.first!(id: r.params['sgh-elternverteiler-amtsperiode']['amt_id'])
                 inhaber = Erziehungsberechtigter.first!(id: r.params['sgh-elternverteiler-amtsperiode']['inhaber_id'])
                 Amtsperiode.new(klasse: @klasse, amt: amt, inhaber: inhaber).save
-                flash[:success] = "#{inhaber} ist jetzt #{amt} in der #{@klasse}"
+                flash['success'] = "#{inhaber} ist jetzt #{amt} in der #{@klasse}"
                 r.redirect(klasse_path(@klasse))
               end
 
@@ -253,13 +255,13 @@ module SGH
                 amt = Amt.first!(id: amt_id)
                 inhaber = Erziehungsberechtigter.first!(id: inhaber_id)
                 Amtsperiode.first!(klasse: @klasse, amt: amt, inhaber: inhaber).destroy
-                flash[:success] = "#{inhaber} ist nicht mehr #{amt} in der #{@klasse}."
+                flash['success'] = "#{inhaber} ist nicht mehr #{amt} in der #{@klasse}."
                 r.redirect(klasse_path(@klasse))
               end
 
               r.post 'delete' do
                 @klasse.destroy
-                flash[:success] = "#{@klasse} wurde gelöscht."
+                flash['success'] = "#{@klasse} wurde gelöscht."
                 r.redirect '/klassen'
               end
 
@@ -267,7 +269,7 @@ module SGH
                 raise "Missing implementation for editing #{@klasse}"
               end
             rescue Sequel::NoMatchingRow
-              flash.now[:error] = "Es gibt keine Klasse #{st}#{zg}"
+              flash.now['error'] = "Es gibt keine Klasse #{st}#{zg}"
               response.status = 404
               topic 'Klasse nicht gefunden'
               view 'klassen/not_found'
@@ -286,11 +288,11 @@ module SGH
               r.redirect(klasse_path(@klasse))
             rescue Sequel::UniqueConstraintViolation
               topic 'Neue Klasse anlegen'
-              flash.now[:error] = "Die #{@klasse} existiert bereits"
+              flash.now['error'] = "Die #{@klasse} existiert bereits"
               view 'klassen/new'
             rescue Sequel::ValidationFailed
               topic 'Neue Klasse anlegen'
-              flash.now[:error] = 'Validierung fehlgeschlagen'
+              flash.now['error'] = 'Validierung fehlgeschlagen'
               view 'klassen/new'
             end
 
@@ -322,7 +324,7 @@ module SGH
 
             r.post Integer, 'delete' do |id|
               @amt = Amt.first!(id: id).destroy
-              flash[:success] = "Das Amt #{@amt} wurde gelöscht."
+              flash['success'] = "Das Amt #{@amt} wurde gelöscht."
               r.redirect '/ämter'
             end
 
@@ -331,7 +333,7 @@ module SGH
               klasse = Klasse.first!(id: r.params['sgh-elternverteiler-amtsperiode']['klasse_id'])
               inhaber = Erziehungsberechtigter.first!(id: r.params['sgh-elternverteiler-amtsperiode']['inhaber_id'])
               Amtsperiode.new(klasse: klasse, amt: amt, inhaber: inhaber).save
-              flash[:success] = "#{inhaber} ist jetzt #{amt} in der #{klasse}"
+              flash['success'] = "#{inhaber} ist jetzt #{amt} in der #{klasse}"
               r.redirect amt_path(amt)
             end
 
@@ -346,7 +348,7 @@ module SGH
               r.redirect "/ämter/#{@amt.id}"
             rescue Sequel::UniqueConstraintViolation
               topic 'Neue Amt anlegen'
-              flash.now[:error] = "Das Amt #{@amt.name} existiert bereits"
+              flash.now['error'] = "Das Amt #{@amt.name} existiert bereits"
               view 'ämter/new'
             end
 
@@ -384,7 +386,7 @@ module SGH
 
             r.post Integer, 'delete' do |id|
               @schüler = Schüler.first!(id: id).destroy
-              flash[:success] = "#{@schüler} wurde gelöscht."
+              flash['success'] = "#{@schüler} wurde gelöscht."
               r.redirect '/schüler'
             end
 
@@ -392,7 +394,7 @@ module SGH
               schüler = Schüler.first!(id: id)
               erziehungsberechtigter = Erziehungsberechtigter.first!(id: r.params['sgh-elternverteiler-erziehungsberechtigung']['erziehungsberechtigter_id'])
               Erziehungsberechtigung.new(schüler: schüler, erziehungsberechtigter: erziehungsberechtigter).save
-              flash[:success] = "#{erziehungsberechtigter} ist jetzt als Erziehungsberechtigte(r) von #{schüler} registriert."
+              flash['success'] = "#{erziehungsberechtigter} ist jetzt als Erziehungsberechtigte(r) von #{schüler} registriert."
               r.redirect "/schüler/#{schüler.id}"
             end
 
@@ -400,11 +402,11 @@ module SGH
               @schüler = Schüler.first!(id: id)
               @schüler.set_fields(r.params['sgh-elternverteiler-schüler'], %w[vorname nachname klasse_id])
               @schüler.save
-              flash[:success] = 'Schüler wurde aktualisiert'
+              flash['success'] = 'Schüler wurde aktualisiert'
               r.redirect
             rescue Sequel::ConstraintViolation
               topic 'Schüler bearbeiten'
-              flash.now[:error] = 'Alle Pflichtfelder müssen ausgefüllt werden.'
+              flash.now['error'] = 'Alle Pflichtfelder müssen ausgefüllt werden.'
               view 'schüler/edit'
             end
 
@@ -415,7 +417,7 @@ module SGH
               r.redirect "/schüler/#{@schüler.id}"
             rescue Sequel::ConstraintViolation
               topic 'Schüler anlegen'
-              flash.now[:error] = 'Alle Pflichtfelder müssen ausgefüllt werden.'
+              flash.now['error'] = 'Alle Pflichtfelder müssen ausgefüllt werden.'
               view 'schüler/new'
             end
 
@@ -446,15 +448,15 @@ module SGH
               name = r.params['sgh/elternverteiler/backups']
 
               if name.nil?
-                flash[:warning] = 'Kein Backup ausgewählt'
+                flash['warning'] = 'Kein Backup ausgewählt'
                 r.redirect
               end
 
               @backup_manager.restore(Recovery::Backup.new(name: name))
-              flash[:success] = "Backup #{name} wurde eingespielt."
+              flash['success'] = "Backup #{name} wurde eingespielt."
               r.redirect
             rescue Recovery::ExecutionError
-              flash[:error] = "Backup #{name} konnte nicht eingespielt werden."
+              flash['error'] = "Backup #{name} konnte nicht eingespielt werden."
               warn "Command: #{$ERROR_INFO.command}"
               warn "STDOUT: #{$ERROR_INFO.stdout}"
               warn "STDERR: #{$ERROR_INFO.stderr}"
@@ -464,11 +466,11 @@ module SGH
             r.post do
               @backup = Recovery::Backup.new(name: r.params['name'])
               @backup_manager.backup(@backup)
-              flash[:success] = "Backup #{@backup.name} wurde angelegt."
+              flash['success'] = "Backup #{@backup.name} wurde angelegt."
               r.redirect
             rescue StandardError
               topic 'Neues Backup'
-              flash.now[:error] = $ERROR_INFO.message
+              flash.now['error'] = $ERROR_INFO.message
               view 'backups/new'
             end
 
@@ -504,7 +506,7 @@ module SGH
               r.on 'upload' do
                 distribution_list = r.params['distribution_list']
                 list_server.upload(distribution_list, 'elternverteiler.txt')
-                flash[:success] = 'Verteiler wurde erfolgreich aktualisiert.'
+                flash['success'] = 'Verteiler wurde erfolgreich aktualisiert.'
                 r.redirect '/verteiler'
               end
 
@@ -536,7 +538,7 @@ module SGH
 
             r.post do
               job = UpdateLehrerJob.enqueue
-              flash[:success] = "Liste wird aktualisiert als job <a href='/jobs/#{job.que_attrs[:id]}'>#{job.que_attrs[:id]}</a>."
+              flash['success'] = "Liste wird aktualisiert als job <a href='/jobs/#{job.que_attrs[:id]}'>#{job.que_attrs[:id]}</a>."
               r.redirect '/lehrer'
             end
           end

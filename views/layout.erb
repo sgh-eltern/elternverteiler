@@ -47,7 +47,7 @@
         </div>
 
         <div class="content">
-          <% %i(success warning error).each do |level| %>
+          <% %w(success warning error).each do |level| %>
             <% if flash[level] %>
               <aside class="<%= level %>"><%== flash[level] %></aside>
             <% end %>
