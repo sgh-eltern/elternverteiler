@@ -80,7 +80,6 @@ module SGH
             '/jobs': 'Jobs',
           }
           @current_path = r.path
-          @user = r.headers['Multipass-Handle']
 
           r.root do
             topic 'Übersicht'
