@@ -56,7 +56,7 @@ module SGH
         route do |r|
           title 'Elternbeirat am SGH'
           @menu = {
-            '/elternbeirat': 'Elternvertreter',
+            '/elternbeirat': 'Elternbeirat',
             '/elternbeirat/anwesenheit': '&nbsp;&nbsp;Anwesenheit',
             '/elternbeirat/klassen': '&nbsp;&nbsp;nach Klassen',
 
