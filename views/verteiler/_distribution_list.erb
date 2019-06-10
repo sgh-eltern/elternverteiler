@@ -43,19 +43,17 @@
 <% mailing_list = ebv.mailing_list %>
 <%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
 
-<%
-=begin
-%>
 # Ämter
-<% SGH::Elternverteiler::Amt.each do |amt| %>
+<% SGH::Elternverteiler::Amt.where(name: 'Seehocketse 2019').each do |amt| %>
 
 <% mailing_list = amt.mailing_list %>
 ## <%= mailing_list.name %>: <%= mailing_list.members.count %> Adressen
-<%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
-<% end %>
 <%
-=end
+# TODO This needs some work ...
+address = mailing_list.address {|list| "#{list.name.to_s.downcase.tr(' ', '-')}@schickhardt-gymnasium-herrenberg.de"}
 %>
+<%= SGH::Elternverteiler::PostmapPresenter.new(address).present(mailing_list.members) %>
+<% end %>
 
 # Schulkonferenz: <%= schulkonferenz.count %> Adressen
 <% mailing_list = schulkonferenz.mailing_list %>

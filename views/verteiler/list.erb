@@ -78,16 +78,12 @@
   </tbody>
 </table>
 
-<%
-=begin
-%>
-
-<h1>Ämter</h1>
+<h1>Seehocketse 2019</h1>
 <table class="pure-table pure-table-bordered sgh-elternverteiler-ämter">
   <%== partial('verteiler/thead') %>
   <tbody>
-    <% SGH::Elternverteiler::Amt.each do |amt| %>
-    <%== partial('verteiler/tr', locals: { liste: amt.mailing_list }) %>
+    <% SGH::Elternverteiler::Amt.where(name: 'Seehocketse 2019').each do |amt| %>
+    <%== partial('verteiler/amt', locals: { liste: amt.mailing_list }) %>
     <% end %>
   </tbody>
 </table>

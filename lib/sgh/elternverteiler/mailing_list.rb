@@ -10,13 +10,17 @@ module SGH
       end
 
       def address(format=:short)
-        case format
-        when :short
-          self[:address].downcase
-        when :long
-          "#{self[:address].downcase}@schickhardt-gymnasium-herrenberg.de"
+        if block_given?
+          yield self
         else
-          raise "Unknown format #{format}"
+          case format
+          when :short
+            self[:address].downcase
+          when :long
+            "#{self[:address].downcase}@schickhardt-gymnasium-herrenberg.de"
+          else
+            raise "Unknown format #{format} and no block given"
+          end
         end
       end
 

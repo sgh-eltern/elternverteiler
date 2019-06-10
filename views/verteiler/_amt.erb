@@ -1,0 +1,15 @@
+<%
+# TODO This needs some work ...
+address = liste.address {|list| "#{list.name.to_s.downcase.tr(' ', '-')}@schickhardt-gymnasium-herrenberg.de"}
+%>
+<tr valign="top">
+  <td>
+    <a href="<%= liste.url %>"><%= liste.name %></a>
+  </td>
+  <td>
+    <a href="mailto:<%= address %>"><%= address %></a>
+  </td>
+  <td>
+    <%= liste.members.count %>
+  </td>
+</tr>
