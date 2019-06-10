@@ -1,4 +1,6 @@
 name: <%= File.basename(Dir.pwd) %>
+on_project_start:
+  - brew services start postgres
 windows:
   - app:
       panes:
