@@ -76,6 +76,7 @@ module SGH
 
             '/verteiler': 'Verteiler',
             '/verteiler.txt': '&nbsp;&nbsp;Plain',
+            '/verteiler.vcf': '&nbsp;&nbsp;vCard',
 
             '/jobs': 'Jobs',
           }
@@ -498,6 +499,11 @@ module SGH
             render 'verteiler/_distribution_list'
           end
 
+          r.on 'verteiler.vcf' do
+            response['Content-Type'] = 'text/vcard; charset=utf-8'
+            render 'verteiler/vcard'
+          end
+
           r.on 'verteiler' do
             r.root do
               topic 'Alle eMail-Verteiler'
@@ -521,11 +527,6 @@ module SGH
                 list_server.upload(distribution_list, 'elternverteiler.txt')
                 flash['success'] = 'Verteiler wurde erfolgreich aktualisiert.'
                 r.redirect '/verteiler'
-              end
-
-              r.on 'export' do
-                response['Content-Type'] = 'text/vcard; charset=utf-8'
-                render 'verteiler/vcard'
               end
             end
           end

@@ -1,5 +1,4 @@
 <% presenter = SGH::Elternverteiler::VCardPresenter.new %>
-
 <% klassen.each do |klasse| %>
 <%= presenter.present(klasse.elternvertreter.mailing_list) %>
 <%= presenter.present(klasse.eltern.mailing_list) %>
@@ -14,4 +13,7 @@
 <%= presenter.present(elternbeirat.mailing_list) %>
 <%= presenter.present(ebv.mailing_list) %>
 <%= presenter.present(evsk.mailing_list) %>
-<%= presenter.present(gebd.mailing_list) %>
+
+<% SGH::Elternverteiler::Amt.each do |amt| %>
+<%= presenter.present(amt) %>
+<% end %>
