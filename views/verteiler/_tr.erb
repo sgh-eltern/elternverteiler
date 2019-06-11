@@ -3,7 +3,7 @@
     <a href="<%= liste.url %>"><%= liste.name %></a>
   </td>
   <td>
-    <a href="mailto:<%= liste.address(:long) %>"><%= liste.address(:long) %></a>
+    <%== partial('email-sgh', locals: { address: liste.address }) %>
   </td>
   <td>
     <%= liste.members.count %>

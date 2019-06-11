@@ -19,75 +19,71 @@
   <li><a href="#klassen">Klassen</a></li>
   <li><a href="#klassenstufen">Klassenstufen</a></li>
   <li><a href="#sonstige">Sonstige</a></li>
+  <li><a href="#ämter">Ämter</a></li>
 </ol>
 
 <h1 id="klassen">Klassen</h1>
 
-<h2>Elternvertreter</h2>
-<table class="pure-table pure-table-bordered sgh-elternverteiler-klasse-elternvertreter">
-  <%== partial('verteiler/thead') %>
-  <tbody>
-    <% klassen.each do |klasse| %>
-      <%== partial('verteiler/tr', locals: { liste: klasse.elternvertreter.mailing_list }) %>
-    <% end %>
-  </tbody>
-</table>
+  <h2>Elternvertreter</h2>
+  <table class="pure-table pure-table-bordered sgh-elternverteiler-klasse-elternvertreter">
+    <%== partial('verteiler/thead') %>
+    <tbody>
+      <% klassen.each do |klasse| %>
+        <%== partial('verteiler/tr', locals: { liste: klasse.elternvertreter.mailing_list }) %>
+      <% end %>
+    </tbody>
+  </table>
 
-<h2>Eltern</h2>
-<table class="pure-table pure-table-bordered sgh-elternverteiler-klasse-eltern">
-  <%== partial('verteiler/thead') %>
-  <tbody>
-    <% klassen.each do |klasse| %>
-      <%== partial('verteiler/tr', locals: { liste: klasse.mailing_list }) %>
-    <% end %>
-  </tbody>
-</table>
+  <h2>Eltern</h2>
+  <table class="pure-table pure-table-bordered sgh-elternverteiler-klasse-eltern">
+    <%== partial('verteiler/thead') %>
+    <tbody>
+      <% klassen.each do |klasse| %>
+        <%== partial('verteiler/tr', locals: { liste: klasse.mailing_list }) %>
+      <% end %>
+    </tbody>
+  </table>
 
 <h1 id="klassenstufen">Klassenstufen</h1>
 
-<h2>Elternvertreter</h2>
-<table class="pure-table pure-table-bordered sgh-elternverteiler-klassenstufe-elternvertreter">
-  <%== partial('verteiler/thead') %>
-  <tbody>
-    <% klassenstufen.each do |klassenstufe| %>
-      <%== partial('verteiler/tr', locals: { liste: klassenstufe.elternvertreter.mailing_list }) %>
-    <% end %>
-  </tbody>
-</table>
+  <h2>Elternvertreter</h2>
+  <table class="pure-table pure-table-bordered sgh-elternverteiler-klassenstufe-elternvertreter">
+    <%== partial('verteiler/thead') %>
+    <tbody>
+      <% klassenstufen.each do |klassenstufe| %>
+        <%== partial('verteiler/tr', locals: { liste: klassenstufe.elternvertreter.mailing_list }) %>
+      <% end %>
+    </tbody>
+  </table>
 
-<h2>Eltern</h2>
-<table class="pure-table pure-table-bordered sgh-elternverteiler-klassenstufe-eltern">
-  <%== partial('verteiler/thead') %>
-  <tbody>
-    <% klassenstufen.each do |klassenstufe| %>
-      <%== partial('verteiler/tr', locals: { liste: klassenstufe.mailing_list }) %>
-    <% end %>
-  </tbody>
-</table>
+  <h2>Eltern</h2>
+  <table class="pure-table pure-table-bordered sgh-elternverteiler-klassenstufe-eltern">
+    <%== partial('verteiler/thead') %>
+    <tbody>
+      <% klassenstufen.each do |klassenstufe| %>
+        <%== partial('verteiler/tr', locals: { liste: klassenstufe.mailing_list }) %>
+      <% end %>
+    </tbody>
+  </table>
 
 <h1 id="sonstige">Sonstige</h1>
-<table class="pure-table pure-table-bordered sgh-elternverteiler-sonstige">
-  <%== partial('verteiler/thead') %>
-  <tbody>
-    <%== partial('verteiler/tr', locals: { liste: eltern.mailing_list }) %>
-    <%== partial('verteiler/tr', locals: { liste: elternbeirat.mailing_list }) %>
-    <%== partial('verteiler/tr', locals: { liste: evsk.mailing_list }) %>
-    <%== partial('verteiler/tr', locals: { liste: gebd.mailing_list }) %>
-    <%== partial('verteiler/tr', locals: { liste: ebv.mailing_list }) %>
-    <%== partial('verteiler/tr', locals: { liste: schulkonferenz.mailing_list }) %>
-  </tbody>
-</table>
 
-<h1>Seehocketse 2019</h1>
-<table class="pure-table pure-table-bordered sgh-elternverteiler-ämter">
-  <%== partial('verteiler/thead') %>
-  <tbody>
-    <% SGH::Elternverteiler::Amt.where(name: 'Seehocketse 2019').each do |amt| %>
-    <%== partial('verteiler/amt', locals: { liste: amt.mailing_list }) %>
+  <table class="pure-table pure-table-bordered sgh-elternverteiler-sonstige">
+    <%== partial('verteiler/thead') %>
+    <tbody>
+      <% [eltern, elternbeirat, evsk, ebv, schulkonferenz].each do |liste| %>
+        <%== partial('verteiler/tr', locals: { liste: liste.mailing_list }) %>
+      <% end %>
+    </tbody>
+  </table>
+
+<h1 id="ämter">Ämter</h1>
+
+  <table class="pure-table pure-table-bordered sgh-elternverteiler-ämter">
+    <%== partial('verteiler/thead') %>
+    <tbody>
+    <% SGH::Elternverteiler::Amt.each do |amt| %>
+      <%== partial('verteiler/amt', locals: { amt: amt }) %>
     <% end %>
-  </tbody>
-</table>
-
-<%
-=end
-%>
+    </tbody>
+  </table>

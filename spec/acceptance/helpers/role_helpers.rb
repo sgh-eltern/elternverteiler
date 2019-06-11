@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 module RoleHelpers
-  def create_role(name)
+  def create_role(name, mail)
     visit '/'
     within('#menu') { click_link('Ämter') }
     click_link('Anlegen')
     fill_in('Name', with: name)
+    fill_in('Mail', with: mail)
     click_button('Anlegen')
   end
 

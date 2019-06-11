@@ -98,7 +98,8 @@ module SGH
                 [
                   klasse,
                   Amtsperiode.where(
-                    amt: Amt.where(Sequel.like(:name, '%.EV')), klasse: klasse
+                    amt: Amt.where(Sequel.like(:name, '%Klassenelternvertreter')),
+                    klasse: klasse,
                     ).sort_by(&:to_s)
                 ]
               end
@@ -228,7 +229,6 @@ module SGH
               r.root do
                 @schüler = @klasse.schüler.sort
                 @amtsperioden = Amtsperiode.where(
-                  amt: Amt.where(Sequel.like(:name, '%.EV')),
                   klasse: @klasse
                   ).sort_by(&:to_s)
                 topic @klasse
@@ -336,8 +336,22 @@ module SGH
               r.redirect amt_path(amt)
             end
 
+            r.get Integer, 'edit' do |id|
+              @amt = Amt.first!(id: id)
+              topic 'Amt bearbeiten'
+              view 'ämter/edit'
+            end
+
             r.post Integer do |id|
-              raise 'Missing implementation for editing Amt'
+              @amt = Amt.first!(id: id)
+              @amt.set_fields(r.params['sgh-elternverteiler-amt'], %w[name mail])
+              @amt.save
+              flash['success'] = 'Amt wurde aktualisiert'
+              r.redirect
+            rescue SGH::Elternverteiler::Amt::ValidationError
+              topic 'Amt bearbeiten'
+              flash.now['error'] = $ERROR_INFO.message
+              view 'ämter/edit'
             end
 
             r.post do

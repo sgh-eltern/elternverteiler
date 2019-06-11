@@ -4,6 +4,8 @@
         action: "/ämter",
         method: 'post',
         ) do |f| %>
-  <%== f.input(:name, label: 'Name', size: 50) %>
+  <%== f.input(:name, size: 50, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>
+  <%== f.input(:mail, size: 20, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>
+
   <%== f.button(value: 'Anlegen', class: "pure-button pure-button-primary") %>
 <% end %>

@@ -1,0 +1,12 @@
+<% form(@amt,
+        :inputs_wrapper => :fieldset,
+        class: 'pure-form pure-form-aligned',
+        action: "/ämter/#{@amt.id}",
+        method: 'post',
+        ) do |f| %>
+  <%== f.input(:name, size: 50, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>
+  <%== f.input(:mail, size: 50, wrapper: :div, wrapper_attr: {class: 'pure-control-group'}, labeler: :explicit) %>
+
+  <%== f.button(value: 'Aktualisieren', class: "pure-button pure-button-primary") %>
+  <input type="reset" value="Zurücksetzen" class="pure-button">
+<% end %>

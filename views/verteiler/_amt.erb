@@ -1,15 +1,11 @@
-<%
-# TODO This needs some work ...
-address = liste.address {|list| "#{list.name.to_s.downcase.tr(' ', '-')}@schickhardt-gymnasium-herrenberg.de"}
-%>
 <tr valign="top">
   <td>
-    <a href="<%= liste.url %>"><%= liste.name %></a>
+    <a href="/ämter/<%= amt.id %>"><%= amt %></a>
   </td>
   <td>
-    <a href="mailto:<%= address %>"><%= address %></a>
+    <%== partial('email-sgh', locals: { address: amt.mail }) %>
   </td>
   <td>
-    <%= liste.members.count %>
+    <%= amt.inhaber.count %>
   </td>
 </tr>

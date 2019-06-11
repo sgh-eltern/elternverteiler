@@ -1,8 +1,6 @@
 # Domain
 
 * Schüler may have an eMail address, too. This may be helpful for those that are members of the Schulkonferenz.
-* Amt needs a new field `address` where we can specify the (unique) short address of the mailing list for the Amtsinhaber
-* Amt needs a new field `slug` ("ev1") besides the long name (which should actually be longer and more descriptive, like "1. Elternvertreter")
 * The following are composite roles, made by combining two or more other roles:
   - elternvertreter
   - elternbeiratsvorsitzende
@@ -42,30 +40,13 @@
   - '/verteiler/klassenstufen': '&nbsp;Klassenstufen',
   - '/verteiler/eltern': '&nbsp;Alle Eltern',
   - '/verteiler/elternbeirat': '&nbsp;Elternbeirat',
-* Jede Amtsperiode hat eine Mailingliste
+* An Amt (e.g. `h19 = SGH::Elternverteiler::Amt.find(name: 'Orga-Team Seehocketse 2019')`) needs the revision field set in its vCard to the most recent value of the following:
+  - `Amtsperiode.where(amt: sh19).order(:updated_at)`
+  - `Amtsperiode.where(amt: sh19).order(:created_at)`
+  - `sh19.updated_at`
+  - `sh19.created_at`
 
-  ```ruby
-  k8c = Klasse.first(stufe: Klassenstufe.first(name: '8'), zug: 'C')
-  ev1 = Amt.first name: '1.EV'
-  ev2 = Amt.first name: '2.EV'
-  ev8c = Amtsperiode.where(amt: [ev1, ev2], klasse: k8c)
-
-  ev8c.mailing_list =>
-  ```
-
-  Alternativ:
-
-  ```ruby
-  Amtsperiode.where(
-    amt: Amt.where(Sequel.like(:name, '%.EV')), klasse: klasse
-    ).sort_by(&:to_s)
-
-  k8c = Klasse.first(stufe: Klassenstufe.first(name: '8'), zug: 'C')
-  eb = Amt.where(Sequel.like(:name, '%.EV'))
-  Amtsperiode.where(amt: eb, klasse: k8c).inhaber.mailing_list
-  ```
-
-# Development / Technical Dept
+# Development / Technical Debt
 
 * Refactor the duplicate queries in app.rb to methods on the app instance
 * Add `<%== csrf_tag %>` to all forms

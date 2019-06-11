@@ -23,38 +23,31 @@
 <%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
 <% end %>
 
-# Alle Eltern: <%= eltern.count %> Adressen
+# Sonstige
+
+## Alle Eltern: <%= eltern.count %> Adressen
 <% mailing_list = eltern.mailing_list %>
 <%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
 
-# Elternbeirat: <%= elternbeirat.count %> Adressen
+## Elternbeirat: <%= elternbeirat.count %> Adressen
 <% mailing_list = elternbeirat.mailing_list %>
 <%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
 
-# Elternvertreter in der Schulkonferenz: <%= evsk.count %> Adressen
-<% mailing_list = evsk.mailing_list %>
+## Elternbeiratsvorsitzende: <%= ebv.count %> Adressen
+<%= mailing_list = ebv.mailing_list %>
 <%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
 
-# GEB-Delegierte: <%= gebd.count %> Adressen
-<% mailing_list = gebd.mailing_list %>
+# Elternvertreter in der Schulkonferenz: <%= evsk.count %>
+<%= mailing_list = evsk.mailing_list %>
 <%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
-
-# Elternbeiratsvorsitzende: <%= ebv.count %> Adressen
-<% mailing_list = ebv.mailing_list %>
-<%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
-
-# Ämter
-<% SGH::Elternverteiler::Amt.where(name: 'Seehocketse 2019').each do |amt| %>
-
-<% mailing_list = amt.mailing_list %>
-## <%= mailing_list.name %>: <%= mailing_list.members.count %> Adressen
-<%
-# TODO This needs some work ...
-address = mailing_list.address {|list| "#{list.name.to_s.downcase.tr(' ', '-')}@schickhardt-gymnasium-herrenberg.de"}
-%>
-<%= SGH::Elternverteiler::PostmapPresenter.new(address).present(mailing_list.members) %>
-<% end %>
 
 # Schulkonferenz: <%= schulkonferenz.count %> Adressen
 <% mailing_list = schulkonferenz.mailing_list %>
 <%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
+
+# Ämter
+<% SGH::Elternverteiler::Amt.each do |amt| %>
+
+## <%= amt.name %>: <%= amt.inhaber.count %> Adressen
+<%= SGH::Elternverteiler::PostmapPresenter.new("#{amt.mail}@schickhardt-gymnasium-herrenberg.de").present(amt.inhaber) %>
+<% end %>

@@ -155,7 +155,7 @@ describe Klasse do
 
     context 'Homer is sent to the PAB' do
       let(:homer) { Erziehungsberechtigter.new(vorname: 'Homer', nachname: 'Simpson').save }
-      let(:pab) { Amt.new(name: '1.EV').save }
+      let(:pab) { Amt.new(name: 'Klassenelternvertreter').save }
 
       before do
         Amtsperiode.new(

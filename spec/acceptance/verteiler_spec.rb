@@ -95,8 +95,8 @@ describe 'Verteiler', type: :feature do
 
   context 'Homer is the primary Elternvertreter of 5V' do
     before(:all) do
-      create_role('1.EV')
-      assign_role('5V', 'Simpson, Homer', '1.EV')
+      create_role('Elternvertreter', 'ev1')
+      assign_role('5V', 'Simpson, Homer', 'Elternvertreter')
       within('#menu') { click_link('Verteiler') }
     end
 
@@ -118,7 +118,7 @@ describe 'Verteiler', type: :feature do
         create_pupil('Flanders', 'Rod', '5W')
         create_parent('Flanders', 'Ned', 'flanders@firstchurch.org')
         assign_parent('Flanders', 'Flanders, Ned')
-        assign_role('5W', 'Flanders, Ned', '1.EV')
+        assign_role('5W', 'Flanders, Ned', 'Elternvertreter')
         within('#menu') { click_link('Verteiler') }
       end
 

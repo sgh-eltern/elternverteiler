@@ -47,7 +47,7 @@ module SGH
 
       def elternvertreter
         Amtsperiode.where(
-          amt: Amt.where(Sequel.like(:name, '%.EV')),
+          amt: Amt.where(Sequel.like(:name, '%Klassenelternvertreter')),
           klasse: self
         ).map(&:inhaber).tap do |all|
           k = self

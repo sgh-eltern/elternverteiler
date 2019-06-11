@@ -81,7 +81,7 @@ describe Klassenstufe do
     end
 
     context 'Elternvertreter' do
-      let(:pab) { Amt.new(name: '1.EV').save }
+      let(:pab) { Amt.new(name: 'Klassenelternvertreter').save }
 
       before do
         Amtsperiode.new(inhaber: jerri, amt: pab, klasse: klasse_4a).save

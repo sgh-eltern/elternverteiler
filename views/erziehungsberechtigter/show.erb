@@ -22,9 +22,7 @@
     <th style="background-color: #f2f2f2; text-align: right;">eMail</th>
     <td>
       <% if @erziehungsberechtigter.mail %>
-        <a href="mailto:<%= @erziehungsberechtigter.mail %>"><%= @erziehungsberechtigter.mail %></a>
-      <% else %>
-        <%= @erziehungsberechtigter.mail %>
+        <%== partial('email', locals: { address: @erziehungsberechtigter.mail }) %>
       <% end %>
     </td>
   </tr>

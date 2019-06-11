@@ -30,7 +30,7 @@ describe 'Klassen', type: :feature do
 
       it 'has a generic address to reach them' do
         within('section.sgh-elternverteiler-elternvertreter') do
-          expect(page).to have_content 'eMail: elternvertreter-5k@schickhardt-gymnasium-herrenberg.de'
+          expect(page).to have_content 'elternvertreter-5k@schickhardt-gymnasium-herrenberg.de'
         end
       end
     end
@@ -41,7 +41,7 @@ describe 'Klassen', type: :feature do
       end
 
       it 'has a generic address to reach them' do
-        expect(page).to have_content 'eMail: eltern-5k@schickhardt-gymnasium-herrenberg.de'
+        expect(page).to have_content 'eltern-5k@schickhardt-gymnasium-herrenberg.de'
       end
     end
 
@@ -71,7 +71,7 @@ describe 'Klassen', type: :feature do
           end
         end
 
-        it 'the pupils parents are gone, too' do
+        it "the pupil's parents are gone, too" do
           within('#menu') { click_link('Eltern') }
           within('section.sgh-elternverteiler-erziehungsberechtigter') do
             expect(page).to_not have_content('Homer')

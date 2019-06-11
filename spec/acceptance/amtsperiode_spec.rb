@@ -40,21 +40,21 @@ describe 'Amtsperiode', type: :feature do
 
   context 'Homer is the designated clown of 5A' do
     before do
-      create_role('1.EV')
-      assign_role('5A', 'Simpson, Homer', '1.EV')
+      create_role('Elternvertreter', 'ev1')
+      assign_role('5A', 'Simpson, Homer', 'Elternvertreter')
     end
 
     after do
-      delete_role('1.EV')
+      delete_role('Elternvertreter')
     end
 
-    it 'lists Homer in his role in the class' do
+    fit 'lists Homer in his role in the class' do
       visit '/'
       within('#menu') { click_link('Klassen') }
       within('.content') { click_link('5A') }
 
       within('.sgh-elternverteiler-amtsinhaber') do
-        expect(page).to have_content('1.EV')
+        expect(page).to have_content('Elternvertreter')
       end
     end
   end

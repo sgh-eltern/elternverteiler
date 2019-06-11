@@ -2,12 +2,16 @@
 require 'spec_helper'
 
 describe Amt do
-  subject(:pab) { Amt.new(name: 'Member of the Parent Advisory Board').save }
+  subject(:pab) { Amt.new(name: 'Member of the Parent Advisory Board', mail: 'pab').save }
   let(:klassenstufe_4) { Klassenstufe.new(name: '4').save }
   let(:klasse) { Klasse.new(stufe: klassenstufe_4, zug: 'a').save }
 
   it 'has a name' do
     expect(pab.name).to eq('Member of the Parent Advisory Board')
+  end
+
+  it 'has an email address' do
+    expect(pab.mail).to eq('pab')
   end
 
   it 'has an empty set of members' do

@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th>Amt</th>
+      <th>Mail</th>
       <th>Inhaber</th>
     </tr>
   </thead>
@@ -16,6 +17,9 @@
     <tr>
       <td>
         <a href="/ämter/<%= amt.id %>"><%= amt %></a>
+      </td>
+      <td>
+        <%== partial('email-sgh', locals: { address: amt.mail }) %>
       </td>
       <td>
         <%= amt.inhaber.count %>

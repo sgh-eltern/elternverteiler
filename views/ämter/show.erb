@@ -1,6 +1,10 @@
 <h2>Inhaber</h2>
 
 <p>
+  eMail: <%== partial('email-sgh', locals: { address: @amt.mail }) %>
+</p>
+
+<p>
   <a href="<%= amt_path(@amt) %>/inhaber/add" class="pure-button pure-button-primary">Hinzufügen</a>
 </p>
 
@@ -49,6 +53,7 @@
 
 <form action="/ämter/<%= @amt.id %>/delete" class="pure-form pure-form-aligned" method="post">
 <p>
+  <a href="/ämter/<%= @amt.id %>/edit" class="pure-button pure-button-primary">Bearbeiten</a>
   <input class="pure-button button-destructive"
          type="submit"
          value="Löschen"

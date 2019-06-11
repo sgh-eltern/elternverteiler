@@ -18,7 +18,7 @@ module SGH
     class Lehrer < Sequel::Model(:lehrer); end
 
     def self.elternbeirat
-      Amt.where(Sequel.like(:name, '%.EV')).
+      Amt.where(Sequel.like(:name, '%Klassenelternvertreter')).
         map(&:inhaber).
         flatten.
         sort_by(&:nachname).
@@ -34,7 +34,7 @@ module SGH
     end
 
     def self.elternbeiratsvorsitzende
-      Amt.where(Sequel.like(:name, '%.EBV')).
+      Amt.where(Sequel.like(:name, '%Elternbeiratsvorsitzende%')).
         map(&:inhaber).
         flatten.
         sort_by(&:nachname).
@@ -50,7 +50,7 @@ module SGH
     end
 
     def self.elternvertreter_schulkonferenz
-      Amt.where(name: ['1.EBV', 'SK', 'SKV']).
+      Amt.where(name: ['Elternbeiratsvorsitzender', 'Elternvertreter in der Schulkonferenz', 'Stellvertretender Elternvertreter in der Schulkonferenz']).
         map(&:inhaber).
         flatten.
         sort_by(&:nachname).

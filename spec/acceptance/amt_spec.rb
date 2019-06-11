@@ -13,7 +13,7 @@ describe 'Ämter', type: :feature do
   end
 
   context 'the role Klassenkasper exists' do
-    before { create_role('Klassenkasper') }
+    before { create_role('Klassenkasper', 'kasper') }
     after { delete_role('Klassenkasper') }
 
     it 'lists the role' do
@@ -56,7 +56,7 @@ describe 'Ämter', type: :feature do
 
     context 'attempting to create another Amt with the same name' do
       before do
-        create_role('Klassenkasper')
+        create_role('Klassenkasper', 'kasper')
       end
 
       it 'provides details on the error' do

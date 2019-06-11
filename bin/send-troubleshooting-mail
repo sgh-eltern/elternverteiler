@@ -1,0 +1,100 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'pry'
+require 'optparse'
+require 'pony'
+
+def mail(to, subject, body)
+  Pony.mail(
+    charset: 'utf-8',
+    text_part_charset: 'utf-8',
+    from: 'Vorstand Elternbeirat SGH <vorstand@eltern-sgh.de>',
+    to: to,
+    subject: subject,
+    body: body,
+    via: :smtp,
+    via_options: via_options
+  )
+end
+
+def via_options
+  {
+    address: ENV.fetch('smtp_host'),
+    port: ENV.fetch('smtp_port'),
+    enable_starttls_auto: true,
+    user_name: ENV.fetch('smtp_user'),
+    password: ENV.fetch('smtp_password'),
+    authentication: ENV['smtp_authentication'],
+    domain: ENV.fetch('smtp_host')
+  }.tap do |via_options|
+    smtp_tls = ENV['smtp_tls']
+    via_options[:tls] = !!smtp_tls if smtp_tls
+  end
+end
+
+dry_run = false
+
+begin
+  OptionParser.new do |opts|
+   opts.on('-n', '--dry-run', 'Dry-run. Analyze, but do not write back to the database') do
+     dry_run = true
+   end
+  end.parse!
+rescue StandardError => e
+  warn "Error: #{e.message}"
+  exit 1
+end
+
+$LOAD_PATH.unshift(File.expand_path('../lib', __dir__))
+
+require 'sequel'
+Sequel::Model.db = Sequel.connect(ENV.fetch('DB'))
+
+require 'sgh/elternverteiler'
+
+# rubocop:disable Style/MixinUsage
+include SGH::Elternverteiler
+# rubocop:enable Style/MixinUsage
+
+if ARGV.empty?
+  warn 'Error: Missing argument which class to inspect'
+  exit 1
+end
+
+def find_klasse(klassenname)
+  case klassenname
+  when /(1?\d)([A-Z])/
+    ks = Klassenstufe.first!(name: Regexp.last_match(1))
+    Klasse.first!(stufe: ks, zug: Regexp.last_match(2))
+  when /J(1|2)/
+    ks = Klassenstufe.first!(name: klassenname)
+    Klasse.first!(stufe: ks)
+  else
+    raise "Konnte Klasse #{klassenname} nicht in Stufe und Zug zerlegen."
+  end
+end
+
+klasse = find_klasse(ARGV.first)
+#binding.pry
+body = DATA.read # can read only once without rewind
+
+puts klasse.eltern.map(&:mail).uniq.sort
+
+# klasse.eltern.each do |parent|
+#   puts mail(parent, "eMail-Verteiler #{klasse}", body)
+# end
+
+__END__
+Hallo liebe Eltern der Klasse 7E,
+
+leider hat sich im eMail-Verteiler der 7E ein Fehler eingeschlichen. Würden Sie bitte auf diese Mail antworten und mir mitteilen, ob Sie weiterhin auf dem Verteiler für die 7E bleiben wollen?
+
+Vielen Dank!
+
+--
+
+Mit freundlichen Grüßen
+
+Steffen Uhlig
+Elternbeiratsvorsitzender des Schickhardt-Gymnasiums Herrenberg

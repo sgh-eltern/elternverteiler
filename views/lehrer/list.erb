@@ -1,9 +1,5 @@
 <%== partial('charbar') %>
 
-<p>
-  <%#== partial('email', locals: { address: lehrer.mailing_list.address(:long) }) %>
-</p>
-
 <section class="sgh-elternverteiler-lehrer">
   <form action="/lehrer" class="pure-form" method="post">
     <p>
@@ -39,9 +35,7 @@
           <%= l.vorname %>
         </td>
         <td>
-          <a href="mailto:<%= l.email %>">
-            <%= l.email %>
-          </a>
+          <%== partial('email', locals: { address: l.email }) %>
         </td>
         <td>
           <% l.fächer.map do |fach| %>
