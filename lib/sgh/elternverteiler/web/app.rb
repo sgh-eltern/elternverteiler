@@ -349,9 +349,9 @@ module SGH
               @amt.save
               flash['success'] = 'Amt wurde aktualisiert'
               r.redirect
-            rescue SGH::Elternverteiler::Amt::ValidationError
+            rescue Sequel::UniqueConstraintViolation
               topic 'Amt bearbeiten'
-              flash.now['error'] = $ERROR_INFO.message
+              flash.now['error'] = "Das Amt '#{@amt.inspect}' existiert bereits"
               view 'ämter/edit'
             end
 

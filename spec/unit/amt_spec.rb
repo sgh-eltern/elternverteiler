@@ -14,6 +14,10 @@ describe Amt do
     expect(pab.mail).to eq('pab')
   end
 
+  it 'cannot create another Amt with the same mail' do
+    expect { Amt.new(name: 'some other Amt', mail: subject.mail).save }.to raise_error(Sequel::UniqueConstraintViolation)
+  end
+
   it 'has an empty set of members' do
     expect(pab.inhaber).to be_empty
   end
