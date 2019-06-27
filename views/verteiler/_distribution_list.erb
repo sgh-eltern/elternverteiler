@@ -51,3 +51,6 @@
 ## <%= amt.name %>: <%= amt.inhaber.count %> Adressen
 <%= SGH::Elternverteiler::PostmapPresenter.new("#{amt.mail}@schickhardt-gymnasium-herrenberg.de").present(amt.inhaber) %>
 <% end %>
+
+# Lehrer: <%= lehrer.count %> Adressen
+<%= SGH::Elternverteiler::PostmapPresenter.new('lehrer@schickhardt-gymnasium-herrenberg.de').present(lehrer) %>

@@ -74,6 +74,17 @@
       <% [eltern, elternbeirat, evsk, ebv, schulkonferenz].each do |liste| %>
         <%== partial('verteiler/tr', locals: { liste: liste.mailing_list }) %>
       <% end %>
+      <tr valign="top">
+        <td>
+          <a href="/verteiler/lehrer">Lehrer</a>
+        </td>
+        <td>
+          <a href="mailto:lehrer@schickhardt-gymnasium-herrenberg.de">lehrer@schickhardt-gymnasium-herrenberg.de</a>
+        </td>
+        <td>
+          <%= lehrer.count %>
+        </td>
+      </tr>
     </tbody>
   </table>
 

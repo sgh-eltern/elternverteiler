@@ -35,6 +35,8 @@ module SGH
       def <=>(other)
         [nachname, vorname] <=> [other.nachname, other.vorname]
       end
+
+      alias :mail :email
     end
   end
 end
