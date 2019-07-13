@@ -34,14 +34,14 @@
 <%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
 
 ## Elternbeiratsvorsitzende: <%= ebv.count %> Adressen
-<%= mailing_list = ebv.mailing_list %>
+<% mailing_list = ebv.mailing_list %>
 <%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
 
-# Elternvertreter in der Schulkonferenz: <%= evsk.count %>
-<%= mailing_list = evsk.mailing_list %>
+## Elternvertreter in der Schulkonferenz: <%= evsk.count %>
+<% mailing_list = evsk.mailing_list %>
 <%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
 
-# Schulkonferenz: <%= schulkonferenz.count %> Adressen
+## Schulkonferenz: <%= schulkonferenz.count %> Adressen
 <% mailing_list = schulkonferenz.mailing_list %>
 <%= SGH::Elternverteiler::PostmapPresenter.new(mailing_list.address(:long)).present(mailing_list.members) %>
 
@@ -52,5 +52,6 @@
 <%= SGH::Elternverteiler::PostmapPresenter.new("#{amt.mail}@schickhardt-gymnasium-herrenberg.de").present(amt.inhaber) %>
 <% end %>
 
-# Lehrer: <%= lehrer.count %> Adressen
+# Lehrer
+## Alle Lehrer: <%= lehrer.count %> Adressen
 <%= SGH::Elternverteiler::PostmapPresenter.new('lehrer@schickhardt-gymnasium-herrenberg.de').present(lehrer) %>
