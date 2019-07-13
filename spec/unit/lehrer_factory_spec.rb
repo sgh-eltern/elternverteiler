@@ -23,7 +23,7 @@ describe LehrerFactory do
       expect(edna.kürzel).to eq('EK')
     end
 
-    it 'with the expected title' do
+    it 'with the expected mail' do
       expect(edna.email).to be_nil
     end
 

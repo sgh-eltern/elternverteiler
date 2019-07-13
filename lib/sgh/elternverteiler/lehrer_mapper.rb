@@ -34,7 +34,7 @@ module SGH
 
       def email(nachname, vorname=nil)
         if vorname
-          "#{local_part(vorname)}.#{local_part(nachname)}@sgh-mail.de"
+          "#{local_part(vorname)[0]}.#{local_part(nachname)}@sgh-mail.de"
         else
           "#{local_part(nachname)}@sgh-mail.de"
         end

@@ -40,14 +40,14 @@ describe LehrerMapper do
 
     it 'resolves Scherer as unique email addresses' do
       scherers = duplicate_surnames['Scherer']
-      expect(scherers.map(&:email)).to include('tanja.scherer@sgh-mail.de')
-      expect(scherers.map(&:email)).to include('kerstin.scherer@sgh-mail.de')
+      expect(scherers.map(&:email)).to include('t.scherer@sgh-mail.de')
+      expect(scherers.map(&:email)).to include('k.scherer@sgh-mail.de')
     end
 
     it 'resolves Schmid as unique email addresses' do
       schmids = duplicate_surnames['Schmid']
-      expect(schmids.map(&:email)).to include('ruediger.schmid@sgh-mail.de')
-      expect(schmids.map(&:email)).to include('kurt.schmid@sgh-mail.de')
+      expect(schmids.map(&:email)).to include('r.schmid@sgh-mail.de')
+      expect(schmids.map(&:email)).to include('k.schmid@sgh-mail.de')
     end
   end
 
