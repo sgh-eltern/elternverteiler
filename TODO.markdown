@@ -25,7 +25,6 @@
   - Kassenführung
   - Kassenprüfung 1 und 2
   - Protokollführung 1 und 2
-  - Vertreter im GEB
   - Vertreter 1,2 und 3 in der Schulkonferenz und deren Stellvertreter
 * For J1 and J2: `Elternvertreter der J1 == Elternvertreter der Klassenstufe J1`
 * Pressing "Add a pupil" (within a class list) selects the right class in the dropdown of the "New Pupil" form

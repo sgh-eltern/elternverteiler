@@ -62,6 +62,17 @@ describe Klassenstufe do
       expect(klassenstufe_4.schüler).to include(terri)
     end
 
+    context 'destroying a Klassenstufe' do
+      before do
+        klassenstufe_4.destroy
+      end
+
+      it 'removes all classes' do
+        expect { klasse_4a.reload }.to raise_error(Sequel::NoExistingObject)
+        expect { klasse_4b.reload }.to raise_error(Sequel::NoExistingObject)
+      end
+    end
+
     context 'mailing list' do
       let(:mailing_list) { klassenstufe_4.mailing_list }
 

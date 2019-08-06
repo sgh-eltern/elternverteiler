@@ -8,6 +8,7 @@ module SGH
       extend WithMailingList
 
       one_to_many :klassen, class: Klasse, key: :stufe_id
+      plugin :association_dependencies, klassen: :destroy
 
       # rubocop:disable Naming/MethodName
       def schüler
