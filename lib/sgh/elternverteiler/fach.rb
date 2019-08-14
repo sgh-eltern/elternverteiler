@@ -15,7 +15,7 @@ module SGH
         name <=> other.name
       end
 
-      alias :to_s :name
+      alias_method :to_s, :name
     end
   end
 end

@@ -29,6 +29,6 @@ describe ReachabilityMailGenerator, type: 'system' do
   end
 
   it 'yields to the block for every Klasse' do
-    expect{ |block| described_class.new(view_path, &block)}.to yield_control.exactly(25).times
+    expect { |block| described_class.new(view_path, &block) }.to yield_control.exactly(25).times
   end
 end

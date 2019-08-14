@@ -7,7 +7,8 @@ module SGH
   module Elternverteiler
     class LehrerFactory
       def map(attributes)
-        return unless attributes && attributes.any?
+        return unless attributes&.any?
+
         if attributes[1].start_with?('Dr. ')
           titel = 'Dr.'
           nachname = attributes[1].split('Dr. ').last
@@ -30,7 +31,7 @@ module SGH
       private
 
       def fächer(text)
-        FachMapper.new.map(*(text.split(',').map(&:strip)))
+        FachMapper.new.map(*text.split(',').map(&:strip))
       end
     end
   end

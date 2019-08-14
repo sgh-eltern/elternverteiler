@@ -24,7 +24,7 @@ module SGH
       class App < Roda
         plugin :sessions, secret: ENV.fetch('SESSION_SECRET'), key: 'elternverteiler.session'
         plugin :request_aref, :raise
-        plugin :route_csrf, :csrf_failure => :clear_session
+        plugin :route_csrf, csrf_failure: :clear_session
 
         plugin :flash
         plugin :forme

@@ -14,7 +14,7 @@ module SGH
             map(&:to_s).map(&:strip))
         end.compact
 
-        lehrer.group_by{|l| l.nachname}.each do |nachname, lehrer|
+        lehrer.group_by(&:nachname).each do |nachname, lehrer|
           if lehrer.size == 1
             l = lehrer.first
             l.email = email(l.nachname)

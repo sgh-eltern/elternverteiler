@@ -2,16 +2,14 @@
 
 require 'sgh/elternverteiler/fach'
 
-=begin
-BEWARE: The backups until at least 2018-11-05T18:48:29+00:00	have old tables
-lehrer, fach etc. in there. They need to be dropped manually after restoring
-those backups with:
-
-  drop table fach;
-  drop table fächer cascade;
-  drop table lehrer cascade;
-  drop table unterrichtet cascade;
-=end
+# BEWARE: The backups until at least 2018-11-05T18:48:29+00:00  have old tables
+# lehrer, fach etc. in there. They need to be dropped manually after restoring
+# those backups with:
+#
+#   drop table fach;
+#   drop table fächer cascade;
+#   drop table lehrer cascade;
+#   drop table unterrichtet cascade;
 
 module SGH
   module Elternverteiler
@@ -36,7 +34,7 @@ module SGH
         [nachname, vorname] <=> [other.nachname, other.vorname]
       end
 
-      alias :mail :email
+      alias_method :mail, :email
     end
   end
 end

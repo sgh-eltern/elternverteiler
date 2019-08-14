@@ -37,9 +37,9 @@ dry_run = false
 
 begin
   OptionParser.new do |opts|
-   opts.on('-n', '--dry-run', 'Dry-run. Analyze, but do not write back to the database') do
-     dry_run = true
-   end
+    opts.on('-n', '--dry-run', 'Dry-run. Analyze, but do not write back to the database') do
+      dry_run = true
+    end
   end.parse!
 rescue StandardError => e
   warn "Error: #{e.message}"
@@ -76,7 +76,7 @@ def find_klasse(klassenname)
 end
 
 klasse = find_klasse(ARGV.first)
-#binding.pry
+# binding.pry
 body = DATA.read # can read only once without rewind
 
 puts klasse.eltern.map(&:mail).uniq.sort

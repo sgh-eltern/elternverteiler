@@ -14,6 +14,7 @@ module SGH
           raise 'Bucket must not be nil' if bucket.nil?
           raise 'Bucket must exist' unless bucket.exists?
           raise 'Database URL must not be empty' if db_url.to_s.empty?
+
           @bucket = bucket
           @db_url = db_url
         end

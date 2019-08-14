@@ -9,9 +9,9 @@ dry_run = false
 
 begin
   OptionParser.new do |opts|
-   opts.on('-n', '--dry-run', 'Dry-run. Analyze, but do not write back to the database') do
-     dry_run = true
-   end
+    opts.on('-n', '--dry-run', 'Dry-run. Analyze, but do not write back to the database') do
+      dry_run = true
+    end
   end.parse!
 rescue StandardError => e
   warn "Error: #{e.message}"
@@ -83,7 +83,7 @@ end
   nachname = s.cell(line_number, headers['Name'])&.strip
   klasse = find_klasse(klassenname)
 
-  child = Schüler.first( vorname: vorname, nachname: nachname, klasse: klasse )
+  child = Schüler.first(vorname: vorname, nachname: nachname, klasse: klasse)
 
   if child.nil?
     puts "MISSING: The database has no #{vorname} #{nachname} in Klasse #{klasse}"
@@ -106,43 +106,43 @@ end
         next
       end
 
-      ezb = Erziehungsberechtigter.where( vorname: vorname, nachname: nachname )
+      ezb = Erziehungsberechtigter.where(vorname: vorname, nachname: nachname)
 
       case ezb.count
-        when 0
-          puts "OK #{vorname} #{nachname} is not in DB and has no mail in spreadsheet"
-        when 1
-          # BUG: This script is not idempotent yet because it deletes parents that are present in one class
-          # and not present in another one. Depending on what comes first, it may be added and deleted
-          # immediately afterwards.
-          # warn "NO_CONSENT Deleting #{ezb.first}"
-          # TODO DO not delete if the parent has Ämter
-          # ezb.destroy unless dry_run
+      when 0
+        puts "OK #{vorname} #{nachname} is not in DB and has no mail in spreadsheet"
+      when 1
+        # BUG: This script is not idempotent yet because it deletes parents that are present in one class
+        # and not present in another one. Depending on what comes first, it may be added and deleted
+        # immediately afterwards.
+        # warn "NO_CONSENT Deleting #{ezb.first}"
+        # TODO DO not delete if the parent has Ämter
+        # ezb.destroy unless dry_run
       else
         warn "ERROR: No mail in spreadsheet and multiple matches for #{vorname} #{nachname}: #{ezb.all.join(', ')}"
         binding.pry
       end
     else
-      ezb = Erziehungsberechtigter.where( vorname: vorname, nachname: nachname, mail: mail )
+      ezb = Erziehungsberechtigter.where(vorname: vorname, nachname: nachname, mail: mail)
 
       if ezb.any?
         puts "OK #{ezb.all.join(', ')} up to date"
       else
-        fallback = Erziehungsberechtigter.where( vorname: vorname, nachname: nachname )
+        fallback = Erziehungsberechtigter.where(vorname: vorname, nachname: nachname)
 
         case fallback.count
-          when 0
-            warn "ADDING #{vorname} #{nachname} <#{mail}> (parent of #{child}) to DB"
-            unless dry_run
-              child.add_eltern Erziehungsberechtigter.find_or_create(vorname: vorname, nachname: nachname, mail: mail)
-            end
-          when 1
-            warn "CHANGING #{fallback.first} => #{mail}"
-            binding.pry
-            fallback.first.update_fields({mail: mail}, [:mail]) unless dry_run
-          else
-            warn "ERROR: New eMail given as #{mail}, and multiple matches for #{vorname} #{nachname}: #{fallback.all.join(', ')}"
-            binding.pry
+        when 0
+          warn "ADDING #{vorname} #{nachname} <#{mail}> (parent of #{child}) to DB"
+          unless dry_run
+            child.add_eltern Erziehungsberechtigter.find_or_create(vorname: vorname, nachname: nachname, mail: mail)
+          end
+        when 1
+          warn "CHANGING #{fallback.first} => #{mail}"
+          binding.pry
+          fallback.first.update_fields({ mail: mail }, [:mail]) unless dry_run
+        else
+          warn "ERROR: New eMail given as #{mail}, and multiple matches for #{vorname} #{nachname}: #{fallback.all.join(', ')}"
+          binding.pry
         end
       end
     end

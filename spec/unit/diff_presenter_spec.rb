@@ -1,10 +1,12 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 
 require 'hashdiff'
 require 'sgh/elternverteiler/postmap_parser'
 
 describe HashDiff do
+  subject(:diff) { described_class.diff(current, updated) }
   let(:parser) { SGH::Elternverteiler::PostmapParser.new }
 
   let(:current) { parser.parse <<~CONTENT
@@ -30,8 +32,6 @@ describe HashDiff do
     eltern-2@springfield-elementary.edu homer@simpson.org,marjoriee@simpson.org
   CONTENT
   }
-
-  let(:diff) { HashDiff.diff(current, updated) }
 
   context 'Marge changes her eMail address' do
     it "shows Marge's old address as removed from eltern-2" do

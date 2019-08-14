@@ -1,11 +1,12 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 
 require 'sgh/elternverteiler/fach_mapper'
 
 describe FachMapper do
   subject(:mapper) { described_class.new }
-  let(:kürzel) { %w(E Geo NwT) }
+  let(:kürzel) { %w[E Geo NwT] }
 
   context 'mapping multiple abbreviations' do
     let(:fächer) { mapper.map(*kürzel) }

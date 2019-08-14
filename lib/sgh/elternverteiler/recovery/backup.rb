@@ -13,6 +13,7 @@ module SGH
 
         def initialize(name: Time.now.iso8601, created_at: nil, signed_url: nil)
           raise 'Name is required' if name.to_s.empty?
+
           @name = name
           @created_at = created_at
           @signed_url = signed_url

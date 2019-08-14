@@ -12,9 +12,9 @@ module SGH
         Klasse.each do |klasse|
           unreachable = klasse.schüler.select { |sch| sch.eltern.collect(&:mail).compact.reject(&:empty?).empty? }.sort_by(&:nachname)
           subject = if unreachable.count.zero?
-            "Alle Schüler der #{klasse} per eMail erreichbar"
-          else
-            "#{unreachable.count} Schüler der #{klasse} nicht per eMail erreichbar"
+                      "Alle Schüler der #{klasse} per eMail erreichbar"
+                    else
+                      "#{unreachable.count} Schüler der #{klasse} nicht per eMail erreichbar"
           end
 
           to = "#{klasse.elternvertreter.mailing_list.name} <#{klasse.elternvertreter.mailing_list.address(:long)}>"

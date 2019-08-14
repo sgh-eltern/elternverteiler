@@ -19,6 +19,7 @@ module PupilHelpers
     within('section.sgh-elternverteiler-schüler') do
       # TODO: This ignores the pupil's first name
       return unless page.has_link?(last)
+
       click_link(last)
     end
 

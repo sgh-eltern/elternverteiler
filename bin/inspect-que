@@ -11,12 +11,12 @@ Job.distinct(:queue).select(:queue).map(&:queue).each do |queue|
   warn "#{queue}:"
   jobs = Job.by_queue(queue)
 
-  %I(errored expired finished scheduled).each do |condition|
+  %I[errored expired finished scheduled].each do |condition|
     puts "  #{condition}: #{jobs.send(condition).count}"
   end
 end
 
-#Job.dataset.destroy
+# Job.dataset.destroy
 
 __END__
 

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 
 require 'sgh/elternverteiler/lehrer_factory'
@@ -7,7 +8,7 @@ describe LehrerFactory do
   subject(:mapper) { described_class.new }
 
   context 'produces a Lehrer' do
-    let(:attributes) { ["EK", "Edna", "Krabappel", "E, Geo, NwT"] }
+    let(:attributes) { ['EK', 'Edna', 'Krabappel', 'E, Geo, NwT'] }
     let(:edna) { mapper.map(attributes) }
     let(:english) { Fach.new(kürzel: 'E', name: 'Englisch') }
 

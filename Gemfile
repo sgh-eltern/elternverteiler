@@ -24,7 +24,6 @@ gem 'tilt'
 
 group 'development' do
   gem 'capybara'
-  gem 'webdrivers'
   gem 'guard-bundler', require: false
   gem 'guard-rspec', require: false
   gem 'parallel_tests'
@@ -37,4 +36,5 @@ group 'development' do
   gem 'selenium-webdriver'
   gem 'sqlite3'
   gem 'timecop'
+  gem 'webdrivers'
 end

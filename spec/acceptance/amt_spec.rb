@@ -50,7 +50,7 @@ describe 'Ämter', type: :feature do
         click_button('Speichern')
 
         within('aside.success') { expect(page).to have_content('Homer Simpson ist jetzt Klassenkasper in der Klasse 5A') }
-        within('.sgh-elternverteiler-amtsinhaber'){ expect(page).to have_content('Simpson, Homer') }
+        within('.sgh-elternverteiler-amtsinhaber') { expect(page).to have_content('Simpson, Homer') }
       end
     end
 
