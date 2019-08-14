@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-require 'sgh/elternverteiler/fach_mapper'
+require 'sgh/elternverteiler/lehrer-diff/fach_mapper'
 
 describe FachMapper do
   subject(:mapper) { described_class.new }

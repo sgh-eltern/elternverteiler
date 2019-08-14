@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'sgh/elternverteiler/lehrer_updater'
+require 'sgh/elternverteiler/lehrer-diff/updater'
 
 module SGH
   module Elternverteiler
@@ -9,7 +9,7 @@ module SGH
       self.queue = 'lehrer'
 
       def run
-        LehrerUpdater.new.call
+        LehrerDiff::Updater.new.call
         finish
       end
     end

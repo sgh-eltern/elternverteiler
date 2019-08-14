@@ -11,7 +11,8 @@ module SGH
 
         def initialize(current, incoming)
           @current = current.map(&:to_h)
-          @diff = HashDiff.diff(@current, incoming.map(&:to_h)).group_by(&:first)
+          @incoming = incoming.map(&:to_h)
+          @diff = HashDiff.diff(@current, @incoming).group_by(&:first)
         end
 
         def additions
@@ -42,6 +43,18 @@ module SGH
 
         def additions?
           additions.any?
+        end
+
+        def any?
+          changes? or additions? or removals?
+        end
+
+        def empty?
+          !any?
+        end
+
+        def to_s
+          "#{additions.size} Zugänge, #{removals.size} Abgänge, #{changes.size} Änderungen"
         end
       end
     end
