@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+$LOAD_PATH.unshift(File.expand_path('../lib', __dir__))
+
+require 'bundler/setup'
+require 'optparse'
+
+require 'sgh/elternverteiler/lehrer-diff/dto'
+require 'sgh/elternverteiler/lehrer-diff/fetcher'
+require 'sgh/elternverteiler/lehrer-diff/cli_presenter'
+
+require_relative '../config/db'
+
+current = Lehrer.map { |l| LehrerDiff::DTO.build(l) }.sort_by(&:kürzel)
+incoming = LehrerDiff::Fetcher.new.fetch.map { |l| LehrerDiff::DTO.build(l) }.sort_by(&:kürzel)
+
+diff = LehrerDiff::Diff.new(current, incoming)
+dp = LehrerDiff::CliPresenter.new(diff)
+
+dp.present($stdout)
+
+exit dp.exit_code

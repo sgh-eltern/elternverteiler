@@ -1,0 +1,471 @@
+---
+- :kürzel: Ab
+  :nachname: Abelein
+  :vorname: Jörg
+  :fächer:
+  - Ch
+  - Geo
+  - NwT
+- :kürzel: Al
+  :nachname: Kleine-Allekotte
+  :vorname: Ulrike
+  :fächer:
+  - G
+  - L
+- :kürzel: Alb
+  :nachname: Albrecht
+  :vorname: Caroline
+  :fächer:
+  - L
+- :kürzel: Am
+  :nachname: Amann
+  :vorname: Fabian
+  :fächer:
+  - M
+  - NwT
+  - Ph
+- :kürzel: An
+  :nachname: Dr. Anderson
+  :vorname: Claudia
+  :fächer:
+  - E
+  - F
+- :kürzel: Ar
+  :nachname: Argüelles-Fernandez
+  :vorname: Rosa
+  :fächer:
+  - M
+  - Sp
+- :kürzel: Bau
+  :nachname: Bauer
+  :vorname: Ronja
+  :fächer:
+  - Bio
+  - Eth
+  - Geo
+- :kürzel: Bd
+  :nachname: Bezold
+  :vorname: Anika
+  :fächer:
+  - D
+  - Sw
+- :kürzel: Be
+  :nachname: Bode
+  :vorname: Denise
+  :fächer:
+  - E
+  - Sp
+- :kürzel: Bl
+  :nachname: Breckel
+  :vorname: Margit
+  :fächer:
+  - D
+  - F
+  - G
+- :kürzel: Bre
+  :nachname: Breuer
+  :vorname: Annika
+  :fächer:
+  - Ch
+  - NwT
+- :kürzel: Brn
+  :nachname: Braun
+  :vorname: Maike
+  :fächer:
+  - Bio
+  - E
+- :kürzel: Bt
+  :nachname: Bertsch-Nödinger
+  :vorname: Heike
+  :fächer:
+  - E
+  - Rev
+- :kürzel: Bu
+  :nachname: Burk
+  :vorname: Tanja
+  :fächer:
+  - D
+  - Sw
+- :kürzel: Del
+  :nachname: Dellert
+  :vorname: Anna
+  :fächer:
+  - G
+  - Rev
+- :kürzel: Ee
+  :nachname: Epple
+  :vorname: Anja
+  :fächer:
+  - D
+  - G
+- :kürzel: Eic
+  :nachname: Eichinger
+  :vorname: Marina
+  :fächer:
+  - Eth
+  - Geo
+  - Sp
+- :kürzel: Ep
+  :nachname: Dr. Epple
+  :vorname: Thomas
+  :fächer:
+  - Ch
+  - Mu
+  - NwT
+- :kürzel: Ge
+  :nachname: Gehring
+  :vorname: Arnold
+  :fächer:
+  - D
+  - Mu
+- :kürzel: Gei
+  :nachname: Geitz
+  :vorname: Christian
+  :fächer:
+  - D
+  - Geo
+  - Sm
+- :kürzel: Gr
+  :nachname: Geißler
+  :vorname: Berthold
+  :fächer:
+  - Bio
+  - Sm
+- :kürzel: Hab
+  :nachname: Hartleib
+  :vorname: Katrin
+  :fächer:
+  - Bio
+  - D
+  - NwT
+- :kürzel: Hb
+  :nachname: Häberle
+  :vorname: Karolin
+  :fächer:
+  - Geo
+  - M
+  - Sw
+- :kürzel: He
+  :nachname: Heinke
+  :vorname: Annette
+  :fächer:
+  - E
+  - Rrk
+- :kürzel: Hei
+  :nachname: Heindel
+  :vorname: Manuela
+  :fächer:
+  - E
+  - Mu
+- :kürzel: Hf
+  :nachname: Höfelein
+  :vorname: Marc
+  :fächer:
+  - E
+  - Sm
+- :kürzel: Hl
+  :nachname: Hahl
+  :vorname: Tina
+  :fächer:
+  - E
+  - Sw
+- :kürzel: Ho
+  :nachname: Holderried
+  :vorname: Oliver
+  :fächer:
+  - Gk
+  - M
+- :kürzel: Hr
+  :nachname: Härter
+  :vorname: Annerose
+  :fächer:
+  - E
+  - F
+- :kürzel: Ja
+  :nachname: Jakab-Cardenas
+  :vorname: Susanna
+  :fächer:
+  - E
+  - F
+  - Sp
+- :kürzel: Jn
+  :nachname: Jänsch
+  :vorname: Petra
+  :fächer:
+  - D
+  - Mu
+- :kürzel: Ka
+  :nachname: Kaiser
+  :vorname: Diana
+  :fächer:
+  - Bio
+  - Geo
+- :kürzel: Kd
+  :nachname: Kudella
+  :vorname: Mirjam
+  :fächer:
+  - L
+  - Rev
+- :kürzel: Ke
+  :nachname: Kernchen
+  :vorname: Sarah
+  :fächer:
+  - G
+  - Gk
+  - L
+- :kürzel: Kh
+  :nachname: Kluth
+  :vorname: Johannes
+  :fächer:
+  - M
+  - Ph
+- :kürzel: Kp
+  :nachname: Kupke
+  :vorname: Michelle
+  :fächer:
+  - M
+  - Ph
+- :kürzel: Ks
+  :nachname: Kaiser
+  :vorname: Esther
+  :fächer:
+  - BK
+  - E
+- :kürzel: Ku
+  :nachname: Kuon
+  :vorname: Annette
+  :fächer:
+  - Bio
+  - Rrk
+- :kürzel: Le
+  :nachname: Lenz
+  :vorname: Caroline
+  :fächer:
+  - D
+  - E
+- :kürzel: Li
+  :nachname: Limberger
+  :vorname: Eva
+  :fächer:
+  - D
+  - Eth
+  - L
+- :kürzel: Ln
+  :nachname: Lenz
+  :vorname: Jan
+  :fächer:
+  - D
+  - G
+  - Gk
+- :kürzel: Löh
+  :nachname: Löhlein
+  :vorname: Anna-Lena
+  :fächer:
+  - Rev
+  - Sp
+- :kürzel: Mau
+  :nachname: Maurer
+  :vorname: Volker
+  :fächer:
+  - BK
+- :kürzel: Me
+  :nachname: Meyer
+  :vorname: Anne
+  :fächer:
+  - D
+  - E
+- :kürzel: Mh
+  :nachname: Mehl
+  :vorname: Dorothea
+  :fächer:
+  - E
+  - Rev
+- :kürzel: Mi
+  :nachname: Mirbach
+  :vorname: Emilie
+  :fächer:
+  - D
+  - F
+- :kürzel: Mo
+  :nachname: Morgenthaler
+  :vorname: Lisa
+  :fächer:
+  - D
+  - Geo
+- :kürzel: Na
+  :nachname: Nagel
+  :vorname: Sandra
+  :fächer:
+  - M
+  - Sp
+- :kürzel: Oe
+  :nachname: Öztürk
+  :vorname: Songül
+  :fächer:
+  - Bio
+  - Geo
+  - M
+- :kürzel: Ot
+  :nachname: Otto
+  :vorname: Stephanie
+  :fächer:
+  - D
+  - E
+- :kürzel: Pr
+  :nachname: Prior
+  :vorname: Roland
+  :fächer:
+  - E
+  - G
+- :kürzel: Rf
+  :nachname: Raff-Schinko
+  :vorname: Christine
+  :fächer:
+  - D
+  - G
+- :kürzel: Rin
+  :nachname: Rink
+  :vorname: Cornelia
+  :fächer:
+  - F
+  - Rev
+- :kürzel: Saf
+  :nachname: Schafhauser
+  :vorname: Wolfgang
+  :fächer:
+  - Bio
+  - NwT
+  - Sm
+- :kürzel: Sc
+  :nachname: Scherer
+  :vorname: Tanja
+  :fächer:
+  - D
+  - G
+- :kürzel: Sd
+  :nachname: Schmidt
+  :vorname: Stefanie
+  :fächer:
+  - D
+  - Gk
+- :kürzel: Se
+  :nachname: Serra
+  :vorname: Franziska
+  :fächer:
+  - M
+  - Sw
+- :kürzel: Sh
+  :nachname: Stahr
+  :vorname: Gerhard
+  :fächer:
+  - Geo
+  - Sm
+- :kürzel: Shr
+  :nachname: Scherer
+  :vorname: Kerstin
+  :fächer:
+  - D
+  - G
+- :kürzel: Si
+  :nachname: Schmid
+  :vorname: Rüdiger
+  :fächer:
+  - M
+  - Rev
+- :kürzel: Sin
+  :nachname: Schindler
+  :vorname: Tabea
+  :fächer:
+  - Rev
+  - Sw
+- :kürzel: Sl
+  :nachname: Stahl
+  :vorname: Thorsten
+  :fächer:
+  - Ch
+  - M
+  - Ph
+- :kürzel: Sm
+  :nachname: Schmid
+  :vorname: Kurt
+  :fächer:
+  - G
+  - Rev
+- :kürzel: Som
+  :nachname: Somfleth
+  :vorname: Theresa
+  :fächer:
+  - D
+  - Rrk
+- :kürzel: Sr
+  :nachname: Schneider
+  :vorname: Sandra
+  :fächer:
+  - Bio
+  - Rrk
+- :kürzel: Srr
+  :nachname: Scheurer
+  :vorname: Miriam
+  :fächer:
+  - Bio
+  - Ch
+- :kürzel: Ta
+  :nachname: Tardel
+  :vorname: Mirjam
+  :fächer:
+  - F
+  - Rrk
+- :kürzel: Te
+  :nachname: Teufel
+  :vorname: Martin
+  :fächer:
+  - M
+  - Sm
+- :kürzel: Ted
+  :nachname: Tedeschi
+  :vorname: Claudio
+  :fächer:
+  - G
+  - Rrk
+- :kürzel: We
+  :nachname: Wendel
+  :vorname: Birgit
+  :fächer:
+  - F
+  - Gk
+  - Sw
+- :kürzel: Wl
+  :nachname: Dr. Wiebel
+  :vorname: Dirk
+  :fächer:
+  - D
+  - Geo
+  - NwT
+- :kürzel: Wn
+  :nachname: Wiedmann
+  :vorname: Dorette
+  :fächer:
+  - Ph
+- :kürzel: Zh
+  :nachname: Zehender
+  :vorname: Raimund
+  :fächer:
+  - M
+  - Ph
+- :kürzel: Zi
+  :nachname: Zimmermann
+  :vorname: Daniela
+  :fächer:
+  - BK
+- :kürzel: Zn
+  :nachname: Zimmermann
+  :vorname: Patricia
+  :fächer:
+  - Ch
+  - E
+- :kürzel: Zo
+  :nachname: Zolg
+  :vorname: Simon
+  :fächer:
+  - M
+  - Rrk
