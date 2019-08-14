@@ -18,7 +18,7 @@ end
 group 'unit' do
   guard :rspec, cmd: 'bundle exec rspec' do
     watch(%r{^spec/unit/.+_spec\.rb$})
-    watch(%r{^lib/.+/(.+)\.rb$}) { |m| "spec/unit/#{m[1]}_spec.rb" }
+    watch(%r{^lib/(?<module>.*/)(?<file>.+)\.rb$}) { |m| "spec/unit/#{m[:module]}#{m[:file]}_spec.rb" }
     watch('spec/spec_helper.rb') { %w(spec/unit spec/system) }
   end
 end
