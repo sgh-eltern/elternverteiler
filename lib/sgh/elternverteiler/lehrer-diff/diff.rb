@@ -46,7 +46,7 @@ module SGH
         end
 
         def any?
-          changes? or additions? or removals?
+          changes? || additions? || removals?
         end
 
         def empty?

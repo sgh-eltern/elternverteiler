@@ -107,9 +107,9 @@ end
         parent.add_kinder(child) if parent && !parent.kinder.include?(child)
       end
     end
-  rescue Erziehungsberechtigter::ValidationError => error
-    warn "Error: Not adding parent of #{child}: #{error.message}"
+  rescue Erziehungsberechtigter::ValidationError => e
+    warn "Error: Not adding parent of #{child}: #{e.message}"
   end
-rescue StandardError => error
-  warn "Error: Skipping #{child} because of: #{error.message}"
+rescue StandardError => e
+  warn "Error: Skipping #{child} because of: #{e.message}"
 end

@@ -13,10 +13,10 @@ module SGH
       many_to_one :stufe, class: Klassenstufe
 
       many_to_many :ämter,
-        class: Amt,
-        join_table: :amtsperioden,
-        left_key: :klasse_id,
-        right_key: :amt_id
+                   class: Amt,
+                   join_table: :amtsperioden,
+                   left_key: :klasse_id,
+                   right_key: :amt_id
 
       with_mailing_list(
         name: lambda { |k| "Eltern der #{k}" },

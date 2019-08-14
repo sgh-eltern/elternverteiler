@@ -17,10 +17,10 @@ module SGH
       include FormeHelper
 
       many_to_many :fächer,
-        class: Fach,
-        join_table: :unterrichtet,
-        left_key: :lehrer_id,
-        right_key: :fach_id
+                   class: Fach,
+                   join_table: :unterrichtet,
+                   left_key: :lehrer_id,
+                   right_key: :fach_id
 
       def to_s
         if titel

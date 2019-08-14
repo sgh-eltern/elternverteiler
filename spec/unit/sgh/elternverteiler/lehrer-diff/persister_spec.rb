@@ -12,7 +12,7 @@ describe LehrerDiff::Persister do
       kürzel: 'ek',
       vorname: 'Edna',
       nachname: 'Krabappel',
-      fächer: %w(E Geo NwT),
+      fächer: %w[E Geo NwT],
     )
   }
 

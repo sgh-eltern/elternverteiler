@@ -131,6 +131,6 @@ end
   if !found
     warn "MISSING: Could not find any combination of #{combinations} as parents of #{child} "
   end
-rescue StandardError => error
-  warn "Error: Skipping #{child} because of: #{error.message}"
+rescue StandardError => e
+  warn "Error: Skipping #{child} because of: #{e.message}"
 end

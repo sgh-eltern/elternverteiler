@@ -6,16 +6,16 @@ module SGH
       include FormeHelper
 
       many_to_many :kinder,
-        class: Schüler,
-        join_table: :erziehungsberechtigung,
-        left_key: :erziehungsberechtigter_id,
-        right_key: :schüler_id
+                   class: Schüler,
+                   join_table: :erziehungsberechtigung,
+                   left_key: :erziehungsberechtigter_id,
+                   right_key: :schüler_id
 
       many_to_many :ämter,
-        class: Amt,
-        join_table: :amtsperioden,
-        left_key: :inhaber_id,
-        right_key: :amt_id
+                   class: Amt,
+                   join_table: :amtsperioden,
+                   left_key: :inhaber_id,
+                   right_key: :amt_id
 
       ValidationError = Class.new(StandardError)
 

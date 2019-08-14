@@ -15,7 +15,7 @@ module SGH
           incoming = Fetcher.new.fetch.map { |l| DTO.build(l) }.sort_by(&:kürzel)
 
           if incoming.empty?
-            # TODO technical alert; it is pretty unlikely the there are no teachers anymore
+            # TODO: technical alert; it is pretty unlikely the there are no teachers anymore
             return
           end
 
@@ -25,7 +25,7 @@ module SGH
           warn diff
 
           if diff.any?
-            # TODO send business alert with diff
+            # TODO: send business alert with diff
           end
 
           lehrer_persister = Persister.new

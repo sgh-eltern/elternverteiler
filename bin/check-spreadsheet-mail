@@ -147,7 +147,7 @@ end
       end
     end
   end
-rescue StandardError => error
+rescue StandardError => e
   binding.pry
-  warn "Error: Skipping #{child} because of: #{error.message}"
+  warn "Error: Skipping #{child} because of: #{e.message}"
 end

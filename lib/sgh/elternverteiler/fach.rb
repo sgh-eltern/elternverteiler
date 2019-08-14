@@ -6,10 +6,10 @@ module SGH
       include FormeHelper
 
       many_to_many :lehrer,
-        class: Lehrer,
-        join_table: :unterrichtet,
-        left_key: :fach_id,
-        right_key: :lehrer_id
+                   class: Lehrer,
+                   join_table: :unterrichtet,
+                   left_key: :fach_id,
+                   right_key: :lehrer_id
 
       def <=>(other)
         name <=> other.name

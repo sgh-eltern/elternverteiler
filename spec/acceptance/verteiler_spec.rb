@@ -36,7 +36,7 @@ describe 'Verteiler', type: :feature do
   it 'links to the distribution list details for Elternvertreter of 5V' do
     within('.sgh-elternverteiler-klasse-elternvertreter') do
       expect(page).to have_link('Elternvertreter der Klasse 5V',
-      href: '/verteiler/elternvertreter-5v')
+                                href: '/verteiler/elternvertreter-5v')
     end
   end
 
@@ -49,7 +49,7 @@ describe 'Verteiler', type: :feature do
   it 'links to the distribution list details for Eltern of 5V' do
     within('.sgh-elternverteiler-klasse-eltern') do
       expect(page).to have_link('Eltern der Klasse 5V',
-      href: '/verteiler/eltern-5v')
+                                href: '/verteiler/eltern-5v')
     end
   end
 
