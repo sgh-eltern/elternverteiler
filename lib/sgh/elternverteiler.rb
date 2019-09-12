@@ -84,9 +84,7 @@ module SGH
     SchulkonferenzMitglied = Struct.new(:mail)
 
     def self.schulkonferenz
-      %w[ schulleitung@v.sgh.bb.schule-bw.de wiebel@sgh-mail.de epple@sgh-mail.de kernchen@sgh-mail.de
-          vorstand@eltern-sgh.de claudia.bartsch@gmx.net anja.hue@gmx.de elisabeth.schiffer@gmx.net
-          leo.verbarg@web.de lea.schrade@web.de philipp.hamm@gmx.de ].
+      %w[ schulleitung@v.sgh.bb.schule-bw.de vorstand@eltern-sgh.de ].
         map { |m| SchulkonferenzMitglied.new(m) }.
         tap do |all|
         all.define_singleton_method(:mailing_list) do
