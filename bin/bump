@@ -21,7 +21,7 @@ def bump(from, to=from + 1)
   ks.save
 end
 
-Klassenstufe.first!(name: 'J2').destroy
+Klassenstufe.first(name: 'J2')&.destroy
 
 bump('J1', 'J2')
 bump(10, 'J1')
