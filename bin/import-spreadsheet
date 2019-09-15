@@ -1,0 +1,100 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+$LOAD_PATH.unshift(File.expand_path('../lib', __dir__))
+
+require 'sequel'
+Sequel::Model.db = Sequel.connect(ENV.fetch('DB'))
+
+require 'sgh/elternverteiler'
+
+# rubocop:disable Style/MixinUsage
+include SGH::Elternverteiler
+# rubocop:enable Style/MixinUsage
+
+require 'simple-spreadsheet'
+
+if ARGV.empty?
+  warn 'Error: Missing argument for document to read'
+  exit 1
+end
+
+sheet = SimpleSpreadsheet::Workbook.read(ARGV.first)
+sheet.selected_sheet = sheet.sheets.last
+
+headers = sheet.first_column.upto(sheet.last_column).map do |column_number|
+  [sheet.cell(sheet.first_row, column_number), column_number]
+end.to_h
+
+def find_or_create_klasse(klassenname)
+  case klassenname
+  when /(1?\d)([A-Z])/
+    ks = Klassenstufe.find_or_create(name: Regexp.last_match(1))
+    Klasse.find_or_create(stufe: ks, zug: Regexp.last_match(2))
+  when /J(1|2)/
+    ks = Klassenstufe.find_or_create(name: klassenname)
+    Klasse.find_or_create(stufe: ks)
+  else
+    raise "Konnte Klasse #{klassenname} nicht in Stufe und Zug zerlegen."
+  end
+end
+
+Sequel::Model.db.transaction do
+  Schüler.dataset.destroy
+  Klassenstufe.dataset.destroy
+
+  (sheet.first_row + 1).upto(sheet.last_row) do |line_number|
+    klassenname = sheet.cell(line_number, headers['Klasse']).upcase
+
+    child = Schüler.find_or_create(
+      vorname: sheet.cell(line_number, headers['Vorname'])&.strip,
+      nachname: sheet.cell(line_number, headers['Name'])&.strip,
+      klasse: find_or_create_klasse(klassenname)
+    )
+
+    1.upto(2).each do |parent_index|
+      parent_vorname = sheet.cell(line_number, headers["Erz#{parent_index}Vorname"]).to_s.strip
+      parent_nachname = sheet.cell(line_number, headers["Erz#{parent_index}Name"]).to_s.strip
+      parent_email = sheet.cell(line_number, headers["Erz#{parent_index}Email"]).to_s.strip
+
+      next if parent_email.empty?
+
+      parent = Erziehungsberechtigter.first {
+        Sequel.&(
+          Sequel.ilike(:vorname, parent_vorname),
+          Sequel.ilike(:nachname, parent_nachname),
+          Sequel.ilike(:mail, parent_email)
+        )
+      } || Erziehungsberechtigter.create(
+             vorname: parent_vorname,
+             nachname: parent_nachname,
+             mail: parent_email
+           )
+
+      parent.add_kinder(child) if parent && !parent.kinder.include?(child)
+    end
+  end
+end
+
+__END__
+
+TODO Cross-checks (not everything is a problem, but it's worth checking):
+
+* Multiple parents with same first- and last name
+
+  SELECT
+     nachname, vorname, mail
+  FROM
+      (
+      select
+         nachname, vorname, mail, count(*) OVER (PARTITION BY nachname, vorname) as cnt
+      from
+        erziehungsberechtigte
+      ) T
+  WHERE
+    cnt > 1
+  ORDER BY
+     cnt DESC
+
+* Kids with same name in multiple classes of the same Jahrgang
+* Parents with same name, but different (or some empty) eMail addresses
