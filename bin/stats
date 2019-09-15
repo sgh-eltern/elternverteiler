@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+
+require_relative '../config/db'
+
+schüler_unreachable_count = Schüler.all.select { |sch| sch.eltern.collect(&:mail).compact.reject(&:empty?).empty? }.sort_by(&:nachname).count
+
+puts "#{Erziehungsberechtigter.count} Eltern"
+puts "#{SGH::Elternverteiler.elternbeirat.count} Elternvertreter"
+puts "#{Schüler.count} Schüler"
+puts "#{schüler_unreachable_count} Schüler nicht per Mail erreichbar"
+puts "#{Klasse.count} Klassen"
+puts "#{Klassenstufe.count} Klassenstufen"
+puts "#{Lehrer.count} Lehrer"
+puts "#{Fach.count} Fächer"
